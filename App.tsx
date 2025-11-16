@@ -7,6 +7,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import CustomCursor from './components/CustomCursor';
 import StickyBottomNav from './components/StickyBottomNav';
+import StylizedCta from './components/StylizedCta';
 
 import HomePage from './pages/HomePage';
 import ServicesPage from './pages/ServicesPage';
@@ -59,6 +60,7 @@ const App: React.FC = () => {
         <main className="min-h-screen">
             <AnimatedRoutes />
         </main>
+        <StylizedCta />
         <Footer />
       </div>
       <StickyBottomNav isVisible={showBottomNav} />

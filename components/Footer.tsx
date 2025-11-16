@@ -15,9 +15,9 @@ const Footer: React.FC = () => {
               Crafting premium digital experiences that innovate and inspire.
             </p>
             <div className="flex space-x-4 mt-6">
-              <a href="#" className="text-gray-400 hover:text-cyan-400 transition-colors duration-300"><TwitterIcon className="h-6 w-6" /></a>
-              <a href="#" className="text-gray-400 hover:text-cyan-400 transition-colors duration-300"><GithubIcon className="h-6 w-6" /></a>
-              <a href="#" className="text-gray-400 hover:text-cyan-400 transition-colors duration-300"><LinkedinIcon className="h-6 w-6" /></a>
+              <a href="#" className="text-gray-400 hover:text-cyan-400 transition-colors duration-300"><TwitterIcon className="h-7 w-7" /></a>
+              <a href="#" className="text-gray-400 hover:text-cyan-400 transition-colors duration-300"><GithubIcon className="h-7 w-7" /></a>
+              <a href="#" className="text-gray-400 hover:text-cyan-400 transition-colors duration-300"><LinkedinIcon className="h-7 w-7" /></a>
             </div>
           </div>
           

@@ -1,6 +1,7 @@
 
 import React from 'react';
-import { motion } from 'framer-motion';
+// Fix: Import the 'Variants' type from framer-motion to correctly type animation variants.
+import { motion, Variants } from 'framer-motion';
 
 interface AnimatedHeadingProps {
   text: string;
@@ -10,7 +11,7 @@ interface AnimatedHeadingProps {
 const AnimatedHeading: React.FC<AnimatedHeadingProps> = ({ text, className }) => {
   const words = text.split(' ');
 
-  const container = {
+  const container: Variants = {
     hidden: { opacity: 0 },
     visible: (i = 1) => ({
       opacity: 1,
@@ -18,7 +19,10 @@ const AnimatedHeading: React.FC<AnimatedHeadingProps> = ({ text, className }) =>
     }),
   };
 
-  const child = {
+  // Fix: Explicitly typing `child` with `Variants` solves the type error.
+  // TypeScript was inferring the `type` property in `transition` as a generic `string`,
+  // but framer-motion expects a specific literal type (e.g., 'spring', 'tween').
+  const child: Variants = {
     visible: {
       opacity: 1,
       y: 0,

@@ -89,9 +89,9 @@ const HomePage: React.FC = () => {
             </Link>
           </motion.div>
           <div className="flex flex-wrap items-center justify-center gap-6 md:gap-12">
-            <TrustBadge icon={<CheckIcon className="h-6 w-6 text-green-400"/>} text="24/7 Support" delay={0.1} />
-            <TrustBadge icon={<RocketIcon className="h-6 w-6 text-purple-400"/>} text="Fast Delivery" delay={0.2} />
-            <TrustBadge icon={<BriefcaseIcon className="h-6 w-6 text-cyan-400"/>} text="50+ Projects Completed" delay={0.3} />
+            <TrustBadge icon={<CheckIcon className="h-8 w-8 text-green-400"/>} text="24/7 Support" delay={0.1} />
+            <TrustBadge icon={<RocketIcon className="h-8 w-8 text-purple-400"/>} text="Fast Delivery" delay={0.2} />
+            <TrustBadge icon={<BriefcaseIcon className="h-8 w-8 text-cyan-400"/>} text="50+ Projects Completed" delay={0.3} />
           </div>
         </div>
       </section>
@@ -205,7 +205,7 @@ const HomePage: React.FC = () => {
                 ].map((testimonial, index) => (
                     <motion.div key={index} variants={itemVariants} className="bg-gray-900/50 p-8 rounded-lg border border-gray-800">
                         <div className="flex justify-center mb-4 text-yellow-400">
-                            {[...Array(5)].map((_, i) => <StarIcon key={i} className="h-5 w-5"/>)}
+                            {[...Array(5)].map((_, i) => <StarIcon key={i} className="h-6 w-6"/>)}
                         </div>
                         <p className="italic text-gray-300 mb-6">"{testimonial.quote}"</p>
                         <h4 className="text-lg font-bold text-white">{testimonial.name}</h4>

@@ -26,22 +26,22 @@ const StickyBottomNav: React.FC<StickyBottomNavProps> = ({ isVisible }) => {
     <AnimatePresence>
       {isVisible && (
         <motion.div
-          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40"
+          className="fixed bottom-6 inset-x-0 flex justify-center z-40 px-4"
           initial={{ y: 100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
           transition={{ type: 'spring', stiffness: 300, damping: 30 }}
         >
           <div className="flex items-center gap-2 bg-black/50 backdrop-blur-lg border border-slate-700/60 rounded-full p-2 shadow-lg shadow-cyan-500/10">
-            <Link to="/" className="flex items-center justify-center h-12 w-12 rounded-full bg-slate-800 hover:bg-slate-700 transition-colors">
-              <img src={logoUrl} alt="Sameer Digital Lab" className="h-8 w-auto"/>
+            <Link to="/" className="flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-slate-800 hover:bg-slate-700 transition-colors">
+              <img src={logoUrl} alt="Sameer Digital Lab" className="h-10 w-auto"/>
             </Link>
             
             {navLinks.map((link) => (
               <NavLink
                 key={link.name}
                 to={link.path}
-                className="px-6 py-2.5 rounded-full text-base font-medium text-slate-200 transition-all duration-300 border border-transparent hover:bg-slate-700/80"
+                className="px-4 md:px-6 py-2.5 rounded-full text-sm md:text-base font-medium text-slate-200 transition-all duration-300 border border-transparent hover:bg-slate-700/80"
                 style={({ isActive }) => (isActive ? activeLinkStyle : {})}
               >
                 {link.name}
@@ -50,7 +50,7 @@ const StickyBottomNav: React.FC<StickyBottomNavProps> = ({ isVisible }) => {
 
             <NavLink
               to="/contact"
-              className="px-6 py-2.5 rounded-full text-base font-bold bg-cyan-500 text-black transition-all duration-300 hover:bg-cyan-400 hover:shadow-[0_0_15px_#22d3ee]"
+              className="px-4 md:px-6 py-2.5 rounded-full text-sm md:text-base font-bold bg-cyan-500 text-black transition-all duration-300 hover:bg-cyan-400 hover:shadow-[0_0_15px_#22d3ee]"
             >
               Contact Us
             </NavLink>
