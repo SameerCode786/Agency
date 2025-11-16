@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 const StylizedCta = () => {
   return (
-    <div className="bg-[#0a0a0a] overflow-hidden">
+    <div className="bg-slate-950 overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           className="relative py-20 text-center"

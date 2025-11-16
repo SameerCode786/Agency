@@ -10,7 +10,7 @@ const Footer: React.FC = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="col-span-1 md:col-span-1">
-            <img src={logoUrl} alt="Sameer Digital Lab Logo" className="h-14 w-auto mb-4" />
+            <img src={logoUrl} alt="SameerCodes Studios Logo" className="h-14 w-auto mb-4" />
             <p className="text-gray-400 text-sm">
               Crafting premium digital experiences that innovate and inspire.
             </p>
@@ -53,7 +53,7 @@ const Footer: React.FC = () => {
         </div>
         
         <div className="mt-8 pt-8 border-t border-gray-800 text-center text-gray-500 text-sm">
-          <p>&copy; {new Date().getFullYear()} Sameer Digital Lab. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} SameerCodes Studios. All rights reserved.</p>
         </div>
       </div>
     </footer>

@@ -9,7 +9,7 @@ interface SeoContent {
 
 export const useSeoContent = (pageName: string) => {
     const [content, setContent] = useState<SeoContent>({
-        title: `Sameer Digital Lab | ${pageName}`,
+        title: `SameerCodes Studios | ${pageName}`,
         description: 'Loading content...',
     });
     const [loading, setLoading] = useState(true);

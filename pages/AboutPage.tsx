@@ -19,7 +19,7 @@ const experienceData = [
     { year: '2018', role: 'Freelance Developer', desc: 'Started the journey, building websites for small businesses and honing my skills in web technologies.' },
     { year: '2020', role: 'Frontend Engineer @ Tech Startup', desc: 'Joined a fast-paced startup, contributing to a large-scale React application and learning agile methodologies.' },
     { year: '2022', role: 'Senior Developer & Team Lead', desc: 'Led a team of developers, mentoring junior members and architecting complex front-end systems.' },
-    { year: '2024', role: 'Founded Sameer Digital Lab', desc: 'Launched the agency to provide premium digital solutions, combining technical expertise with creative vision.' },
+    { year: '2024', role: 'Founded SameerCodes Studios', desc: 'Launched the agency to provide premium digital solutions, combining technical expertise with creative vision.' },
 ]
 
 const AboutPage: React.FC = () => {
@@ -30,7 +30,7 @@ const AboutPage: React.FC = () => {
       <meta name="description" content={description} />
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-24 pt-36">
         <div className="text-center mb-16">
-          <AnimatedHeading text="About Sameer Digital Lab" className="text-4xl md:text-6xl font-bold mb-4" />
+          <AnimatedHeading text="About SameerCodes Studios" className="text-4xl md:text-6xl font-bold mb-4" />
           <p className="max-w-3xl mx-auto text-gray-400 text-lg">
             A fusion of passion, code, and creativity.
           </p>
@@ -55,10 +55,10 @@ const AboutPage: React.FC = () => {
             >
                 <h2 className="text-3xl font-bold text-white mb-4">The Mind Behind the Magic</h2>
                 <p className="text-gray-400 mb-4">
-                    Hi, I'm Sameer, the founder of Sameer Digital Lab. With over a decade of experience in the digital landscape, I've cultivated a deep passion for building exceptional websites and applications. My journey has taken me from freelance projects to leading teams at innovative startups, always with one goal in mind: to leverage technology to create meaningful and impactful digital experiences.
+                    Hi, I'm Sameer, the founder of SameerCodes Studios. With over a decade of experience in the digital landscape, I've cultivated a deep passion for building exceptional websites and applications. My journey has taken me from freelance projects to leading teams at innovative startups, always with one goal in mind: to leverage technology to create meaningful and impactful digital experiences.
                 </p>
                 <p className="text-gray-400">
-                    Sameer Digital Lab is the culmination of this journey—a place where technical excellence meets creative design. We believe in collaboration, transparency, and pushing the boundaries of what's possible on the web.
+                    SameerCodes Studios is the culmination of this journey—a place where technical excellence meets creative design. We believe in collaboration, transparency, and pushing the boundaries of what's possible on the web.
                 </p>
             </motion.div>
         </div>

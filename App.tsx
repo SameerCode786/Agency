@@ -1,13 +1,14 @@
 
 import React, { useState, useEffect } from 'react';
 import { HashRouter, Routes, Route, useLocation } from 'react-router-dom';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 
 import Header from './components/Header';
 import Footer from './components/Footer';
 import CustomCursor from './components/CustomCursor';
 import StickyBottomNav from './components/StickyBottomNav';
 import StylizedCta from './components/StylizedCta';
+import Preloader from './components/Preloader';
 
 import HomePage from './pages/HomePage';
 import ServicesPage from './pages/ServicesPage';
@@ -36,10 +37,29 @@ const AnimatedRoutes: React.FC = () => {
 
 const App: React.FC = () => {
   const [showBottomNav, setShowBottomNav] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    // Hide preloader after 8 seconds
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+      document.body.style.overflow = 'auto'; // Re-enable scroll
+    }, 8000);
+
+    // Disable scroll when preloader is visible
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+        clearTimeout(timer);
+        document.body.style.overflow = 'auto'; // Ensure scroll is re-enabled on component unmount
+    };
+  }, []);
+
+
+  useEffect(() => {
+    if (isLoading) return; // Don't run scroll listener while loading
+
     const handleScroll = () => {
-      // Show bottom nav after scrolling down 300px
       if (window.scrollY > 300) {
         setShowBottomNav(true);
       } else {
@@ -49,21 +69,34 @@ const App: React.FC = () => {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isLoading]);
 
 
   return (
     <HashRouter>
       <CustomCursor />
-      <div className="relative z-10">
-        <Header isVisible={!showBottomNav} />
-        <main className="min-h-screen">
-            <AnimatedRoutes />
-        </main>
-        <StylizedCta />
-        <Footer />
-      </div>
-      <StickyBottomNav isVisible={showBottomNav} />
+      <AnimatePresence mode="wait">
+        {isLoading ? (
+          <Preloader key="preloader" />
+        ) : (
+          <motion.div 
+            key="main-content" 
+            initial={{ opacity: 0 }} 
+            animate={{ opacity: 1 }} 
+            transition={{ duration: 0.8 }}
+          >
+            <div className="relative z-10">
+              <Header isVisible={!showBottomNav} />
+              <main className="min-h-screen">
+                  <AnimatedRoutes />
+              </main>
+              <StylizedCta />
+              <Footer />
+            </div>
+            <StickyBottomNav isVisible={showBottomNav} />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </HashRouter>
   );
 };

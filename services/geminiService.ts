@@ -16,28 +16,28 @@ interface SeoContent {
 // Mock data to simulate Gemini API responses
 const mockSeoData: Record<string, SeoContent> = {
     Home: {
-        title: "Sameer Digital Lab - Web & Mobile App Development Agency",
+        title: "SameerCodes Studios - Web & Mobile App Development Agency",
         description: "Professional web & mobile app development agency. We build custom websites, React Native apps, WordPress solutions. Affordable prices, fast delivery.",
     },
     Services: {
-        title: "Our Services | Sameer Digital Lab",
+        title: "Our Services | SameerCodes Studios",
         description: "Explore our services: Web & Mobile App Development, UI/UX Design, Speed Optimization, Maintenance, and Digital Strategy. We provide end-to-end solutions for your digital needs.",
     },
     Portfolio: {
-        title: "Portfolio | Sameer Digital Lab",
+        title: "Portfolio | SameerCodes Studios",
         description: "Browse our portfolio of innovative projects. See how we've helped businesses achieve their goals with our expertise in web, mobile, and design.",
     },
     About: {
-        title: "About Us | Sameer Digital Lab",
-        description: "Learn about Sameer Digital Lab's journey, expertise, and the creative minds behind our success. We are passionate about code, creativity, and client success.",
+        title: "About Us | SameerCodes Studios",
+        description: "Learn about SameerCodes Studios' journey, expertise, and the creative minds behind our success. We are passionate about code, creativity, and client success.",
     },
     Blog: {
-        title: "Blog | Sameer Digital Lab",
-        description: "Read our blog for insights on the latest trends in web development, design, and digital strategy. Stay informed with expert analysis from Sameer Digital Lab.",
+        title: "Blog | SameerCodes Studios",
+        description: "Read our blog for insights on the latest trends in web development, design, and digital strategy. Stay informed with expert analysis from SameerCodes Studios.",
     },
     Contact: {
-        title: "Contact Us | Sameer Digital Lab",
-        description: "Get in touch with Sameer Digital Lab. Let's discuss your project and how we can help you build something amazing. Contact us for a free quote.",
+        title: "Contact Us | SameerCodes Studios",
+        description: "Get in touch with SameerCodes Studios. Let's discuss your project and how we can help you build something amazing. Contact us for a free quote.",
     },
 };
 
@@ -47,7 +47,7 @@ export const generateSeoContent = async (pageName: string): Promise<SeoContent> 
     // In a real application, you would make an API call to Gemini here.
     return new Promise((resolve) => {
         setTimeout(() => {
-            resolve(mockSeoData[pageName] || { title: "Sameer Digital Lab", description: "Premium Digital Agency." });
+            resolve(mockSeoData[pageName] || { title: "SameerCodes Studios", description: "Premium Digital Agency." });
         }, 200); // Simulate network delay
     });
 
@@ -60,7 +60,7 @@ export const generateSeoContent = async (pageName: string): Promise<SeoContent> 
         }
 
         const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-        const prompt = `Generate an SEO-friendly title and meta description for the '${pageName}' page of a futuristic digital agency called 'Sameer Digital Lab'. Return the result as a JSON object with keys "title" and "description". The tone should be professional, modern, and premium.`;
+        const prompt = `Generate an SEO-friendly title and meta description for the '${pageName}' page of a futuristic digital agency called 'SameerCodes Studios'. Return the result as a JSON object with keys "title" and "description". The tone should be professional, modern, and premium.`;
         
         const response = await ai.models.generateContent({
             model: 'gemini-2.5-flash',
