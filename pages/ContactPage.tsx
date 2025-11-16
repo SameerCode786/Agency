@@ -33,14 +33,14 @@ const ContactPage: React.FC = () => {
                         <EmailIcon className="h-8 w-8 text-cyan-400" />
                         <div>
                             <h4 className="font-semibold text-lg">Email</h4>
-                            <a href="mailto:hello@sameercodes.online" className="text-gray-400 hover:text-cyan-400">hello@sameercodes.online</a>
+                            <a href="mailto:support@sameercodes.online" className="text-gray-400 hover:text-cyan-400">support@sameercodes.online</a>
                         </div>
                     </div>
                     <div className="flex items-center space-x-4">
                         <PhoneIcon className="h-8 w-8 text-cyan-400" />
                         <div>
                             <h4 className="font-semibold text-lg">Phone</h4>
-                            <p className="text-gray-400">+1 234 567 890</p>
+                            <p className="text-gray-400">+91 XXXXX XXXXX</p>
                         </div>
                     </div>
                     <div className="flex items-center space-x-4">

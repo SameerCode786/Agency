@@ -34,8 +34,8 @@ const Footer: React.FC = () => {
           <div>
             <h3 className="text-lg font-semibold text-white mb-4">Contact</h3>
             <ul className="space-y-2 text-gray-400">
-              <li>Email: hello@sameercodes.online</li>
-              <li>Phone: +1 234 567 890</li>
+              <li>Email: support@sameercodes.online</li>
+              <li>Phone: +91 XXXXX XXXXX</li>
               <li>Location: Cyberspace</li>
             </ul>
           </div>
@@ -53,7 +53,7 @@ const Footer: React.FC = () => {
         </div>
         
         <div className="mt-8 pt-8 border-t border-gray-800 text-center text-gray-500 text-sm">
-          <p>&copy; {new Date().getFullYear()} Sameer Digital Lab. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} SameerCodes Studios. All rights reserved.</p>
         </div>
       </div>
     </footer>

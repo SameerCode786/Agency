@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -50,7 +51,7 @@ const StickyBottomNav: React.FC<StickyBottomNavProps> = ({ isVisible }) => {
 
             <NavLink
               to="/contact"
-              className="px-6 py-2.5 rounded-full text-base font-bold bg-yellow-400 text-black transition-all duration-300 hover:bg-yellow-300 hover:shadow-[0_0_15px_#facc15]"
+              className="px-6 py-2.5 rounded-full text-base font-bold bg-cyan-500 text-black transition-all duration-300 hover:bg-cyan-400 hover:shadow-[0_0_15px_#22d3ee]"
             >
               Contact Us
             </NavLink>
