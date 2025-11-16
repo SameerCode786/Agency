@@ -1,11 +1,12 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { HashRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 
 import Header from './components/Header';
 import Footer from './components/Footer';
 import CustomCursor from './components/CustomCursor';
+import StickyBottomNav from './components/StickyBottomNav';
 
 import HomePage from './pages/HomePage';
 import ServicesPage from './pages/ServicesPage';
@@ -33,16 +34,34 @@ const AnimatedRoutes: React.FC = () => {
 
 
 const App: React.FC = () => {
+  const [showBottomNav, setShowBottomNav] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Show bottom nav after scrolling down 300px
+      if (window.scrollY > 300) {
+        setShowBottomNav(true);
+      } else {
+        setShowBottomNav(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+
   return (
     <HashRouter>
       <CustomCursor />
       <div className="relative z-10">
-        <Header />
+        <Header isVisible={!showBottomNav} />
         <main className="min-h-screen">
             <AnimatedRoutes />
         </main>
         <Footer />
       </div>
+      <StickyBottomNav isVisible={showBottomNav} />
     </HashRouter>
   );
 };
