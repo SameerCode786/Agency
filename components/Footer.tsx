@@ -1,16 +1,16 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { SdlLogo, GithubIcon, TwitterIcon, LinkedinIcon } from './Icons';
+import { GithubIcon, TwitterIcon, LinkedinIcon } from './Icons';
 import { motion } from 'framer-motion';
 
 const Footer: React.FC = () => {
+  const logoUrl = "https://res.cloudinary.com/dow2sbjsp/image/upload/v1763314768/Sameer_en7cdu.png";
   return (
     <footer className="bg-black border-t border-cyan-500/20 py-12">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="col-span-1 md:col-span-1">
-            <SdlLogo className="h-12 mb-4" />
+            <img src={logoUrl} alt="Sameer Digital Lab Logo" className="h-14 w-auto mb-4" />
             <p className="text-gray-400 text-sm">
               Crafting premium digital experiences that innovate and inspire.
             </p>

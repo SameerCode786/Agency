@@ -1,8 +1,6 @@
-
 import React from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { SdlMonogram } from './Icons';
 
 const navLinks = [
   { name: 'Services', path: '/services' },
@@ -16,6 +14,7 @@ interface StickyBottomNavProps {
 }
 
 const StickyBottomNav: React.FC<StickyBottomNavProps> = ({ isVisible }) => {
+  const logoUrl = "https://res.cloudinary.com/dow2sbjsp/image/upload/v1763314768/Sameer_en7cdu.png";
   // Style for the active NavLink, matching the website's cyan theme
   const activeLinkStyle = {
     borderColor: '#22d3ee', // cyan-400
@@ -35,7 +34,7 @@ const StickyBottomNav: React.FC<StickyBottomNavProps> = ({ isVisible }) => {
         >
           <div className="flex items-center gap-2 bg-black/50 backdrop-blur-lg border border-slate-700/60 rounded-full p-2 shadow-lg shadow-cyan-500/10">
             <Link to="/" className="flex items-center justify-center h-12 w-12 rounded-full bg-slate-800 hover:bg-slate-700 transition-colors">
-              <SdlMonogram className="h-7 w-7 text-cyan-400" />
+              <img src={logoUrl} alt="Sameer Digital Lab" className="h-8 w-auto"/>
             </Link>
             
             {navLinks.map((link) => (

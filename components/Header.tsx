@@ -1,8 +1,6 @@
-
 import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { SdlLogo, SdlMonogram } from './Icons';
 
 const navLinks = [
   { name: 'Home', path: '/' },
@@ -18,6 +16,7 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ isVisible }) => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const logoUrl = "https://res.cloudinary.com/dow2sbjsp/image/upload/v1763314768/Sameer_en7cdu.png";
 
   const activeLinkStyle = {
     color: '#22d3ee',
@@ -36,9 +35,8 @@ const Header: React.FC<HeaderProps> = ({ isVisible }) => {
         >
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-20">
-              <Link to="/" className="flex items-center space-x-2">
-                <SdlMonogram className="h-8 w-8 text-cyan-400" />
-                <SdlLogo className="h-6 hidden sm:block" />
+              <Link to="/" className="flex items-center">
+                <img src={logoUrl} alt="Sameer Digital Lab Logo" className="h-12 w-auto" />
               </Link>
 
               <nav className="hidden lg:flex items-center space-x-8">

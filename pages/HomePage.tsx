@@ -1,9 +1,9 @@
-
 import React from 'react';
 import PageWrapper from '../components/PageWrapper';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import AnimatedHeading from '../components/AnimatedHeading';
+import ScrollRevealSection from '../components/ScrollRevealSection';
 import { CodeIcon, MobileIcon, WordPressIcon, ArrowRightIcon, CheckIcon, RocketIcon, BriefcaseIcon, SpeedIcon, WalletIcon, MaintenanceIcon, PhoneIcon, StarIcon } from '../components/Icons';
 import { useSeoContent } from '../hooks/useSeoContent';
 
@@ -97,8 +97,8 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* Services Section */}
-      <section className="py-20 bg-black/30">
-        <div className="container mx-auto px-4 text-center">
+      <ScrollRevealSection>
+        <div className="text-center">
             <AnimatedHeading text="Our Expert Services" className="text-4xl md:text-5xl font-bold mb-4" />
             <p className="max-w-2xl mx-auto text-gray-400 mb-12">We provide end-to-end digital solutions tailored to your business needs.</p>
             <motion.div 
@@ -131,11 +131,11 @@ const HomePage: React.FC = () => {
                 ))}
             </motion.div>
         </div>
-      </section>
+      </ScrollRevealSection>
 
       {/* Special Offers Banner */}
-      <section className="py-20">
-        <div className="container mx-auto px-4 text-center">
+      <ScrollRevealSection>
+        <div className="text-center">
             <AnimatedHeading text="🚀 Limited Time Offers" className="text-4xl md:text-5xl font-bold mb-12"/>
             <motion.div
                  className="grid grid-cols-1 lg:grid-cols-2 gap-8"
@@ -159,11 +159,11 @@ const HomePage: React.FC = () => {
                 </motion.div>
             </motion.div>
         </div>
-      </section>
+      </ScrollRevealSection>
       
       {/* Why Choose Us */}
-      <section className="py-20 bg-black/30">
-          <div className="container mx-auto px-4 text-center">
+      <ScrollRevealSection className="bg-black/30">
+          <div className="text-center">
               <AnimatedHeading text="Why Choose Sameer Digital Lab?" className="text-4xl md:text-5xl font-bold mb-12"/>
               <motion.div
                 className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
@@ -186,11 +186,11 @@ const HomePage: React.FC = () => {
                   ))}
               </motion.div>
           </div>
-      </section>
+      </ScrollRevealSection>
 
       {/* Testimonials */}
-      <section className="py-20">
-          <div className="container mx-auto px-4 text-center">
+      <ScrollRevealSection>
+          <div className="text-center">
               <AnimatedHeading text="What Our Clients Say" className="text-4xl md:text-5xl font-bold mb-12" />
               <motion.div
                 className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto"
@@ -214,11 +214,11 @@ const HomePage: React.FC = () => {
                 ))}
               </motion.div>
           </div>
-      </section>
+      </ScrollRevealSection>
 
       {/* Final CTA Section */}
-      <section className="py-20 text-center">
-        <div className="container mx-auto px-4">
+      <ScrollRevealSection>
+        <div className="text-center">
             <AnimatedHeading text="Ready to Transform Your Business?" className="text-4xl md:text-5xl font-bold mb-4"/>
             <p className="max-w-2xl mx-auto text-gray-400 mb-8">Get a FREE website/app consultation and project estimate</p>
             <div className="flex flex-wrap items-center justify-center gap-4 md:gap-8 mb-8 text-lg">
@@ -233,7 +233,7 @@ const HomePage: React.FC = () => {
             </Link>
              <p className="mt-6 text-gray-400">Or email us at: <a href="mailto:support@sameercodes.online" className="text-cyan-400 font-semibold hover:underline">support@sameercodes.online</a></p>
         </div>
-      </section>
+      </ScrollRevealSection>
     </PageWrapper>
   );
 };

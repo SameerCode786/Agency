@@ -1,30 +1,4 @@
-
 import React from 'react';
-
-export const SdlMonogram: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
-  <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
-    <path d="M 85 50 A 35 35 0 1 1 50 15" stroke="currentColor" strokeWidth="12" strokeLinecap="round"/>
-    <path d="M 15 50 A 35 35 0 1 1 50 85" stroke="#4A5568" strokeWidth="12" strokeLinecap="round"/>
-  </svg>
-);
-
-
-export const SdlLogo: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
-    <svg width="170" height="50" viewBox="0 0 170 50" xmlns="http://www.w3.org/2000/svg" {...props}>
-        <style>
-            {`.sameer-font { font-family: sans-serif; font-size: 28px; font-weight: bold; letter-spacing: -1px; }`}
-            {`.lab-font { font-family: sans-serif; font-size: 16px; fill: #D1D5DB; }`}
-        </style>
-        <text y="25">
-            <tspan className="sameer-font" fill="#9CA3AF">SAME</tspan>
-            <tspan className="sameer-font" fill="#22d3ee">ER</tspan>
-        </text>
-        <text x="50" y="45" className="lab-font">
-            Digital Lab
-        </text>
-    </svg>
-);
-
 
 export const CodeIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
   <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
