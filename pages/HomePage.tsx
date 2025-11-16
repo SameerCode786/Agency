@@ -60,7 +60,7 @@ const HomePage: React.FC = () => {
             Web & Mobile App Development Agency
             <br />
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-500">
-                SameerCodes Studios
+                Sameer Digital Lab
             </span>
           </motion.h1>
           <motion.p 
@@ -164,7 +164,7 @@ const HomePage: React.FC = () => {
       {/* Why Choose Us */}
       <section className="py-20 bg-black/30">
           <div className="container mx-auto px-4 text-center">
-              <AnimatedHeading text="Why Choose SameerCodes Studios?" className="text-4xl md:text-5xl font-bold mb-12"/>
+              <AnimatedHeading text="Why Choose Sameer Digital Lab?" className="text-4xl md:text-5xl font-bold mb-12"/>
               <motion.div
                 className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
                 variants={containerVariants}
@@ -201,7 +201,7 @@ const HomePage: React.FC = () => {
               >
                 {[
                     { quote: "Sameer delivered our website in just 6 days! The quality exceeded our expectations. Highly recommended!", name: "Raj Sharma, Mumbai", role: "Business Owner" },
-                    { quote: "The mobile app developed by SameerCodes Studios helped us increase our sales by 40%. Great work!", name: "Priya Patel, Delhi", role: "Startup Founder" }
+                    { quote: "The mobile app developed by Sameer Digital Lab helped us increase our sales by 40%. Great work!", name: "Priya Patel, Delhi", role: "Startup Founder" }
                 ].map((testimonial, index) => (
                     <motion.div key={index} variants={itemVariants} className="bg-gray-900/50 p-8 rounded-lg border border-gray-800">
                         <div className="flex justify-center mb-4 text-yellow-400">

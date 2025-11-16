@@ -3,29 +3,25 @@ import React from 'react';
 
 export const SdlMonogram: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
   <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
-    <path d="M20 80L50 20L80 80" stroke="currentColor" strokeWidth="10" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M35 80H65" stroke="currentColor" strokeWidth="10" strokeLinecap="round"/>
-    <path d="M50 20L20 80" stroke="url(#grad1)" strokeWidth="4"/>
-    <defs>
-        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" style={{stopColor: '#a855f7', stopOpacity:1}} />
-        <stop offset="100%" style={{stopColor: '#22d3ee', stopOpacity:1}} />
-        </linearGradient>
-    </defs>
+    <path d="M 85 50 A 35 35 0 1 1 50 15" stroke="currentColor" strokeWidth="12" strokeLinecap="round"/>
+    <path d="M 15 50 A 35 35 0 1 1 50 85" stroke="#4A5568" strokeWidth="12" strokeLinecap="round"/>
   </svg>
 );
 
+
 export const SdlLogo: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
-    <svg width="220" height="40" viewBox="0 0 220 40" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
-        <text x="0" y="30" fontFamily="sans-serif" fontSize="24" fontWeight="bold" fill="url(#gradText)">
-            SameerCodes Studios
+    <svg width="170" height="50" viewBox="0 0 170 50" xmlns="http://www.w3.org/2000/svg" {...props}>
+        <style>
+            {`.sameer-font { font-family: sans-serif; font-size: 28px; font-weight: bold; letter-spacing: -1px; }`}
+            {`.lab-font { font-family: sans-serif; font-size: 16px; fill: #D1D5DB; }`}
+        </style>
+        <text y="25">
+            <tspan className="sameer-font" fill="#9CA3AF">SAME</tspan>
+            <tspan className="sameer-font" fill="#22d3ee">ER</tspan>
         </text>
-        <defs>
-            <linearGradient id="gradText" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#e0e7ff" />
-                <stop offset="100%" stopColor="#a7f3d0" />
-            </linearGradient>
-        </defs>
+        <text x="50" y="45" className="lab-font">
+            Digital Lab
+        </text>
     </svg>
 );
 
