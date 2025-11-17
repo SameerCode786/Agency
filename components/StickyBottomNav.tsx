@@ -33,7 +33,7 @@ const StickyBottomNav: React.FC<StickyBottomNavProps> = ({ isVisible }) => {
           transition={{ type: 'spring', stiffness: 300, damping: 30 }}
         >
           <div className="flex items-center gap-2 bg-black/50 backdrop-blur-lg border border-slate-700/60 rounded-full p-2 shadow-lg shadow-cyan-500/10">
-            <Link to="/" className="flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-slate-800 hover:bg-slate-700 transition-colors">
+            <Link to="/" className="flex-shrink-0 flex items-center justify-center px-2">
               <img src={logoUrl} alt="SameerCodes Studios" className="h-10 w-auto"/>
             </Link>
             

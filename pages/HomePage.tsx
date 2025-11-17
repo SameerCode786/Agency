@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PageWrapper from '../components/PageWrapper';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import AnimatedHeading from '../components/AnimatedHeading';
 import { 
@@ -68,14 +68,26 @@ const TestimonialCard: React.FC<{ quote: string; name: string; role: string; }> 
     </motion.div>
 );
 
+const animatedHeadings = ["Websites.", "Mobile Apps.", "Growth.", "Success."];
 
 const HomePage: React.FC = () => {
     const { title, description } = useSeoContent('Home');
+    const [currentHeadingIndex, setCurrentHeadingIndex] = useState(0);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentHeadingIndex((prevIndex) => (prevIndex + 1) % animatedHeadings.length);
+        }, 3000); // Change heading every 3 seconds
+        return () => clearInterval(interval);
+    }, []);
+
 
     const heroStyle = {
         backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='p' width='100' height='100' patternUnits='userSpaceOnUse'%3E%3Cpath d='M0 50Q25 25 50 50t50 0' stroke='%23334155' fill='none' stroke-width='1'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='transparent' /%3E%3Crect width='100%25' height='100%25' fill='url(%23p)'/%3E%3C/svg%3E")`,
         backgroundRepeat: 'repeat',
     };
+    
+    const imageUrl = "https://res.cloudinary.com/dow2sbjsp/image/upload/v1763321580/WhatsApp_Image_2025-10-16_at_13.55.34_4d890154_mue78l.jpg";
 
   return (
     <PageWrapper>
@@ -83,75 +95,87 @@ const HomePage: React.FC = () => {
       <meta name="description" content={description} />
       
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center overflow-hidden bg-black" style={heroStyle}>
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/50 to-transparent"></div>
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black" style={heroStyle}>
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/70 to-transparent"></div>
         <div className="container mx-auto px-4 z-10">
-            <div className="max-w-3xl text-left">
-                <motion.p 
-                    className="text-purple-400 font-semibold tracking-widest uppercase mb-4 text-sm"
-                    initial={{ opacity: 0, x: -50 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.8, ease: "easeOut" }}
+           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <motion.div
+                    className="text-center lg:text-left"
+                    initial="hidden"
+                    animate="visible"
+                    variants={{
+                        hidden: { opacity: 0 },
+                        visible: {
+                            opacity: 1,
+                            transition: { staggerChildren: 0.2, delayChildren: 0.3 },
+                        },
+                    }}
                 >
-                    Creative Agency
-                </motion.p>
-                <motion.h1 
-                    className="text-5xl md:text-6xl lg:text-7xl font-bold text-slate-50 tracking-tighter mb-6"
-                    initial={{ opacity: 0, x: -50 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
-                >
-                    Web & Mobile App 
-                    <br />
-                    <span className="text-purple-400">
-                        Development
-                    </span>
-                </motion.h1>
-                <motion.p 
-                    className="max-w-md text-slate-300 md:text-xl mb-10"
-                    initial={{ opacity: 0, x: -50 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-                >
-                    We Build High-Performing Digital Experiences That Drive Business Growth. 100% Client Satisfaction.
-                </motion.p>
-                <motion.div 
-                    className="flex flex-col sm:flex-row items-start justify-start gap-4 mb-16"
-                    initial={{ opacity: 0, y: 50 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-                >
-                    <Link to="/contact">
-                        <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="w-full sm:w-auto px-8 py-3 bg-purple-600 text-white font-bold rounded-md text-lg hover:bg-purple-700 shadow-[0_0_20px_#a855f7] transition-all duration-300">
-                            Get Free Consultation
-                        </motion.button>
-                    </Link>
-                    <Link to="/portfolio">
-                        <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="w-full sm:w-auto px-8 py-3 border-2 border-slate-600 text-slate-300 font-bold rounded-md text-lg hover:bg-slate-800 transition-all duration-300">
-                            View Our Work
-                        </motion.button>
-                    </Link>
+                    <motion.h1 
+                        variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: 'easeOut' } }}}
+                        className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-slate-50 tracking-tight mb-6"
+                    >
+                        We Build Digital Solutions That{' '}
+                        <div className="inline-block relative w-[200px] sm:w-[300px] md:w-[450px] h-[50px] sm:h-[60px] md:h-[80px]">
+                            <AnimatePresence mode="wait">
+                                <motion.span
+                                    key={currentHeadingIndex}
+                                    className="text-cyan-400 absolute inset-0"
+                                    initial={{ opacity: 0, x: -50 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, x: 50 }}
+                                    transition={{ duration: 0.6, ease: "easeInOut" }}
+                                >
+                                    {animatedHeadings[currentHeadingIndex]}
+                                </motion.span>
+                            </AnimatePresence>
+                        </div>
+                    </motion.h1>
+
+                    <motion.p 
+                        variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: 'easeOut' } }}}
+                        className="max-w-xl mx-auto lg:mx-0 text-slate-300 md:text-xl mb-10 tracking-wide"
+                    >
+                        Premium Web Development • Mobile Apps • WordPress Solutions • Cold Email Marketing
+                    </motion.p>
+
+                    <motion.div 
+                        variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: 'easeOut' } }}}
+                        className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4"
+                    >
+                        <Link to="/contact">
+                            <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="w-full sm:w-auto px-8 py-3 bg-[#a657f7] text-white font-bold rounded-md text-lg hover:bg-purple-500 shadow-[0_0_20px_#a657f7] transition-all duration-300">
+                                Get Free Consultation
+                            </motion.button>
+                        </Link>
+                        <Link to="/portfolio">
+                            <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="w-full sm:w-auto px-8 py-3 border-2 border-slate-600 text-slate-300 font-bold rounded-md text-lg hover:bg-slate-800 hover:border-slate-500 transition-all duration-300">
+                                View Our Work
+                            </motion.button>
+                        </Link>
+                    </motion.div>
                 </motion.div>
-                <motion.div 
-                    className="flex flex-row items-center justify-start gap-12"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.4 }}
+                <motion.div
+                     initial={{ opacity: 0, x: 50, scale: 0.9 }}
+                     animate={{ opacity: 1, x: 0, scale: 1 }}
+                     transition={{ duration: 0.8, ease: 'easeOut', delay: 0.5 }}
+                     className="hidden lg:flex justify-center items-center"
                 >
-                    <div>
-                        <p className="text-4xl font-bold text-white">50+</p>
-                        <p className="text-sm text-slate-400 tracking-wider">Projects Completed</p>
-                    </div>
-                    <div>
-                        <p className="text-4xl font-bold text-white">98%</p>
-                        <p className="text-sm text-slate-400 tracking-wider">Satisfaction</p>
-                    </div>
-                    <div>
-                        <p className="text-4xl font-bold text-white">24/7</p>
-                        <p className="text-sm text-slate-400 tracking-wider">Support</p>
-                    </div>
+                    <motion.img 
+                        src={imageUrl} 
+                        alt="Digital Agency" 
+                        className="rounded-full w-full max-w-md border-4 border-cyan-500/30 shadow-2xl shadow-cyan-500/20"
+                        animate={{
+                            y: [0, -15, 0]
+                        }}
+                        transition={{
+                            duration: 4,
+                            repeat: Infinity,
+                            ease: "easeInOut"
+                        }}
+                    />
                 </motion.div>
-            </div>
+           </div>
         </div>
       </section>
 
