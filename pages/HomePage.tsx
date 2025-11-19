@@ -137,20 +137,18 @@ const HomePage: React.FC = () => {
                     }}
                     className="w-full lg:w-1/2 text-left"
                 >
-                    {/* Subheading with Shake Animation */}
+                    {/* Subheading with Shake Animation - Pill Style */}
                     <motion.div 
-                        variants={{ hidden: { opacity: 0, x: -20 }, visible: { opacity: 1, x: 0 } }}
-                        className="flex items-center gap-3 mb-8"
+                        variants={{ hidden: { opacity: 0, y: -10 }, visible: { opacity: 1, y: 0 } }}
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-900/30 border border-cyan-500/30 text-cyan-300 mb-8 backdrop-blur-sm shadow-lg shadow-cyan-500/10"
                     >
                         <motion.div
                             animate={{ rotate: [0, -15, 15, -15, 15, 0] }}
                             transition={{ duration: 2, repeat: Infinity, repeatDelay: 3, ease: "easeInOut" }}
-                            className="bg-cyan-500/20 p-2 rounded-full border border-cyan-500/50"
                         >
-                            <StarIcon className="w-5 h-5 text-cyan-300" />
+                            <StarIcon className="w-4 h-4 text-cyan-300" />
                         </motion.div>
-                        {/* Subheading Font Size: 21px */}
-                        <span className="text-cyan-400 font-bold tracking-widest uppercase text-[18px] border-l-2 border-cyan-500 pl-3">
+                        <span className="font-bold tracking-widest uppercase text-[14px]">
                             Web & Mobile App Development Agency
                         </span>
                     </motion.div>
