@@ -95,7 +95,7 @@ const HomePage: React.FC = () => {
       <meta name="description" content={description} />
       
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black py-28 lg:py-32">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
         {/* 1. Video Background */}
         <video 
             autoPlay 
@@ -114,8 +114,8 @@ const HomePage: React.FC = () => {
         <ParticleBackground />
 
         {/* 4. Content */}
-        <div className="container mx-auto px-6 sm:px-8 lg:px-20 z-20 relative w-full">
-            <div className="flex flex-col lg:flex-row items-center justify-between w-full gap-16 lg:gap-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-16 z-20 relative w-full h-full flex items-center py-24 lg:py-0">
+            <div className="flex flex-col lg:flex-row items-center justify-between w-full gap-12">
                 
                 {/* Left Side: Text Content - Exactly 50% on large screens */}
                 <motion.div
@@ -211,64 +211,59 @@ const HomePage: React.FC = () => {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 1, delay: 0.6, ease: "easeOut" }}
                 >
-                     {/* Orbiting Icons Container */}
-                     <div className="absolute inset-0 pointer-events-none z-10 flex items-center justify-center scale-110">
-                        {/* Inner Ring (Clockwise) */}
-                        <motion.div
-                            animate={{ rotate: 360 }}
-                            transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-                            className="absolute w-[115%] h-[115%] border border-cyan-500/10 rounded-full"
-                        >
-                            <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black/80 backdrop-blur-sm p-2 rounded-full border border-cyan-500/50 shadow-lg shadow-cyan-500/20">
-                                <motion.div animate={{ rotate: -360 }} transition={{ duration: 25, repeat: Infinity, ease: "linear" }}>
-                                    <ReactIcon className="w-8 h-8 text-cyan-400" />
-                                </motion.div>
-                            </div>
-                            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 bg-black/80 backdrop-blur-sm p-2 rounded-full border border-cyan-500/50 shadow-lg shadow-cyan-500/20">
-                                <motion.div animate={{ rotate: -360 }} transition={{ duration: 25, repeat: Infinity, ease: "linear" }}>
-                                    <WordPressIcon className="w-8 h-8 text-white" />
-                                </motion.div>
-                            </div>
-                        </motion.div>
-
-                        {/* Outer Ring (Counter-Clockwise) */}
-                        <motion.div
-                            animate={{ rotate: -360 }}
-                            transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-                            className="absolute w-[145%] h-[145%] border border-purple-500/10 rounded-full border-dashed"
-                        >
-                            <div className="absolute top-1/2 left-0 -translate-x-1/2 -translate-y-1/2 bg-black/80 backdrop-blur-sm p-2 rounded-full border border-purple-500/50 shadow-lg shadow-purple-500/20">
-                                <motion.div animate={{ rotate: 360 }} transition={{ duration: 30, repeat: Infinity, ease: "linear" }}>
-                                    <JsIcon className="w-8 h-8 text-yellow-400" />
-                                </motion.div>
-                            </div>
-                            <div className="absolute top-1/2 right-0 translate-x-1/2 -translate-y-1/2 bg-black/80 backdrop-blur-sm p-2 rounded-full border border-purple-500/50 shadow-lg shadow-purple-500/20">
-                                <motion.div animate={{ rotate: 360 }} transition={{ duration: 30, repeat: Infinity, ease: "linear" }}>
-                                    <ExpoIcon className="w-8 h-8 text-white" />
-                                </motion.div>
-                            </div>
-                        </motion.div>
-                    </div>
-
-
-                    <div className="relative w-[90%] rounded-2xl overflow-hidden border border-cyan-500/30 shadow-[0_0_50px_rgba(34,211,238,0.1)] bg-black/50 transform rotate-2 hover:rotate-0 transition-transform duration-700 ease-out z-20">
-                        {/* Decorative elements */}
-                        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-500 to-transparent z-20 opacity-50"></div>
-                        <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-purple-500 to-transparent z-20 opacity-50"></div>
+                     {/* Orbiting Icons Container - Sized relative to the video container below */}
+                     <div className="relative w-[400px] h-[400px] flex items-center justify-center">
                         
-                        <video 
-                            autoPlay 
-                            loop 
-                            muted 
-                            playsInline 
-                            className="w-full h-auto object-cover relative z-0"
-                        >
-                            <source src={foregroundVideoUrl} type="video/mp4" />
-                        </video>
-                        
-                        {/* Tech overlay text */}
-                        <div className="absolute bottom-4 right-4 bg-black/70 backdrop-blur-md px-3 py-1 rounded text-xs text-cyan-400 font-mono border border-cyan-500/30 z-20">
-                            SYSTEM_ONLINE
+                        {/* Orbiting Rings - Closer to the center */}
+                        <div className="absolute inset-0 pointer-events-none z-10 flex items-center justify-center">
+                            {/* Inner Ring (Clockwise) - Reduced size to 65% to be closer */}
+                            <motion.div
+                                animate={{ rotate: 360 }}
+                                transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+                                className="absolute w-[65%] h-[65%] border border-cyan-500/10 rounded-full"
+                            >
+                                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black/80 backdrop-blur-sm p-1.5 rounded-full border border-cyan-500/50 shadow-lg shadow-cyan-500/20">
+                                    <motion.div animate={{ rotate: -360 }} transition={{ duration: 25, repeat: Infinity, ease: "linear" }}>
+                                        <ReactIcon className="w-6 h-6 text-cyan-400" />
+                                    </motion.div>
+                                </div>
+                                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 bg-black/80 backdrop-blur-sm p-1.5 rounded-full border border-cyan-500/50 shadow-lg shadow-cyan-500/20">
+                                    <motion.div animate={{ rotate: -360 }} transition={{ duration: 25, repeat: Infinity, ease: "linear" }}>
+                                        <WordPressIcon className="w-6 h-6 text-white" />
+                                    </motion.div>
+                                </div>
+                            </motion.div>
+
+                            {/* Outer Ring (Counter-Clockwise) - Reduced size to 90% to be closer */}
+                            <motion.div
+                                animate={{ rotate: -360 }}
+                                transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+                                className="absolute w-[90%] h-[90%] border border-purple-500/10 rounded-full border-dashed"
+                            >
+                                <div className="absolute top-1/2 left-0 -translate-x-1/2 -translate-y-1/2 bg-black/80 backdrop-blur-sm p-1.5 rounded-full border border-purple-500/50 shadow-lg shadow-purple-500/20">
+                                    <motion.div animate={{ rotate: 360 }} transition={{ duration: 30, repeat: Infinity, ease: "linear" }}>
+                                        <JsIcon className="w-6 h-6 text-yellow-400" />
+                                    </motion.div>
+                                </div>
+                                <div className="absolute top-1/2 right-0 translate-x-1/2 -translate-y-1/2 bg-black/80 backdrop-blur-sm p-1.5 rounded-full border border-purple-500/50 shadow-lg shadow-purple-500/20">
+                                    <motion.div animate={{ rotate: 360 }} transition={{ duration: 30, repeat: Infinity, ease: "linear" }}>
+                                        <ExpoIcon className="w-6 h-6 text-white" />
+                                    </motion.div>
+                                </div>
+                            </motion.div>
+                        </div>
+
+                        {/* Video Element - Explicit smaller size */}
+                        <div className="w-[80%] h-[80%] z-20 flex justify-center items-center overflow-hidden rounded-full">
+                            <video 
+                                autoPlay 
+                                loop 
+                                muted 
+                                playsInline 
+                                className="w-full h-full object-cover mix-blend-screen transform scale-105"
+                            >
+                                <source src={foregroundVideoUrl} type="video/mp4" />
+                            </video>
                         </div>
                     </div>
                 </motion.div>
