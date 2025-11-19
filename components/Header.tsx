@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -34,9 +35,9 @@ const Header: React.FC<HeaderProps> = ({ isVisible }) => {
           transition={{ duration: 0.4 }}
         >
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-20">
+            <div className="flex items-center justify-between h-24">
               <Link to="/" className="flex items-center">
-                <img src={logoUrl} alt="SameerCodes Studios Logo" className="h-12 w-auto" />
+                <img src={logoUrl} alt="SameerCodes Studios Logo" className="h-20 w-auto" />
               </Link>
 
               <nav className="hidden lg:flex items-center space-x-8">
