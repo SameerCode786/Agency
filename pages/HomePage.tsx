@@ -142,18 +142,20 @@ const HomePage: React.FC = () => {
                         >
                             <StarIcon className="w-5 h-5 text-cyan-300" />
                         </motion.div>
-                        <span className="text-cyan-400 font-bold tracking-widest uppercase text-sm sm:text-base border-l-2 border-cyan-500 pl-3">
+                        {/* Subheading Font Size: 21px */}
+                        <span className="text-cyan-400 font-bold tracking-widest uppercase text-[21px] border-l-2 border-cyan-500 pl-3">
                             Premium Digital Solutions
                         </span>
                     </motion.div>
 
+                    {/* Main Heading Font Size: 42px (Responsive scale) */}
                     <motion.h1 
                         variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: 'easeOut' } }}}
-                        className="text-5xl sm:text-6xl md:text-7xl lg:text-7xl font-bold text-slate-50 tracking-tight mb-6 drop-shadow-2xl leading-[1.1]"
+                        className="text-[42px] sm:text-[48px] lg:text-[56px] font-bold text-slate-50 tracking-tight mb-6 drop-shadow-2xl leading-[1.1]"
                     >
                         We Create Amazing <br />
-                        {/* Adjusted height and min-width to prevent layout shift */}
-                        <div className="inline-block relative h-[80px] sm:h-[90px] md:h-[100px] lg:h-[110px] w-full min-w-[320px] mt-2 overflow-hidden">
+                        {/* Adjusted height and min-width to match new 42px+ font size */}
+                        <div className="inline-block relative h-[55px] sm:h-[65px] lg:h-[75px] w-full min-w-[320px] mt-2 overflow-hidden">
                             <AnimatePresence mode="wait">
                                 <motion.span
                                     key={currentHeadingIndex}
@@ -169,9 +171,10 @@ const HomePage: React.FC = () => {
                         </div>
                     </motion.h1>
 
+                    {/* Paragraph Font Size: 16px */}
                     <motion.p 
                         variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: 'easeOut' } }}}
-                        className="text-lg sm:text-xl text-slate-300 mb-10 max-w-xl leading-relaxed font-light border-l-4 border-cyan-500/30 pl-6"
+                        className="text-[16px] text-slate-300 mb-10 max-w-lg leading-relaxed font-light border-l-4 border-cyan-500/30 pl-6"
                     >
                         Transform your business with our cutting-edge digital solutions. 
                         We combine creativity with technology to deliver exceptional results 
