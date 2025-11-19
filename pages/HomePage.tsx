@@ -17,7 +17,8 @@ import {
     StarIcon,
     ReactIcon,
     JsIcon,
-    ExpoIcon
+    ExpoIcon,
+    SupabaseIcon
 } from '../components/Icons';
 import { useSeoContent } from '../hooks/useSeoContent';
 
@@ -114,7 +115,7 @@ const HomePage: React.FC = () => {
         <ParticleBackground />
 
         {/* 4. Content */}
-        <div className="container mx-auto px-4 sm:px-6 lg:px-16 z-20 relative w-full h-full flex items-center py-24 lg:py-0">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-16 z-20 relative w-full h-full flex items-center py-24 lg:py-32">
             <div className="flex flex-col lg:flex-row items-center justify-between w-full gap-12">
                 
                 {/* Left Side: Text Content - Exactly 50% on large screens */}
@@ -189,7 +190,7 @@ const HomePage: React.FC = () => {
                             <motion.button 
                                 whileHover={{ scale: 1.05, boxShadow: "0 0 25px rgba(34, 211, 238, 0.5)" }} 
                                 whileTap={{ scale: 0.95 }} 
-                                className="px-8 sm:px-10 py-3 sm:py-4 bg-cyan-500 text-black font-bold rounded-full text-base sm:text-lg shadow-lg shadow-cyan-500/20 transition-all duration-300 flex items-center gap-2"
+                                className="px-8 sm:px-10 py-3 sm:py-4 bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-bold rounded-full text-base sm:text-lg shadow-lg shadow-cyan-500/20 transition-all duration-300 flex items-center gap-2"
                             >
                                 Schedule Meeting
                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
@@ -197,9 +198,9 @@ const HomePage: React.FC = () => {
                         </Link>
                         <Link to="/portfolio">
                             <motion.button 
-                                whileHover={{ scale: 1.05, backgroundColor: "rgba(255, 255, 255, 0.1)" }} 
+                                whileHover={{ scale: 1.05, backgroundColor: "rgba(34, 211, 238, 0.1)" }} 
                                 whileTap={{ scale: 0.95 }} 
-                                className="px-8 sm:px-10 py-3 sm:py-4 bg-transparent border border-slate-500 text-white font-bold rounded-full text-base sm:text-lg hover:border-white transition-all duration-300"
+                                className="px-8 sm:px-10 py-3 sm:py-4 bg-transparent border border-cyan-500 text-white font-bold rounded-full text-base sm:text-lg transition-all duration-300"
                             >
                                 Our Work
                             </motion.button>
@@ -232,7 +233,7 @@ const HomePage: React.FC = () => {
                                 </div>
                                 <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 bg-black/80 backdrop-blur-sm p-1.5 rounded-full border border-cyan-500/50 shadow-lg shadow-cyan-500/20">
                                     <motion.div animate={{ rotate: -360 }} transition={{ duration: 25, repeat: Infinity, ease: "linear" }}>
-                                        <WordPressIcon className="w-6 h-6 text-white" />
+                                        <SupabaseIcon className="w-6 h-6 text-green-400" />
                                     </motion.div>
                                 </div>
                             </motion.div>
