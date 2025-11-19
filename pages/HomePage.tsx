@@ -71,7 +71,13 @@ const TestimonialCard: React.FC<{ quote: string; name: string; role: string; }> 
     </motion.div>
 );
 
-const animatedHeadings = ["Websites", "Mobile Apps", "Digital Experiences", "Brand Identities"];
+const animatedHeadings = [
+    "Digital Products",
+    "Successful Businesses",
+    "Revenue Streams",
+    "Brand Stories",
+    "Market Leaders"
+];
 
 const HomePage: React.FC = () => {
     const { title, description } = useSeoContent('Home');
@@ -144,8 +150,8 @@ const HomePage: React.FC = () => {
                             <StarIcon className="w-5 h-5 text-cyan-300" />
                         </motion.div>
                         {/* Subheading Font Size: 21px */}
-                        <span className="text-cyan-400 font-bold tracking-widest uppercase text-[21px] border-l-2 border-cyan-500 pl-3">
-                            Premium Digital Solutions
+                        <span className="text-cyan-400 font-bold tracking-widest uppercase text-[18px] border-l-2 border-cyan-500 pl-3">
+                            Web & Mobile App Development Agency
                         </span>
                     </motion.div>
 
@@ -154,7 +160,7 @@ const HomePage: React.FC = () => {
                         variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: 'easeOut' } }}}
                         className="text-[42px] sm:text-[48px] lg:text-[56px] font-bold text-slate-50 tracking-tight mb-6 drop-shadow-2xl leading-[1.1]"
                     >
-                        We Create Amazing <br />
+                        Transform Your Ideas Into <br />
                         {/* Adjusted height and min-width to match new 42px+ font size */}
                         <div className="inline-block relative h-[55px] sm:h-[65px] lg:h-[75px] w-full min-w-[320px] mt-2 overflow-hidden">
                             <AnimatePresence mode="wait">
@@ -177,9 +183,9 @@ const HomePage: React.FC = () => {
                         variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: 'easeOut' } }}}
                         className="text-[16px] text-slate-300 mb-10 max-w-lg leading-relaxed font-light border-l-4 border-cyan-500/30 pl-6"
                     >
-                        Transform your business with our cutting-edge digital solutions. 
-                        We combine creativity with technology to deliver exceptional results 
-                        that drive growth and engage your audience effectively.
+                        We turn your vision into reality with cutting-edge web and mobile applications. 
+                        Our expertise in React Native, WordPress, and modern frameworks ensures your digital presence stands out. 
+                        We don't just build software - we create solutions that drive growth, engage users, and deliver tangible business results.
                     </motion.p>
 
                     <motion.div 
@@ -192,7 +198,7 @@ const HomePage: React.FC = () => {
                                 whileTap={{ scale: 0.95 }} 
                                 className="px-8 sm:px-10 py-3 sm:py-4 bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-bold rounded-full text-base sm:text-lg shadow-lg shadow-cyan-500/20 transition-all duration-300 flex items-center gap-2"
                             >
-                                Schedule Meeting
+                                Start Your Project
                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                             </motion.button>
                         </Link>
@@ -202,7 +208,7 @@ const HomePage: React.FC = () => {
                                 whileTap={{ scale: 0.95 }} 
                                 className="px-8 sm:px-10 py-3 sm:py-4 bg-transparent border border-cyan-500 text-white font-bold rounded-full text-base sm:text-lg transition-all duration-300"
                             >
-                                Our Work
+                                View Our Work
                             </motion.button>
                         </Link>
                     </motion.div>
