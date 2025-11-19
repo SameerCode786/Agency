@@ -66,6 +66,29 @@ export const WordPressIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) =>
     <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm6.7 12.3c-.2.2-.5.3-.8.1l-2.4-1.1c-.3-.1-.4-.4-.3-.7.1-.3.4-.4.7-.3l2.4 1.1c.3.1.4.4.3.7zm-4.3-2.9l-3.3 7.3c-.1.3-.5.4-.8.3l-2.4-1.1c-.3-.1-.4-.5-.3-.8l3.3-7.3c.1-.3.5-.4.8-.3l2.4 1.1c.3.2.4.5.3.8zm-2.4 2.1c-.1 0-.2 0-.2-.1l-1.3-2.9c-.1-.2 0-.5.2-.6l1.3-.6c.2-.1.5 0 .6.2s0 .5-.2.6l-.7.3.7 1.5c.1.2 0 .5-.2.6zm-5-3.3c-.3.1-.4.4-.3.7l1.3 5.3c.1.3.4.4.7.3l2.4-1.1c.3-.1.4-.4.3-.7l-1.3-5.3c-.1-.3-.4-.4-.7-.3l-2.4 1.1zM9.3 8.1c0-.4-.3-.7-.7-.7s-.7.3-.7.7.3.7.7.7.7-.3.7-.7z"></path></svg>
 );
 
+export const ReactIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="-11.5 -10.23174 23 20.46348" fill="currentColor">
+        <circle cx="0" cy="0" r="2.05" fill="currentColor"/>
+        <g stroke="currentColor" strokeWidth="1" fill="none">
+            <ellipse rx="11" ry="4.2"/>
+            <ellipse rx="11" ry="4.2" transform="rotate(60)"/>
+            <ellipse rx="11" ry="4.2" transform="rotate(120)"/>
+        </g>
+    </svg>
+);
+
+export const JsIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M3 3h18v18H3V3zm13.5 13.5c.37 0 .65-.1.88-.31.23-.21.35-.5.35-.86h1.6c0 .8-.34 1.45-1.01 1.95-.67.5-1.48.75-2.43.75-.99 0-1.79-.33-2.4-.98-.61-.65-.91-1.59-.91-2.81 0-1.2.31-2.13.94-2.78.63-.65 1.45-.98 2.46-.98.93 0 1.7.25 2.33.75.63.5 1 1.18 1.1 2.05h-1.6c-.07-.42-.25-.73-.54-.92-.29-.19-.64-.29-1.05-.29-.6 0-1.08.19-1.44.58-.36.39-.54.98-.54 1.77 0 .82.17 1.41.52 1.78.35.37.84.55 1.46.55.38 0 .71-.11.99-.33zm-5.83.63h1.6V8.25h-1.6v6.88z" fill="currentColor"/>
+    </svg>
+);
+
+export const ExpoIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 1.24L2.3 5.63l1.77 15.76L12 22.76l7.93-1.37 1.77-15.76L12 1.24zm2.14 14.23l-2.14-2.27-2.13 2.27-1.52-1.53 2.13-2.27-2.13-2.26 1.52-1.54 2.13 2.27 2.14-2.27 1.53 1.54-2.14 2.26 2.14 2.27-1.53 1.53z"/>
+    </svg>
+);
+
 export const CheckIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
     <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
 );

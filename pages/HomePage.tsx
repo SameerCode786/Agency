@@ -1,21 +1,23 @@
+
 import React, { useState, useEffect } from 'react';
 import PageWrapper from '../components/PageWrapper';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import AnimatedHeading from '../components/AnimatedHeading';
+import ParticleBackground from '../components/ParticleBackground';
 import { 
     CheckIcon, 
-    RocketIcon, 
-    BriefcaseIcon, 
     CodeIcon, 
     MobileIcon, 
     WordPressIcon,
-    ArrowRightIcon,
     SpeedIcon,
     WalletIcon,
     MaintenanceIcon,
     PhoneIcon,
-    StarIcon
+    StarIcon,
+    ReactIcon,
+    JsIcon,
+    ExpoIcon
 } from '../components/Icons';
 import { useSeoContent } from '../hooks/useSeoContent';
 
@@ -68,7 +70,7 @@ const TestimonialCard: React.FC<{ quote: string; name: string; role: string; }> 
     </motion.div>
 );
 
-const animatedHeadings = ["Websites.", "Mobile Apps.", "Growth.", "Success."];
+const animatedHeadings = ["Websites", "Mobile Apps", "Digital Experiences", "Brand Identities"];
 
 const HomePage: React.FC = () => {
     const { title, description } = useSeoContent('Home');
@@ -80,14 +82,12 @@ const HomePage: React.FC = () => {
         }, 3000); // Change heading every 3 seconds
         return () => clearInterval(interval);
     }, []);
-
-
-    const heroStyle = {
-        backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='p' width='100' height='100' patternUnits='userSpaceOnUse'%3E%3Cpath d='M0 50Q25 25 50 50t50 0' stroke='%23334155' fill='none' stroke-width='1'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='transparent' /%3E%3Crect width='100%25' height='100%25' fill='url(%23p)'/%3E%3C/svg%3E")`,
-        backgroundRepeat: 'repeat',
-    };
     
-    const imageUrl = "https://res.cloudinary.com/dow2sbjsp/image/upload/v1763321580/WhatsApp_Image_2025-10-16_at_13.55.34_4d890154_mue78l.jpg";
+    // Background Video URL
+    const backgroundVideoUrl = "https://res.cloudinary.com/dow2sbjsp/video/upload/v1763557012/ABOUT_Agensi_Pekerjaan_Nusamas_Sdn_Bhd_ypmqnb.mp4";
+    
+    // Foreground Feature Video URL
+    const foregroundVideoUrl = "https://res.cloudinary.com/dow2sbjsp/video/upload/v1763557903/Website_Background_Videos_Download_The_BEST_Free_4k_Stock_Video_io7gxb.mp4";
 
   return (
     <PageWrapper>
@@ -95,12 +95,30 @@ const HomePage: React.FC = () => {
       <meta name="description" content={description} />
       
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black" style={heroStyle}>
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/70 to-transparent"></div>
-        <div className="container mx-auto px-4 z-10">
-           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black py-28 lg:py-32">
+        {/* 1. Video Background */}
+        <video 
+            autoPlay 
+            loop 
+            muted 
+            playsInline 
+            className="absolute inset-0 w-full h-full object-cover"
+        >
+            <source src={backgroundVideoUrl} type="video/mp4" />
+        </video>
+        
+        {/* 2. Dark Overlay for readability - Maximum Darkness (95%) */}
+        <div className="absolute inset-0 bg-black/95 z-0"></div>
+
+        {/* 3. Particle/Constellation Animation */}
+        <ParticleBackground />
+
+        {/* 4. Content */}
+        <div className="container mx-auto px-6 sm:px-8 lg:px-20 z-20 relative w-full">
+            <div className="flex flex-col lg:flex-row items-center justify-between w-full gap-16 lg:gap-20">
+                
+                {/* Left Side: Text Content - Exactly 50% on large screens */}
                 <motion.div
-                    className="text-center lg:text-left"
                     initial="hidden"
                     animate="visible"
                     variants={{
@@ -110,21 +128,40 @@ const HomePage: React.FC = () => {
                             transition: { staggerChildren: 0.2, delayChildren: 0.3 },
                         },
                     }}
+                    className="w-full lg:w-1/2 text-left"
                 >
+                    {/* Subheading with Shake Animation */}
+                    <motion.div 
+                        variants={{ hidden: { opacity: 0, x: -20 }, visible: { opacity: 1, x: 0 } }}
+                        className="flex items-center gap-3 mb-8"
+                    >
+                        <motion.div
+                            animate={{ rotate: [0, -15, 15, -15, 15, 0] }}
+                            transition={{ duration: 2, repeat: Infinity, repeatDelay: 3, ease: "easeInOut" }}
+                            className="bg-cyan-500/20 p-2 rounded-full border border-cyan-500/50"
+                        >
+                            <StarIcon className="w-5 h-5 text-cyan-300" />
+                        </motion.div>
+                        <span className="text-cyan-400 font-bold tracking-widest uppercase text-sm sm:text-base border-l-2 border-cyan-500 pl-3">
+                            Premium Digital Solutions
+                        </span>
+                    </motion.div>
+
                     <motion.h1 
                         variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: 'easeOut' } }}}
-                        className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-slate-50 tracking-tight mb-6"
+                        className="text-5xl sm:text-6xl md:text-7xl lg:text-7xl font-bold text-slate-50 tracking-tight mb-6 drop-shadow-2xl leading-[1.1]"
                     >
-                        We Build Digital Solutions That{' '}
-                        <div className="inline-block relative w-[200px] sm:w-[300px] md:w-[450px] h-[50px] sm:h-[60px] md:h-[80px]">
+                        We Create Amazing <br />
+                        {/* Adjusted height and min-width to prevent layout shift */}
+                        <div className="inline-block relative h-[80px] sm:h-[90px] md:h-[100px] lg:h-[110px] w-full min-w-[320px] mt-2 overflow-hidden">
                             <AnimatePresence mode="wait">
                                 <motion.span
                                     key={currentHeadingIndex}
-                                    className="text-cyan-400 absolute inset-0"
-                                    initial={{ opacity: 0, x: -50 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    exit={{ opacity: 0, x: 50 }}
-                                    transition={{ duration: 0.6, ease: "easeInOut" }}
+                                    className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 absolute inset-0 block whitespace-nowrap"
+                                    initial={{ opacity: 0, y: 40, filter: "blur(10px)" }}
+                                    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                                    exit={{ opacity: 0, y: -40, filter: "blur(10px)" }}
+                                    transition={{ duration: 0.5, ease: "easeOut" }}
                                 >
                                     {animatedHeadings[currentHeadingIndex]}
                                 </motion.span>
@@ -134,53 +171,126 @@ const HomePage: React.FC = () => {
 
                     <motion.p 
                         variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: 'easeOut' } }}}
-                        className="max-w-xl mx-auto lg:mx-0 text-slate-300 md:text-xl mb-10 tracking-wide"
+                        className="text-lg sm:text-xl text-slate-300 mb-10 max-w-xl leading-relaxed font-light border-l-4 border-cyan-500/30 pl-6"
                     >
-                        Premium Web Development • Mobile Apps • WordPress Solutions • Cold Email Marketing
+                        Transform your business with our cutting-edge digital solutions. 
+                        We combine creativity with technology to deliver exceptional results 
+                        that drive growth and engage your audience effectively.
                     </motion.p>
 
                     <motion.div 
                         variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: 'easeOut' } }}}
-                        className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4"
+                        className="flex flex-wrap items-center gap-4 sm:gap-6"
                     >
                         <Link to="/contact">
-                            <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="w-full sm:w-auto px-8 py-3 bg-[#a657f7] text-white font-bold rounded-md text-lg hover:bg-purple-500 shadow-[0_0_20px_#a657f7] transition-all duration-300">
-                                Get Free Consultation
+                            <motion.button 
+                                whileHover={{ scale: 1.05, boxShadow: "0 0 25px rgba(34, 211, 238, 0.5)" }} 
+                                whileTap={{ scale: 0.95 }} 
+                                className="px-8 sm:px-10 py-3 sm:py-4 bg-cyan-500 text-black font-bold rounded-full text-base sm:text-lg shadow-lg shadow-cyan-500/20 transition-all duration-300 flex items-center gap-2"
+                            >
+                                Schedule Meeting
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                             </motion.button>
                         </Link>
                         <Link to="/portfolio">
-                            <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="w-full sm:w-auto px-8 py-3 border-2 border-slate-600 text-slate-300 font-bold rounded-md text-lg hover:bg-slate-800 hover:border-slate-500 transition-all duration-300">
-                                View Our Work
+                            <motion.button 
+                                whileHover={{ scale: 1.05, backgroundColor: "rgba(255, 255, 255, 0.1)" }} 
+                                whileTap={{ scale: 0.95 }} 
+                                className="px-8 sm:px-10 py-3 sm:py-4 bg-transparent border border-slate-500 text-white font-bold rounded-full text-base sm:text-lg hover:border-white transition-all duration-300"
+                            >
+                                Our Work
                             </motion.button>
                         </Link>
                     </motion.div>
                 </motion.div>
-                <motion.div
-                     initial={{ opacity: 0, x: 50, scale: 0.9 }}
-                     animate={{ opacity: 1, x: 0, scale: 1 }}
-                     transition={{ duration: 0.8, ease: 'easeOut', delay: 0.5 }}
-                     className="hidden lg:flex justify-center items-center"
+
+                {/* Right Side: Foreground Video with Orbiting Icons - Exactly 50% on large screens */}
+                <motion.div 
+                    className="hidden lg:flex w-full lg:w-1/2 justify-center items-center relative"
+                    initial={{ opacity: 0, x: 50 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 1, delay: 0.6, ease: "easeOut" }}
                 >
-                    <motion.img 
-                        src={imageUrl} 
-                        alt="Digital Agency" 
-                        className="rounded-full w-full max-w-md border-4 border-cyan-500/30 shadow-2xl shadow-cyan-500/20"
-                        animate={{
-                            y: [0, -15, 0]
-                        }}
-                        transition={{
-                            duration: 4,
-                            repeat: Infinity,
-                            ease: "easeInOut"
-                        }}
-                    />
+                     {/* Orbiting Icons Container */}
+                     <div className="absolute inset-0 pointer-events-none z-10 flex items-center justify-center scale-110">
+                        {/* Inner Ring (Clockwise) */}
+                        <motion.div
+                            animate={{ rotate: 360 }}
+                            transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+                            className="absolute w-[115%] h-[115%] border border-cyan-500/10 rounded-full"
+                        >
+                            <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black/80 backdrop-blur-sm p-2 rounded-full border border-cyan-500/50 shadow-lg shadow-cyan-500/20">
+                                <motion.div animate={{ rotate: -360 }} transition={{ duration: 25, repeat: Infinity, ease: "linear" }}>
+                                    <ReactIcon className="w-8 h-8 text-cyan-400" />
+                                </motion.div>
+                            </div>
+                            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 bg-black/80 backdrop-blur-sm p-2 rounded-full border border-cyan-500/50 shadow-lg shadow-cyan-500/20">
+                                <motion.div animate={{ rotate: -360 }} transition={{ duration: 25, repeat: Infinity, ease: "linear" }}>
+                                    <WordPressIcon className="w-8 h-8 text-white" />
+                                </motion.div>
+                            </div>
+                        </motion.div>
+
+                        {/* Outer Ring (Counter-Clockwise) */}
+                        <motion.div
+                            animate={{ rotate: -360 }}
+                            transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+                            className="absolute w-[145%] h-[145%] border border-purple-500/10 rounded-full border-dashed"
+                        >
+                            <div className="absolute top-1/2 left-0 -translate-x-1/2 -translate-y-1/2 bg-black/80 backdrop-blur-sm p-2 rounded-full border border-purple-500/50 shadow-lg shadow-purple-500/20">
+                                <motion.div animate={{ rotate: 360 }} transition={{ duration: 30, repeat: Infinity, ease: "linear" }}>
+                                    <JsIcon className="w-8 h-8 text-yellow-400" />
+                                </motion.div>
+                            </div>
+                            <div className="absolute top-1/2 right-0 translate-x-1/2 -translate-y-1/2 bg-black/80 backdrop-blur-sm p-2 rounded-full border border-purple-500/50 shadow-lg shadow-purple-500/20">
+                                <motion.div animate={{ rotate: 360 }} transition={{ duration: 30, repeat: Infinity, ease: "linear" }}>
+                                    <ExpoIcon className="w-8 h-8 text-white" />
+                                </motion.div>
+                            </div>
+                        </motion.div>
+                    </div>
+
+
+                    <div className="relative w-[90%] rounded-2xl overflow-hidden border border-cyan-500/30 shadow-[0_0_50px_rgba(34,211,238,0.1)] bg-black/50 transform rotate-2 hover:rotate-0 transition-transform duration-700 ease-out z-20">
+                        {/* Decorative elements */}
+                        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-500 to-transparent z-20 opacity-50"></div>
+                        <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-purple-500 to-transparent z-20 opacity-50"></div>
+                        
+                        <video 
+                            autoPlay 
+                            loop 
+                            muted 
+                            playsInline 
+                            className="w-full h-auto object-cover relative z-0"
+                        >
+                            <source src={foregroundVideoUrl} type="video/mp4" />
+                        </video>
+                        
+                        {/* Tech overlay text */}
+                        <div className="absolute bottom-4 right-4 bg-black/70 backdrop-blur-md px-3 py-1 rounded text-xs text-cyan-400 font-mono border border-cyan-500/30 z-20">
+                            SYSTEM_ONLINE
+                        </div>
+                    </div>
                 </motion.div>
-           </div>
+            </div>
         </div>
+        
+        {/* Scroll Indicator */}
+        <motion.div 
+            className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 text-cyan-400/70 cursor-pointer"
+            animate={{ y: [0, 10, 0] }}
+            transition={{ duration: 2, repeat: Infinity }}
+            onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
+        >
+            <div className="flex flex-col items-center gap-2">
+                <span className="text-[10px] uppercase tracking-widest opacity-70">Scroll</span>
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+            </div>
+        </motion.div>
       </section>
 
       {/* Services Section */}
-      <section className="py-24 sm:py-32 bg-slate-950">
+      <section className="py-24 sm:py-32 bg-slate-950 relative z-10">
         <div className="container mx-auto px-4">
             <div className="text-center max-w-3xl mx-auto">
                 <AnimatedHeading text="Our Expert Services" className="text-4xl md:text-5xl font-bold mb-4" />
@@ -216,7 +326,7 @@ const HomePage: React.FC = () => {
       </section>
       
       {/* Special Offers Section */}
-      <section className="py-24 sm:py-32 bg-gray-900/40">
+      <section className="py-24 sm:py-32 bg-gray-900/40 relative z-10">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-3xl mx-auto">
               <AnimatedHeading text="🚀 Limited Time Offers" className="text-4xl md:text-5xl font-bold mb-16" />
@@ -240,7 +350,7 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* Why Choose Us Section */}
-       <section className="py-24 sm:py-32 bg-slate-950">
+       <section className="py-24 sm:py-32 bg-slate-950 relative z-10">
         <div className="container mx-auto px-4">
             <div className="text-center max-w-3xl mx-auto">
                 <AnimatedHeading text="Why Choose SameerCodes Studios?" className="text-4xl md:text-5xl font-bold mb-16" />
@@ -269,7 +379,7 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-24 sm:py-32 bg-gray-900/40">
+      <section className="py-24 sm:py-32 bg-gray-900/40 relative z-10">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-3xl mx-auto">
               <AnimatedHeading text="What Our Clients Say" className="text-4xl md:text-5xl font-bold mb-16" />
@@ -291,7 +401,7 @@ const HomePage: React.FC = () => {
 
 
       {/* Final CTA Section */}
-      <section className="py-24 sm:py-32 bg-white">
+      <section className="py-24 sm:py-32 bg-white relative z-10">
         <div className="container mx-auto px-4 text-center">
             <motion.div
               initial={{ opacity: 0, y: 50 }}
