@@ -1,7 +1,8 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PageWrapper from '../components/PageWrapper';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform, useSpring, useMotionValue, useVelocity, useAnimationFrame } from 'framer-motion';
+import { wrap } from "@motionone/utils";
 import { Link } from 'react-router-dom';
 import AnimatedHeading from '../components/AnimatedHeading';
 import ParticleBackground from '../components/ParticleBackground';
@@ -18,7 +19,8 @@ import {
     ReactIcon,
     JsIcon,
     ExpoIcon,
-    SupabaseIcon
+    SupabaseIcon,
+    ArrowRightIcon
 } from '../components/Icons';
 import { useSeoContent } from '../hooks/useSeoContent';
 
@@ -71,12 +73,92 @@ const TestimonialCard: React.FC<{ quote: string; name: string; role: string; }> 
     </motion.div>
 );
 
+interface ParallaxTextProps {
+  children: string;
+  baseVelocity: number;
+}
+
+function ParallaxText({ children, baseVelocity = 100 }: ParallaxTextProps) {
+  const baseX = useMotionValue(0);
+  const { scrollY } = useScroll();
+  const scrollVelocity = useVelocity(scrollY);
+  const smoothVelocity = useSpring(scrollVelocity, {
+    damping: 50,
+    stiffness: 400
+  });
+  const velocityFactor = useTransform(smoothVelocity, [0, 1000], [0, 5], {
+    clamp: false
+  });
+
+  const x = useTransform(baseX, (v) => `${wrap(-20, -45, v)}%`);
+
+  const directionFactor = useRef<number>(1);
+  useAnimationFrame((t, delta) => {
+    let moveBy = directionFactor.current * baseVelocity * (delta / 1000);
+
+    if (velocityFactor.get() < 0) {
+      directionFactor.current = -1;
+    } else if (velocityFactor.get() > 0) {
+      directionFactor.current = 1;
+    }
+
+    moveBy += directionFactor.current * moveBy * velocityFactor.get();
+
+    baseX.set(baseX.get() + moveBy);
+  });
+
+  return (
+    <div className="overflow-hidden m-0 whitespace-nowrap flex flex-nowrap">
+      <motion.div className="font-bold uppercase text-[15vw] leading-[0.85] text-transparent bg-clip-text bg-gradient-to-b from-slate-800 to-transparent opacity-30 flex whitespace-nowrap flex-nowrap" style={{ x }}>
+        <span className="block mr-8">{children} </span>
+        <span className="block mr-8">{children} </span>
+        <span className="block mr-8">{children} </span>
+        <span className="block mr-8">{children} </span>
+      </motion.div>
+    </div>
+  );
+}
+
 const animatedHeadings = [
     "Digital Products",
     "Successful Businesses",
     "Revenue Streams",
     "Brand Stories",
     "Market Leaders"
+];
+
+// Data for the "How We Take Your Business to the Next Level" section
+const coreServicesData = [
+    {
+        title: "Website Development",
+        desc: "We design and develop modern, responsive, and high-performance websites that strengthen your brand and convert visitors into customers.",
+        video: "https://res.cloudinary.com/dow2sbjsp/video/upload/v1763927887/website_g6erpv.mp4",
+        colSpan: "lg:col-span-2"
+    },
+    {
+        title: "SEO Optimization",
+        desc: "We improve your search rankings with clean, strategic, and data-driven SEO—bringing you more visibility, more traffic, and more real business results.",
+        video: "https://res.cloudinary.com/dow2sbjsp/video/upload/v1763927973/Seo_Search_h9ua0s.mp4",
+        colSpan: "lg:col-span-1"
+    },
+    {
+        title: "App Development",
+        desc: "We create smooth, user-friendly, and scalable mobile applications that help your business reach customers anywhere, on any device.",
+        video: "https://res.cloudinary.com/dow2sbjsp/video/upload/v1763927584/app_cwwxyt.mp4",
+        colSpan: "lg:col-span-1"
+    },
+    {
+        title: "Shopify Development",
+        desc: "We build optimized Shopify stores with premium design, fast performance, and conversion-focused layouts that boost sales.",
+        video: "https://res.cloudinary.com/dow2sbjsp/video/upload/v1763928151/shopigy_pnq2kb.mp4",
+        colSpan: "lg:col-span-1"
+    },
+    {
+        title: "WordPress Customization",
+        desc: "We upgrade, redesign, and fully customize WordPress sites—making them faster, cleaner, more secure, and perfectly aligned with your brand.",
+        video: "https://res.cloudinary.com/dow2sbjsp/video/upload/v1763927832/wordpress_z7f2lk.mp4",
+        colSpan: "lg:col-span-1"
+    }
 ];
 
 const HomePage: React.FC = () => {
@@ -293,7 +375,7 @@ const HomePage: React.FC = () => {
         </motion.div>
       </section>
 
-      {/* DIGITAL PROCESS SECTION - NEWLY ADDED */}
+      {/* DIGITAL PROCESS SECTION */}
       <section className="py-24 bg-black text-white border-b border-slate-900">
         <div className="container mx-auto px-4 sm:px-6 lg:px-16">
             {/* Top Row: Heading & Description */}
@@ -317,7 +399,7 @@ const HomePage: React.FC = () => {
                         transition={{ delay: 0.2 }}
                         className="text-slate-400 text-lg leading-relaxed mb-8"
                     >
-                        Every project begins with a strong digital process. At SameerCodes Studios, we don’t rely on guesswork — we deliver results through clear strategy, in-depth research, and proven methods. For every website, we understand user needs, explore innovative solutions, and test every feature before final delivery to ensure you receive a top-performing website.
+                        Every project begins with a strong digital process. At Sameer Digital Lab, we don’t rely on guesswork — we deliver results through clear strategy, in-depth research, and proven methods. For every website, we understand user needs, explore innovative solutions, and test every feature before final delivery to ensure you receive a top-performing website.
                     </motion.p>
                     <motion.button
                         initial={{ opacity: 0 }}
@@ -331,7 +413,7 @@ const HomePage: React.FC = () => {
                 </div>
             </div>
 
-            {/* Bottom Row: 3 Steps with VIDEO Animations */}
+            {/* Bottom Row: 3 Steps with VIDEO Animations - Removed Borders */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {/* Step 1: Discover */}
                 <motion.div 
@@ -341,7 +423,7 @@ const HomePage: React.FC = () => {
                     transition={{ delay: 0.1 }}
                     className="flex flex-col items-center text-center group"
                 >
-                    <div className="mb-6 p-0 rounded-full border border-slate-800 group-hover:border-cyan-500/50 transition-colors duration-500 overflow-hidden w-32 h-32 flex items-center justify-center bg-black relative">
+                    <div className="mb-6 p-0 rounded-full transition-colors duration-500 overflow-hidden w-32 h-32 flex items-center justify-center bg-black relative">
                         <video autoPlay loop muted playsInline className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity duration-300">
                             <source src="https://res.cloudinary.com/dow2sbjsp/video/upload/v1763708206/discover-animation_tnruml.mp4" type="video/mp4" />
                         </video>
@@ -360,7 +442,7 @@ const HomePage: React.FC = () => {
                     transition={{ delay: 0.3 }}
                     className="flex flex-col items-center text-center group"
                 >
-                     <div className="mb-6 p-0 rounded-full border border-slate-800 group-hover:border-cyan-500/50 transition-colors duration-500 overflow-hidden w-32 h-32 flex items-center justify-center bg-black relative">
+                     <div className="mb-6 p-0 rounded-full transition-colors duration-500 overflow-hidden w-32 h-32 flex items-center justify-center bg-black relative">
                         <video autoPlay loop muted playsInline className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity duration-300">
                             <source src="https://res.cloudinary.com/dow2sbjsp/video/upload/v1763708273/explore-animation_hteza3.mp4" type="video/mp4" />
                         </video>
@@ -379,7 +461,7 @@ const HomePage: React.FC = () => {
                     transition={{ delay: 0.5 }}
                     className="flex flex-col items-center text-center group"
                 >
-                     <div className="mb-6 p-0 rounded-full border border-slate-800 group-hover:border-cyan-500/50 transition-colors duration-500 overflow-hidden w-32 h-32 flex items-center justify-center bg-black relative">
+                     <div className="mb-6 p-0 rounded-full transition-colors duration-500 overflow-hidden w-32 h-32 flex items-center justify-center bg-black relative">
                         <video autoPlay loop muted playsInline className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity duration-300">
                             <source src="https://res.cloudinary.com/dow2sbjsp/video/upload/v1763708320/experiment-animation_pnda4i.mp4" type="video/mp4" />
                         </video>
@@ -389,6 +471,91 @@ const HomePage: React.FC = () => {
                         We deliver a high-performance experience—a website that loads fast, ranks higher, and grows your business.
                     </p>
                 </motion.div>
+            </div>
+        </div>
+      </section>
+
+      {/* HOW WE TAKE YOUR BUSINESS TO THE NEXT LEVEL (NEW SECTION) */}
+      <section className="py-24 bg-slate-950 relative z-10 overflow-hidden">
+        {/* Parallax HIRE US Text */}
+        <div className="mb-16 opacity-10 pointer-events-none">
+            <ParallaxText baseVelocity={5}>HIRE US</ParallaxText>
+        </div>
+
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            {/* Redesigned Section Header - Modern Split Layout */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-end mb-20 border-b border-slate-800 pb-12">
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                >
+                    <span className="text-cyan-400 text-sm font-bold tracking-[0.2em] uppercase mb-4 block">Our Expertise</span>
+                    <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.1] tracking-tight">
+                        How we take your business to the next level
+                    </h2>
+                </motion.div>
+
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.2 }}
+                    className="flex flex-col items-start"
+                >
+                    <p className="text-slate-400 text-lg leading-relaxed mb-8 max-w-md">
+                        We are a results-driven digital agency, and our mission is simple — to build fast, modern, and high-performing digital experiences that help your business grow. Through powerful design, smart technology, and proven optimization, we create solutions that bring real impact.
+                    </p>
+                    <Link to="/services">
+                        <button className="bg-lime-400 hover:bg-lime-500 text-black px-8 py-3 rounded-full font-bold flex items-center gap-2 transition-colors duration-300">
+                            See all services
+                            <ArrowRightIcon className="w-5 h-5" />
+                        </button>
+                    </Link>
+                </motion.div>
+            </div>
+
+            <div className="text-left mb-8">
+                 <h3 className="text-2xl font-bold text-white tracking-widest uppercase">Our Core Services</h3>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {coreServicesData.map((service, index) => (
+                    <motion.div 
+                        key={index}
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: index * 0.1 }}
+                        className={`group relative overflow-hidden rounded-2xl h-[400px] border border-slate-800 hover:border-cyan-500/50 transition-all duration-500 ${service.colSpan || ''}`}
+                    >
+                        {/* Background Video */}
+                        <div className="absolute inset-0 z-0">
+                            <video 
+                                autoPlay 
+                                loop 
+                                muted 
+                                playsInline 
+                                className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+                            >
+                                <source src={service.video} type="video/mp4" />
+                            </video>
+                        </div>
+
+                        {/* Dark Overlay - Lightens on Hover */}
+                        <div className="absolute inset-0 bg-black/85 group-hover:bg-black/40 transition-colors duration-500 z-10"></div>
+
+                        {/* Content */}
+                        <div className="absolute inset-0 z-20 p-8 flex flex-col justify-end">
+                            <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                                <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors">{service.title}</h3>
+                                <p className="text-slate-300 text-sm leading-relaxed opacity-80 group-hover:opacity-100 transition-opacity">
+                                    {service.desc}
+                                </p>
+                            </div>
+                        </div>
+                    </motion.div>
+                ))}
             </div>
         </div>
       </section>
@@ -457,7 +624,7 @@ const HomePage: React.FC = () => {
        <section className="py-24 sm:py-32 bg-slate-950 relative z-10">
         <div className="container mx-auto px-4">
             <div className="text-center max-w-3xl mx-auto">
-                <AnimatedHeading text="Why Choose SameerCodes Studios?" className="text-4xl md:text-5xl font-bold mb-16" />
+                <AnimatedHeading text="Why Choose Sameer Digital Lab?" className="text-4xl md:text-5xl font-bold mb-16" />
             </div>
             <motion.div 
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"

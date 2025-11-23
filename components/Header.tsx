@@ -37,7 +37,7 @@ const Header: React.FC<HeaderProps> = ({ isVisible }) => {
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-24">
               <Link to="/" className="flex items-center">
-                <img src={logoUrl} alt="SameerCodes Studios Logo" className="h-20 w-auto" />
+                <img src={logoUrl} alt="Sameer Digital Lab Logo" className="h-20 w-auto" />
               </Link>
 
               <nav className="hidden lg:flex items-center space-x-8">

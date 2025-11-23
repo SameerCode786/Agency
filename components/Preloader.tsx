@@ -23,7 +23,7 @@ const letter = {
 };
 
 const Preloader: React.FC = () => {
-  const text = "SameerCodes Studios — Where Creativity Meets Technology…";
+  const text = "Sameer Digital Lab — Where Creativity Meets Technology…";
 
   return (
     <motion.div

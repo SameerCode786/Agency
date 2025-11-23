@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -34,7 +35,7 @@ const StickyBottomNav: React.FC<StickyBottomNavProps> = ({ isVisible }) => {
         >
           <div className="flex items-center gap-2 bg-black/50 backdrop-blur-lg border border-slate-700/60 rounded-full p-2 shadow-lg shadow-cyan-500/10">
             <Link to="/" className="flex-shrink-0 flex items-center justify-center px-2">
-              <img src={logoUrl} alt="SameerCodes Studios" className="h-10 w-auto"/>
+              <img src={logoUrl} alt="Sameer Digital Lab" className="h-10 w-auto"/>
             </Link>
             
             {navLinks.map((link) => (
