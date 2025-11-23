@@ -24,10 +24,19 @@ import {
 } from '../components/Icons';
 import { useSeoContent } from '../hooks/useSeoContent';
 
-const ServiceCard: React.FC<{ icon: React.ReactNode; title: string; desc: string; features: string[], price: string; index: number }> = ({ icon, title, desc, features, price, index }) => {
+interface ServiceCardProps {
+    icon: React.ReactNode;
+    title: string;
+    desc: string;
+    features: string[];
+    price: string;
+    index: number;
+}
+
+const ServiceCard = ({ icon, title, desc, features, price, index }: ServiceCardProps) => {
     return (
         <motion.div
-            className="bg-slate-900/50 p-8 rounded-2xl border border-slate-800 hover:border-cyan-400/30 hover:shadow-[0_0_40px_rgba(34,211,238,0.15)] transition-all duration-300 transform hover:-translate-y-2 flex flex-col"
+            className="bg-slate-900/30 p-8 rounded-2xl border border-slate-800 hover:border-cyan-400/30 hover:shadow-[0_0_40px_rgba(34,211,238,0.1)] transition-all duration-300 transform hover:-translate-y-2 flex flex-col"
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.5 }}
@@ -46,17 +55,29 @@ const ServiceCard: React.FC<{ icon: React.ReactNode; title: string; desc: string
     );
 };
 
-const WhyChooseCard: React.FC<{ icon: React.ReactNode; title: string; desc: string; }> = ({ icon, title, desc }) => (
-    <div className="bg-slate-900/50 p-6 rounded-lg border border-slate-800 text-center">
+interface WhyChooseCardProps {
+    icon: React.ReactNode;
+    title: string;
+    desc: string;
+}
+
+const WhyChooseCard = ({ icon, title, desc }: WhyChooseCardProps) => (
+    <div className="bg-slate-900/30 p-6 rounded-lg border border-slate-800 text-center hover:bg-slate-900/50 transition-colors">
         <div className="text-cyan-400 w-12 h-12 mx-auto mb-4 flex items-center justify-center">{icon}</div>
         <h3 className="text-xl font-bold text-white mb-2">{title}</h3>
         <p className="text-slate-400 text-sm">{desc}</p>
     </div>
 );
 
-const TestimonialCard: React.FC<{ quote: string; name: string; role: string; }> = ({ quote, name, role }) => (
+interface TestimonialCardProps {
+    quote: string;
+    name: string;
+    role: string;
+}
+
+const TestimonialCard = ({ quote, name, role }: TestimonialCardProps) => (
     <motion.div 
-        className="bg-slate-900/50 p-8 rounded-2xl border border-slate-800"
+        className="bg-slate-900/30 p-8 rounded-2xl border border-slate-800"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.5 }}
@@ -74,7 +95,7 @@ const TestimonialCard: React.FC<{ quote: string; name: string; role: string; }> 
 );
 
 interface ParallaxTextProps {
-  children: string;
+  children: React.ReactNode;
   baseVelocity: number;
 }
 
@@ -109,11 +130,15 @@ function ParallaxText({ children, baseVelocity = 100 }: ParallaxTextProps) {
 
   return (
     <div className="overflow-hidden m-0 whitespace-nowrap flex flex-nowrap">
-      <motion.div className="font-bold uppercase text-[15vw] leading-[0.85] text-transparent bg-clip-text bg-gradient-to-b from-slate-800 to-transparent opacity-30 flex whitespace-nowrap flex-nowrap" style={{ x }}>
-        <span className="block mr-8">{children} </span>
-        <span className="block mr-8">{children} </span>
-        <span className="block mr-8">{children} </span>
-        <span className="block mr-8">{children} </span>
+      <motion.div 
+        className="font-bold uppercase text-[12vw] leading-[0.85] flex whitespace-nowrap flex-nowrap" 
+        style={{ x }}
+      >
+        {/* Updated style for visibility: Stroke effect or low opacity white */}
+        <span className="block mr-12 text-transparent" style={{ WebkitTextStroke: "2px rgba(255,255,255,0.15)" }}>{children} </span>
+        <span className="block mr-12 text-transparent" style={{ WebkitTextStroke: "2px rgba(255,255,255,0.15)" }}>{children} </span>
+        <span className="block mr-12 text-transparent" style={{ WebkitTextStroke: "2px rgba(255,255,255,0.15)" }}>{children} </span>
+        <span className="block mr-12 text-transparent" style={{ WebkitTextStroke: "2px rgba(255,255,255,0.15)" }}>{children} </span>
       </motion.div>
     </div>
   );
@@ -375,8 +400,8 @@ const HomePage: React.FC = () => {
         </motion.div>
       </section>
 
-      {/* DIGITAL PROCESS SECTION */}
-      <section className="py-24 bg-black text-white border-b border-slate-900">
+      {/* DIGITAL PROCESS SECTION - Unified BG to slate-950 */}
+      <section className="py-24 bg-slate-950 text-white border-b border-slate-900">
         <div className="container mx-auto px-4 sm:px-6 lg:px-16">
             {/* Top Row: Heading & Description */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20">
@@ -475,10 +500,10 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* HOW WE TAKE YOUR BUSINESS TO THE NEXT LEVEL (NEW SECTION) */}
+      {/* HOW WE TAKE YOUR BUSINESS TO THE NEXT LEVEL (Unified BG) */}
       <section className="py-24 bg-slate-950 relative z-10 overflow-hidden">
-        {/* Parallax HIRE US Text */}
-        <div className="mb-16 opacity-10 pointer-events-none">
+        {/* Parallax HIRE US Text - Increased Visibility */}
+        <div className="mb-16 opacity-30 pointer-events-none">
             <ParallaxText baseVelocity={5}>HIRE US</ParallaxText>
         </div>
 
@@ -507,10 +532,14 @@ const HomePage: React.FC = () => {
                         We are a results-driven digital agency, and our mission is simple — to build fast, modern, and high-performing digital experiences that help your business grow. Through powerful design, smart technology, and proven optimization, we create solutions that bring real impact.
                     </p>
                     <Link to="/services">
-                        <button className="bg-lime-400 hover:bg-lime-500 text-black px-8 py-3 rounded-full font-bold flex items-center gap-2 transition-colors duration-300">
+                        <motion.button 
+                            whileHover={{ scale: 1.05, backgroundColor: "#bef264" }}
+                            whileTap={{ scale: 0.95 }}
+                            className="bg-lime-400 text-black px-8 py-3 rounded-full font-bold flex items-center gap-2 transition-colors duration-300"
+                        >
                             See all services
                             <ArrowRightIcon className="w-5 h-5" />
-                        </button>
+                        </motion.button>
                     </Link>
                 </motion.div>
             </div>
@@ -557,10 +586,34 @@ const HomePage: React.FC = () => {
                     </motion.div>
                 ))}
             </div>
+
+            {/* NEW CLOSING PARAGRAPH & BUTTON */}
+            <motion.div 
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="mt-24 max-w-4xl mx-auto text-center"
+            >
+                <p className="text-2xl md:text-3xl text-slate-300 leading-relaxed font-light mb-10">
+                    "In a digital world full of competition, we create the advantage. Our solutions turn your ideas into high-performing digital experiences—experiences that inspire trust, drive engagement, and push your business forward with real results."
+                </p>
+                <Link to="/contact">
+                    <motion.button
+                        whileHover={{ scale: 1.05, boxShadow: "0 0 30px rgba(34, 211, 238, 0.4)" }}
+                        whileTap={{ scale: 0.95 }}
+                        className="px-12 py-5 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold rounded-full text-xl tracking-wide shadow-lg relative overflow-hidden group"
+                    >
+                        <span className="relative z-10 flex items-center gap-2">
+                            Start a Project <ArrowRightIcon className="w-6 h-6" />
+                        </span>
+                        <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
+                    </motion.button>
+                </Link>
+            </motion.div>
         </div>
       </section>
 
-      {/* Services Section */}
+      {/* Services Section - Unified BG */}
       <section className="py-24 sm:py-32 bg-slate-950 relative z-10">
         <div className="container mx-auto px-4">
             <div className="text-center max-w-3xl mx-auto">
@@ -596,8 +649,8 @@ const HomePage: React.FC = () => {
         </div>
       </section>
       
-      {/* Special Offers Section */}
-      <section className="py-24 sm:py-32 bg-gray-900/40 relative z-10">
+      {/* Special Offers Section - Unified BG */}
+      <section className="py-24 sm:py-32 bg-slate-950 relative z-10 border-t border-slate-900">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-3xl mx-auto">
               <AnimatedHeading text="🚀 Limited Time Offers" className="text-4xl md:text-5xl font-bold mb-16" />
@@ -620,7 +673,7 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* Why Choose Us Section */}
+      {/* Why Choose Us Section - Unified BG */}
        <section className="py-24 sm:py-32 bg-slate-950 relative z-10">
         <div className="container mx-auto px-4">
             <div className="text-center max-w-3xl mx-auto">
@@ -649,8 +702,8 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className="py-24 sm:py-32 bg-gray-900/40 relative z-10">
+      {/* Testimonials Section - Unified BG */}
+      <section className="py-24 sm:py-32 bg-slate-950 relative z-10 border-t border-slate-900">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-3xl mx-auto">
               <AnimatedHeading text="What Our Clients Say" className="text-4xl md:text-5xl font-bold mb-16" />
@@ -671,8 +724,8 @@ const HomePage: React.FC = () => {
       </section>
 
 
-      {/* Final CTA Section */}
-      <section className="py-24 sm:py-32 bg-white relative z-10">
+      {/* Final CTA Section - Unified BG */}
+      <section className="py-24 sm:py-32 bg-slate-950 relative z-10 border-t border-slate-900">
         <div className="container mx-auto px-4 text-center">
             <motion.div
               initial={{ opacity: 0, y: 50 }}
@@ -680,28 +733,36 @@ const HomePage: React.FC = () => {
               viewport={{ once: true, amount: 0.5 }}
               transition={{ duration: 0.7 }}
             >
-              <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">Ready to Transform Your Business?</h2>
-              <p className="max-w-2xl mx-auto text-slate-600 text-lg mb-8">Get a FREE website/app consultation and project estimate.</p>
+              <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">Ready to Transform Your Business?</h2>
+              <p className="max-w-2xl mx-auto text-slate-400 text-lg mb-8">Get a FREE website/app consultation and project estimate.</p>
               
-              <div className="flex flex-wrap justify-center gap-x-8 gap-y-4 mb-8 text-slate-700 font-semibold">
-                <span className="flex items-center gap-2"><CheckIcon className="h-5 w-5 text-green-600"/> No Advance Payment</span>
-                <span className="flex items-center gap-2"><CheckIcon className="h-5 w-5 text-green-600"/> 100% Satisfaction</span>
-                <span className="flex items-center gap-2"><CheckIcon className="h-5 w-5 text-green-600"/> Money-Back Guarantee</span>
+              <div className="flex flex-wrap justify-center gap-x-8 gap-y-4 mb-8 text-slate-400 font-semibold">
+                <span className="flex items-center gap-2"><CheckIcon className="h-5 w-5 text-green-500"/> No Advance Payment</span>
+                <span className="flex items-center gap-2"><CheckIcon className="h-5 w-5 text-green-500"/> 100% Satisfaction</span>
+                <span className="flex items-center gap-2"><CheckIcon className="h-5 w-5 text-green-500"/> Money-Back Guarantee</span>
               </div>
               
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                   <Link to="/contact">
-                      <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="px-10 py-4 bg-slate-900 text-white font-bold rounded-full text-xl shadow-lg shadow-slate-900/30 transition-all duration-300">
+                      <motion.button 
+                        whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(34,211,238,0.3)" }} 
+                        whileTap={{ scale: 0.95 }} 
+                        className="px-10 py-4 bg-white text-slate-950 font-bold rounded-full text-xl shadow-lg transition-all duration-300"
+                      >
                           Start Your Project Today
                       </motion.button>
                   </Link>
                   <a href="tel:+910000000000">
-                      <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="px-10 py-4 bg-green-500 text-white font-bold rounded-full text-xl shadow-lg shadow-green-500/30 transition-all duration-300">
+                      <motion.button 
+                        whileHover={{ scale: 1.05 }} 
+                        whileTap={{ scale: 0.95 }} 
+                        className="px-10 py-4 bg-green-500 text-white font-bold rounded-full text-xl shadow-lg shadow-green-500/30 transition-all duration-300"
+                      >
                           Call Now: +91 XXXXX XXXXX
                       </motion.button>
                   </a>
               </div>
-              <p className="mt-6 text-slate-500">Or email us at: <a href="mailto:support@sameercodes.online" className="text-slate-800 font-semibold hover:underline">support@sameercodes.online</a></p>
+              <p className="mt-6 text-slate-500">Or email us at: <a href="mailto:support@sameercodes.online" className="text-cyan-500 font-semibold hover:underline">support@sameercodes.online</a></p>
             </motion.div>
         </div>
       </section>
