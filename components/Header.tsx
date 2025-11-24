@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import PremiumButton from './PremiumButton';
 
 const navLinks = [
   { name: 'Home', path: '/' },
@@ -20,7 +21,7 @@ const Header: React.FC<HeaderProps> = ({ isVisible }) => {
   const logoUrl = "https://res.cloudinary.com/dow2sbjsp/image/upload/v1763314768/Sameer_en7cdu.png";
 
   const activeLinkStyle = {
-    color: '#22d3ee',
+    color: '#22d3ee', // cyan-400
     textShadow: '0 0 10px #22d3ee',
   };
 
@@ -28,7 +29,7 @@ const Header: React.FC<HeaderProps> = ({ isVisible }) => {
     <AnimatePresence>
       {isVisible && (
         <motion.header
-          className="fixed top-0 left-0 right-0 z-50 bg-black/50 backdrop-blur-lg border-b border-cyan-500/20"
+          className="fixed top-0 left-0 right-0 z-50 bg-slate-950/80 backdrop-blur-lg border-b border-cyan-500/10"
           initial={{ y: -100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: -100, opacity: 0 }}
@@ -45,7 +46,7 @@ const Header: React.FC<HeaderProps> = ({ isVisible }) => {
                   <NavLink
                     key={link.name}
                     to={link.path}
-                    className="text-gray-300 hover:text-cyan-400 transition-colors duration-300 font-medium relative group"
+                    className="text-slate-300 hover:text-cyan-400 transition-colors duration-300 font-medium relative group"
                     style={({ isActive }) => (isActive ? activeLinkStyle : {})}
                   >
                     {link.name}
@@ -56,13 +57,7 @@ const Header: React.FC<HeaderProps> = ({ isVisible }) => {
               
               <div className="hidden lg:block">
                 <Link to="/contact">
-                    <motion.button 
-                        className="px-6 py-2 border border-cyan-400 text-cyan-400 rounded-full font-semibold hover:bg-cyan-400 hover:text-black transition-all duration-300 hover:shadow-[0_0_20px_#22d3ee]"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                    >
-                        Contact Us
-                    </motion.button>
+                    <PremiumButton icon={false} className="!px-6 !py-2">Contact Us</PremiumButton>
                 </Link>
               </div>
 
@@ -80,13 +75,13 @@ const Header: React.FC<HeaderProps> = ({ isVisible }) => {
           <AnimatePresence>
           {menuOpen && (
             <motion.div 
-                className="lg:hidden bg-black/80 backdrop-blur-lg"
+                className="lg:hidden bg-slate-950/95 backdrop-blur-lg border-b border-cyan-500/20"
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
                 transition={{ duration: 0.3 }}
             >
-              <nav className="flex flex-col items-center space-y-4 py-4">
+              <nav className="flex flex-col items-center space-y-4 py-8">
                 {navLinks.map((link) => (
                   <NavLink
                     key={link.name}
@@ -98,15 +93,11 @@ const Header: React.FC<HeaderProps> = ({ isVisible }) => {
                     {link.name}
                   </NavLink>
                 ))}
-                <Link to="/contact" onClick={() => setMenuOpen(false)}>
-                    <motion.button 
-                        className="mt-4 px-6 py-2 border border-cyan-400 text-cyan-400 rounded-full font-semibold hover:bg-cyan-400 hover:text-black transition-all duration-300 hover:shadow-[0_0_20px_#22d3ee]"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                    >
-                        Contact Us
-                    </motion.button>
-                </Link>
+                <div className="mt-4">
+                    <Link to="/contact" onClick={() => setMenuOpen(false)}>
+                        <PremiumButton>Contact Us</PremiumButton>
+                    </Link>
+                </div>
               </nav>
             </motion.div>
           )}

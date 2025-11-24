@@ -5,6 +5,7 @@ import AnimatedHeading from '../components/AnimatedHeading';
 import { motion } from 'framer-motion';
 import { WhatsappIcon, EmailIcon, PhoneIcon } from '../components/Icons';
 import { useSeoContent } from '../hooks/useSeoContent';
+import PremiumButton from '../components/PremiumButton';
 
 const ContactPage: React.FC = () => {
     const { title, description } = useSeoContent('Contact');
@@ -30,24 +31,24 @@ const ContactPage: React.FC = () => {
                 <h3 className="text-3xl font-bold text-white mb-6">Contact Information</h3>
                 <div className="space-y-6">
                     <div className="flex items-center space-x-4">
-                        <EmailIcon className="h-8 w-8 text-cyan-400" />
+                        <EmailIcon className="h-8 w-8 text-purple-400" />
                         <div>
                             <h4 className="font-semibold text-lg">Email</h4>
-                            <a href="mailto:support@sameercodes.online" className="text-gray-400 hover:text-cyan-400">support@sameercodes.online</a>
+                            <a href="mailto:support@sameercodes.online" className="text-gray-400 hover:text-purple-400">support@sameercodes.online</a>
                         </div>
                     </div>
                     <div className="flex items-center space-x-4">
-                        <PhoneIcon className="h-8 w-8 text-cyan-400" />
+                        <PhoneIcon className="h-8 w-8 text-purple-400" />
                         <div>
                             <h4 className="font-semibold text-lg">Phone</h4>
                             <p className="text-gray-400">+91 XXXXX XXXXX</p>
                         </div>
                     </div>
                     <div className="flex items-center space-x-4">
-                        <WhatsappIcon className="h-8 w-8 text-cyan-400" />
+                        <WhatsappIcon className="h-8 w-8 text-purple-400" />
                         <div>
                             <h4 className="font-semibold text-lg">WhatsApp</h4>
-                            <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-cyan-400">Chat with us</a>
+                            <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-purple-400">Chat with us</a>
                         </div>
                     </div>
                 </div>
@@ -68,19 +69,17 @@ const ContactPage: React.FC = () => {
                     <form className="space-y-6">
                         <div>
                             <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">Full Name</label>
-                            <input type="text" id="name" className="w-full bg-gray-800 border border-gray-700 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
+                            <input type="text" id="name" className="w-full bg-gray-800 border border-gray-700 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500" />
                         </div>
                         <div>
                             <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">Email</label>
-                            <input type="email" id="email" className="w-full bg-gray-800 border border-gray-700 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-cyan-500" />
+                            <input type="email" id="email" className="w-full bg-gray-800 border border-gray-700 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500" />
                         </div>
                         <div>
                             <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-2">Message</label>
-                            <textarea id="message" rows={5} className="w-full bg-gray-800 border border-gray-700 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-cyan-500"></textarea>
+                            <textarea id="message" rows={5} className="w-full bg-gray-800 border border-gray-700 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500"></textarea>
                         </div>
-                        <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} type="submit" className="w-full px-8 py-3 bg-cyan-500 text-black font-bold rounded-full text-lg shadow-[0_0_20px_#22d3ee] transition-all duration-300">
-                            Submit Form
-                        </motion.button>
+                        <PremiumButton width="full" onClick={() => {}}>Submit Form</PremiumButton>
                     </form>
                 </div>
             </motion.div>
