@@ -97,6 +97,26 @@ export const SupabaseIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => 
     <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12.9 2L4 14h7.1l-1.9 8 8.9-12h-7.1l1.9-8z" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path></svg>
 );
 
+export const HtmlIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h20l-2 18-8 3-8-3z"/><path d="M12 19l5.5-2 1.5-12H5l1.5 12z"/></svg>
+);
+
+export const CssIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h20l-2 18-8 3-8-3z"/><path d="M12 19l5.5-2 1.5-12H5l1.5 12z"/></svg>
+);
+
+export const FigmaIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 5.5A3.5 3.5 0 0 1 8.5 2H12v7H8.5A3.5 3.5 0 0 1 5 5.5z"/><path d="M12 2h3.5a3.5 3.5 0 1 1 0 7H12V2z"/><path d="M12 12.5a3.5 3.5 0 1 1 7 0 3.5 3.5 0 1 1-7 0z"/><path d="M5 19.5A3.5 3.5 0 0 1 8.5 16H12v3.5a3.5 3.5 0 1 1-7 0z"/><path d="M5 12.5A3.5 3.5 0 0 1 8.5 9H12v7H8.5A3.5 3.5 0 0 1 5 12.5z"/></svg>
+);
+
+export const NpmIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 8h22v7H11v2H7v-2H1z"/><path d="M7 8v7"/><path d="M14 8v7"/><path d="M17 11v4"/><path d="M4 11v4"/><path d="M11 11v1"/><path d="M20 11v4"/></svg>
+);
+
+export const TailwindIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11.5 6.5c-3-2-6 1-4 3 1.5 1.5 2.5 1 4-1 2-2.5 5.5-1.5 5.5 1.5 0 2-2 3-4 3-1.5 0-3-1-3-2s2-2 3.5-1c2 1.5 2 3.5 0 5-1.5 1.5-3 1.5-4 1.5"/></svg>
+);
+
 export const RocketIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
     <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4.5 16.5c-1.5 1.5-3 1.5-4.5 0s-1.5-3 0-4.5 3-1.5 4.5 0l1.5 1.5-1.5 1.5-1.5-1.5-1.5 1.5 3 3 1.5-1.5 1.5 1.5-1.5 1.5zm15-15c1.5-1.5 3-1.5 4.5 0s1.5 3 0 4.5-3 1.5-4.5 0l-1.5-1.5 1.5-1.5 1.5 1.5 1.5-1.5-3-3-1.5 1.5-1.5-1.5 1.5-1.5zM9 15l-1.5-1.5-6-6L6 3l6 6L10.5 15z"></path></svg>
 );
