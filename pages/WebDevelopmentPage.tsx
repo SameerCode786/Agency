@@ -84,7 +84,7 @@ const techStack = [
 
 const TechMarquee = () => {
     return (
-        <div className="w-full overflow-hidden bg-slate-900 py-12 border-y border-slate-800">
+        <div className="w-full overflow-hidden bg-slate-900 py-12 border-y border-slate-800 mt-12">
              <div className="container mx-auto px-4 mb-8 text-center">
                  <h2 className="text-2xl font-bold text-white mb-2">We use the latest technologies</h2>
                  <p className="text-slate-500">To create timeless designs and robust applications</p>
@@ -129,9 +129,14 @@ const faqs = [
 const WebDevelopmentPage: React.FC = () => {
     const { title, description } = useSeoContent('Web Development');
     const [activeFaq, setActiveFaq] = useState<number | null>(null);
+    const techSectionRef = useRef<HTMLDivElement>(null);
 
     const toggleFaq = (index: number) => {
         setActiveFaq(activeFaq === index ? null : index);
+    };
+
+    const scrollToTech = () => {
+        techSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
 
     return (
@@ -169,99 +174,189 @@ const WebDevelopmentPage: React.FC = () => {
             </section>
 
             {/* WHO WE WORK WITH & CAPABILITIES */}
-            <section className="py-24 bg-slate-900/30 border-t border-slate-800">
+            <section className="py-32 bg-slate-900 border-t border-slate-800 relative overflow-hidden">
+                 <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent"></div>
+                 
+                 <div className="container mx-auto px-4 sm:px-6 lg:px-16 relative z-10">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
+                        {/* Left Column: Who We Work With */}
+                        <div className="flex flex-col justify-center">
+                            <motion.div
+                                initial={{ opacity: 0, x: -30 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.6 }}
+                            >
+                                <span className="inline-block py-1 px-3 rounded-full bg-cyan-500/10 text-cyan-400 text-sm font-bold tracking-widest uppercase mb-6 border border-cyan-500/20">
+                                    Our Clients
+                                </span>
+                                <h3 className="text-5xl md:text-6xl font-bold text-white mb-8 leading-tight">
+                                    Who We Work With
+                                </h3>
+                                <p className="text-slate-300 text-lg md:text-xl leading-relaxed mb-10 font-light">
+                                    We work with startups, small businesses, agencies, and international clients. No matter your size or industry, we help you move forward with confidence.
+                                </p>
+                                
+                                <div className="flex flex-wrap gap-6 items-center">
+                                    <Link to="/contact">
+                                        <PremiumButton className="px-8 py-4">Get in touch</PremiumButton>
+                                    </Link>
+                                    <button 
+                                        onClick={scrollToTech}
+                                        className="group flex items-center gap-3 px-8 py-4 rounded-full border border-slate-700 hover:border-cyan-500/50 hover:bg-slate-800 transition-all duration-300 text-white font-semibold"
+                                    >
+                                        <span>Discover More</span>
+                                        <div className="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center group-hover:bg-cyan-500 group-hover:text-black transition-colors duration-300">
+                                             <ArrowRightIcon className="w-4 h-4 transform rotate-90" />
+                                        </div>
+                                    </button>
+                                </div>
+                            </motion.div>
+                        </div>
+
+                        {/* Right Column: Capabilities */}
+                        <div className="relative">
+                            <motion.div
+                                initial={{ opacity: 0, x: 30 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.6, delay: 0.2 }}
+                                className="bg-slate-950 p-10 rounded-3xl border border-slate-800 shadow-2xl relative overflow-hidden group"
+                            >
+                                <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/5 rounded-full blur-3xl group-hover:bg-cyan-500/10 transition-colors duration-500"></div>
+                                
+                                <h3 className="text-3xl font-bold text-white mb-10 relative z-10 border-b border-slate-800 pb-6">
+                                    Our Website Capabilities
+                                </h3>
+                                
+                                <div className="space-y-4 relative z-10">
+                                    {capabilities.map((cap, i) => (
+                                        <motion.div 
+                                            key={i}
+                                            initial={{ opacity: 0, y: 10 }}
+                                            whileInView={{ opacity: 1, y: 0 }}
+                                            viewport={{ once: true }}
+                                            transition={{ delay: i * 0.1 }}
+                                            className="flex items-center justify-between p-4 rounded-xl hover:bg-slate-900 transition-colors duration-300 cursor-default border border-transparent hover:border-slate-800 group/item"
+                                        >
+                                            <span className="text-xl text-slate-300 font-light group-hover/item:text-cyan-400 transition-colors">{cap}</span>
+                                            <ArrowRightIcon className="w-5 h-5 text-slate-600 group-hover/item:text-cyan-400 transition-colors opacity-0 group-hover/item:opacity-100 transform -translate-x-4 group-hover/item:translate-x-0 duration-300" />
+                                        </motion.div>
+                                    ))}
+                                </div>
+                            </motion.div>
+                        </div>
+                    </div>
+                 </div>
+            </section>
+
+             {/* SCROLLING TEXT */}
+             <section className="py-12 bg-slate-950 overflow-hidden border-t border-slate-900">
+                <ParallaxText baseVelocity={3}>Let's work together.</ParallaxText>
+             </section>
+
+            {/* PRECISION & PASSION - Text Left, Image Right */}
+            <section ref={techSectionRef} className="py-24 bg-gradient-to-b from-slate-950 to-slate-900">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-16">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
-                        {/* Left Column */}
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                        
+                        {/* Content Left */}
                         <motion.div
                             initial={{ opacity: 0, x: -30 }}
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
-                            transition={{ duration: 0.6 }}
                         >
-                            <h3 className="text-3xl font-bold text-white mb-6">Who We Work With</h3>
-                            <p className="text-slate-400 text-lg leading-relaxed mb-8">
-                                We work with startups, small businesses, agencies, and international clients. No matter your size or industry, we help you move forward with confidence.
+                             <div className="mb-6 flex items-center gap-3">
+                                <div className="h-px w-12 bg-cyan-500"></div>
+                                <span className="text-cyan-400 font-bold uppercase tracking-widest text-sm">Technology & Process</span>
+                            </div>
+                            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-8 leading-[1.1]">
+                                We Build With <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">Precision, Passion,</span> and Modern Technology
+                            </h2>
+                            <p className="text-xl text-slate-400 leading-relaxed mb-8">
+                                We carefully manage every project with full focus and complete responsibility. Our team works in-house, delivering quality work that is fast, stable, and built to last.
                             </p>
-                            <Link to="/contact">
-                                <PremiumButton>Get in touch</PremiumButton>
-                            </Link>
+                            <p className="text-lg text-slate-500 leading-relaxed mb-10">
+                                With a clear process and honest communication, we design and develop websites that perform beautifully on every device. We treat your business like our own.
+                            </p>
+                            
+                            <div className="flex gap-4">
+                                <Link to="/portfolio">
+                                    <PremiumButton icon={true}>View Our Work</PremiumButton>
+                                </Link>
+                            </div>
                         </motion.div>
 
-                        {/* Right Column */}
+                        {/* Image Right */}
                         <motion.div
                             initial={{ opacity: 0, x: 30 }}
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
-                            transition={{ duration: 0.6, delay: 0.2 }}
+                            transition={{ delay: 0.2 }}
+                            className="relative h-full min-h-[500px] w-full"
                         >
-                             <h3 className="text-3xl font-bold text-white mb-8">Our Website Capabilities</h3>
-                             <div className="space-y-4">
-                                {capabilities.map((cap, i) => (
-                                    <motion.div 
-                                        key={i}
-                                        initial={{ opacity: 0, y: 10 }}
-                                        whileInView={{ opacity: 1, y: 0 }}
-                                        viewport={{ once: true }}
-                                        transition={{ delay: i * 0.1 }}
-                                        className="flex items-center gap-4 group cursor-default"
-                                    >
-                                        <div className="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-cyan-500 group-hover:bg-cyan-500 group-hover:text-black transition-colors duration-300">
-                                            <CheckIcon className="w-4 h-4" />
-                                        </div>
-                                        <span className="text-xl text-slate-300 font-light group-hover:text-white transition-colors">{cap}</span>
-                                    </motion.div>
-                                ))}
-                             </div>
+                            <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500/20 to-purple-500/20 rounded-2xl transform rotate-3 scale-95 blur-lg opacity-60"></div>
+                            <div className="relative h-full w-full rounded-2xl overflow-hidden border border-slate-700 shadow-2xl">
+                                <img 
+                                    src="https://images.unsplash.com/photo-1555099962-4199c345e5dd?q=80&w=2070&auto=format&fit=crop" 
+                                    alt="Modern Coding Environment" 
+                                    className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700"
+                                />
+                                <div className="absolute inset-0 bg-slate-950/20"></div>
+                            </div>
                         </motion.div>
                     </div>
-                </div>
-            </section>
-
-             {/* SCROLLING TEXT */}
-             <section className="py-12 bg-slate-950 overflow-hidden">
-                <ParallaxText baseVelocity={3}>Let's work together.</ParallaxText>
-             </section>
-
-            {/* PRECISION & PASSION */}
-            <section className="py-24 bg-gradient-to-b from-slate-950 to-slate-900">
-                <div className="container mx-auto px-4 sm:px-6 lg:px-16 text-center max-w-5xl mx-auto mb-16">
-                    <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                    >
-                        <h2 className="text-4xl md:text-5xl font-bold text-white mb-8">
-                            We Build With Precision, Passion, and Modern Technology
-                        </h2>
-                        <p className="text-xl text-slate-400 leading-relaxed">
-                            We carefully manage every project with full focus and complete responsibility. Our team works in-house, delivering quality work that is fast, stable, and built to last. With a clear process and honest communication, we design and develop websites that perform beautifully on every device.
-                        </p>
-                    </motion.div>
                 </div>
                 
                 <TechMarquee />
             </section>
 
-            {/* FAQs */}
-            <section className="py-24 bg-slate-950">
+            {/* FAQs - Sticky Layout */}
+            <section className="py-32 bg-slate-950 relative border-t border-slate-900">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-16">
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
-                        <div>
-                            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">The answers to your questions</h2>
-                            <p className="text-slate-400 mb-8">Can't find what you're looking for? Get in touch directly.</p>
-                            <Link to="/contact"><PremiumButton>Get in touch</PremiumButton></Link>
+                    <div className="flex flex-col lg:flex-row gap-16 relative">
+                        
+                        {/* Sticky Sidebar - Left */}
+                        <div className="lg:w-1/3">
+                            <div className="sticky top-32">
+                                <motion.div
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                >
+                                    <h2 className="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
+                                        The answers to your questions.
+                                    </h2>
+                                    <p className="text-slate-400 text-lg mb-10 max-w-sm">
+                                        Can't find what you're looking for? Get in touch directly with our team.
+                                    </p>
+                                    <Link to="/contact">
+                                        <PremiumButton className="px-10 py-4">Get in touch</PremiumButton>
+                                    </Link>
+                                </motion.div>
+                            </div>
                         </div>
-                        <div className="lg:col-span-2">
+
+                        {/* Scrollable FAQs - Right */}
+                        <div className="lg:w-2/3">
                             <div className="space-y-4">
                                 {faqs.map((faq, index) => (
-                                    <div key={index} className="border-b border-slate-800">
+                                    <motion.div 
+                                        key={index} 
+                                        initial={{ opacity: 0, y: 20 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ delay: index * 0.05 }}
+                                        className="border-b border-slate-800"
+                                    >
                                         <button 
                                             onClick={() => toggleFaq(index)}
-                                            className="w-full text-left py-6 flex justify-between items-center focus:outline-none group"
+                                            className="w-full text-left py-8 flex justify-between items-center focus:outline-none group"
                                         >
-                                            <span className="text-lg md:text-xl font-medium text-slate-200 group-hover:text-cyan-400 transition-colors">{faq.q}</span>
-                                            <span className={`transform transition-transform duration-300 ${activeFaq === index ? 'rotate-180' : ''} text-cyan-400`}>
+                                            <span className="text-xl md:text-2xl font-medium text-slate-200 group-hover:text-cyan-400 transition-colors pr-8">
+                                                {faq.q}
+                                            </span>
+                                            <span className={`transform transition-transform duration-300 ${activeFaq === index ? 'rotate-180' : ''} text-cyan-400 flex-shrink-0 bg-slate-900 p-2 rounded-full`}>
                                                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                                                 </svg>
@@ -276,13 +371,13 @@ const WebDevelopmentPage: React.FC = () => {
                                                     transition={{ duration: 0.3 }}
                                                     className="overflow-hidden"
                                                 >
-                                                    <p className="pb-6 text-slate-400 leading-relaxed whitespace-pre-line">
+                                                    <p className="pb-8 text-slate-400 text-lg leading-relaxed whitespace-pre-line max-w-3xl">
                                                         {faq.a}
                                                     </p>
                                                 </motion.div>
                                             )}
                                         </AnimatePresence>
-                                    </div>
+                                    </motion.div>
                                 ))}
                             </div>
                         </div>
