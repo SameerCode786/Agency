@@ -36,13 +36,23 @@ interface ServiceCardProps {
 }
 
 const ServiceCard = ({ icon, title, desc, features, price, index }: ServiceCardProps) => {
+    const { setCursorVariant, setCursorText } = useCursor();
+
     return (
         <motion.div
-            className="bg-slate-900/30 p-8 rounded-2xl border border-slate-800 hover:border-cyan-500/30 hover:shadow-[0_0_40px_rgba(34,211,238,0.1)] transition-all duration-300 transform hover:-translate-y-2 flex flex-col group"
+            className="bg-slate-900/30 p-8 rounded-2xl border border-slate-800 hover:border-cyan-500/30 hover:shadow-[0_0_40px_rgba(34,211,238,0.1)] transition-all duration-300 transform hover:-translate-y-2 flex flex-col group cursor-none"
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.5 }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
+            onMouseEnter={() => {
+                setCursorVariant('view-more');
+                setCursorText('View More');
+            }}
+            onMouseLeave={() => {
+                setCursorVariant('default');
+                setCursorText('');
+            }}
         >
             <div className="mb-4 text-cyan-400 group-hover:text-cyan-300 transition-colors">{icon}</div>
             <h3 className="text-2xl font-bold mb-2 text-slate-100 group-hover:text-white transition-colors">{title}</h3>
@@ -184,7 +194,7 @@ const coreServicesData = [
     },
     {
         title: "WordPress Customization",
-        desc: "We upgrade, redesign, and fully customize WordPress sites—making them faster, cleaner, more secure, and perfectly aligned with your brand.",
+        desc: "We upgrade, redesign, and fully customize WordPress sites—making them faster, cleaner, and perfectly aligned with your brand.",
         video: "https://res.cloudinary.com/dow2sbjsp/video/upload/v1763927832/wordpress_z7f2lk.mp4",
         colSpan: "lg:col-span-1",
         link: "/services"
