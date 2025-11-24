@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import AnimatedHeading from '../components/AnimatedHeading';
 import ParticleBackground from '../components/ParticleBackground';
 import PremiumButton from '../components/PremiumButton';
+import { useCursor } from '../components/CustomCursor'; // Import hook
 import { 
     CheckIcon, 
     CodeIcon, 
@@ -157,37 +158,43 @@ const coreServicesData = [
         title: "Website Development",
         desc: "We design and develop modern, responsive, and high-performance websites that strengthen your brand and convert visitors into customers.",
         video: "https://res.cloudinary.com/dow2sbjsp/video/upload/v1763927887/website_g6erpv.mp4",
-        colSpan: "lg:col-span-2"
+        colSpan: "lg:col-span-2",
+        link: "/web-development" // Added link
     },
     {
         title: "SEO Optimization",
         desc: "We improve your search rankings with clean, strategic, and data-driven SEO—bringing you more visibility, more traffic, and more real business results.",
         video: "https://res.cloudinary.com/dow2sbjsp/video/upload/v1763927973/Seo_Search_h9ua0s.mp4",
-        colSpan: "lg:col-span-1"
+        colSpan: "lg:col-span-1",
+        link: "/services"
     },
     {
         title: "App Development",
         desc: "We create smooth, user-friendly, and scalable mobile applications that help your business reach customers anywhere, on any device.",
         video: "https://res.cloudinary.com/dow2sbjsp/video/upload/v1763927584/app_cwwxyt.mp4",
-        colSpan: "lg:col-span-1"
+        colSpan: "lg:col-span-1",
+        link: "/services"
     },
     {
         title: "Shopify Development",
         desc: "We build optimized Shopify stores with premium design, fast performance, and conversion-focused layouts that boost sales.",
         video: "https://res.cloudinary.com/dow2sbjsp/video/upload/v1763928151/shopigy_pnq2kb.mp4",
-        colSpan: "lg:col-span-1"
+        colSpan: "lg:col-span-1",
+        link: "/services"
     },
     {
         title: "WordPress Customization",
         desc: "We upgrade, redesign, and fully customize WordPress sites—making them faster, cleaner, more secure, and perfectly aligned with your brand.",
         video: "https://res.cloudinary.com/dow2sbjsp/video/upload/v1763927832/wordpress_z7f2lk.mp4",
-        colSpan: "lg:col-span-1"
+        colSpan: "lg:col-span-1",
+        link: "/services"
     }
 ];
 
 const HomePage: React.FC = () => {
     const { title, description } = useSeoContent('Home');
     const [currentHeadingIndex, setCurrentHeadingIndex] = useState(0);
+    const { setCursorVariant, setCursorText } = useCursor(); // Use cursor hook
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -505,35 +512,48 @@ const HomePage: React.FC = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {coreServicesData.map((service, index) => (
-                    <motion.div 
+                    <Link 
+                        to={service.link}
                         key={index}
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: index * 0.1 }}
                         className={`group relative overflow-hidden rounded-2xl h-[400px] border border-slate-800 hover:border-cyan-500/50 transition-all duration-500 ${service.colSpan || ''}`}
+                        onMouseEnter={() => {
+                            setCursorVariant('view-more');
+                            setCursorText('View More');
+                        }}
+                        onMouseLeave={() => {
+                            setCursorVariant('default');
+                            setCursorText('');
+                        }}
                     >
-                        <div className="absolute inset-0 z-0">
-                            <video 
-                                autoPlay 
-                                loop 
-                                muted 
-                                playsInline 
-                                className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
-                            >
-                                <source src={service.video} type="video/mp4" />
-                            </video>
-                        </div>
-                        <div className="absolute inset-0 bg-slate-950/90 group-hover:bg-slate-950/40 transition-colors duration-500 z-10"></div>
-                        <div className="absolute inset-0 z-20 p-8 flex flex-col justify-end">
-                            <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                                <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors">{service.title}</h3>
-                                <p className="text-slate-300 text-sm leading-relaxed opacity-80 group-hover:opacity-100 transition-opacity">
-                                    {service.desc}
-                                </p>
+                        <motion.div 
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: index * 0.1 }}
+                            className="h-full w-full relative"
+                        >
+                            <div className="absolute inset-0 z-0">
+                                <video 
+                                    autoPlay 
+                                    loop 
+                                    muted 
+                                    playsInline 
+                                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+                                >
+                                    <source src={service.video} type="video/mp4" />
+                                </video>
                             </div>
-                        </div>
-                    </motion.div>
+                            <div className="absolute inset-0 bg-slate-950/90 group-hover:bg-slate-950/40 transition-colors duration-500 z-10"></div>
+                            <div className="absolute inset-0 z-20 p-8 flex flex-col justify-end">
+                                <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                                    <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors">{service.title}</h3>
+                                    <p className="text-slate-300 text-sm leading-relaxed opacity-80 group-hover:opacity-100 transition-opacity">
+                                        {service.desc}
+                                    </p>
+                                </div>
+                            </div>
+                        </motion.div>
+                    </Link>
                 ))}
             </div>
 

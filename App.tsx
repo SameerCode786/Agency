@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 import Header from './components/Header';
 import Footer from './components/Footer';
-import CustomCursor from './components/CustomCursor';
+import { CursorProvider } from './components/CustomCursor'; // Updated import
 import StickyBottomNav from './components/StickyBottomNav';
 import StylizedCta from './components/StylizedCta';
 import Preloader from './components/Preloader';
@@ -16,6 +16,7 @@ import PortfolioPage from './pages/PortfolioPage';
 import AboutPage from './pages/AboutPage';
 import BlogPage from './pages/BlogPage';
 import ContactPage from './pages/ContactPage';
+import WebDevelopmentPage from './pages/WebDevelopmentPage'; // Import new page
 
 const AnimatedRoutes: React.FC = () => {
     const location = useLocation();
@@ -29,6 +30,7 @@ const AnimatedRoutes: React.FC = () => {
                 <Route path="/about" element={<AboutPage />} />
                 <Route path="/blog" element={<BlogPage />} />
                 <Route path="/contact" element={<ContactPage />} />
+                <Route path="/web-development" element={<WebDevelopmentPage />} />
             </Routes>
         </AnimatePresence>
     );
@@ -74,29 +76,30 @@ const App: React.FC = () => {
 
   return (
     <HashRouter>
-      <CustomCursor />
-      <AnimatePresence mode="wait">
-        {isLoading ? (
-          <Preloader key="preloader" />
-        ) : (
-          <motion.div 
-            key="main-content" 
-            initial={{ opacity: 0 }} 
-            animate={{ opacity: 1 }} 
-            transition={{ duration: 0.8 }}
-          >
-            <div className="relative z-10">
-              <Header isVisible={!showBottomNav} />
-              <main className="min-h-screen">
-                  <AnimatedRoutes />
-              </main>
-              <StylizedCta />
-              <Footer />
-            </div>
-            <StickyBottomNav isVisible={showBottomNav} />
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <CursorProvider>
+        <AnimatePresence mode="wait">
+            {isLoading ? (
+            <Preloader key="preloader" />
+            ) : (
+            <motion.div 
+                key="main-content" 
+                initial={{ opacity: 0 }} 
+                animate={{ opacity: 1 }} 
+                transition={{ duration: 0.8 }}
+            >
+                <div className="relative z-10">
+                <Header isVisible={!showBottomNav} />
+                <main className="min-h-screen">
+                    <AnimatedRoutes />
+                </main>
+                <StylizedCta />
+                <Footer />
+                </div>
+                <StickyBottomNav isVisible={showBottomNav} />
+            </motion.div>
+            )}
+        </AnimatePresence>
+      </CursorProvider>
     </HashRouter>
   );
 };

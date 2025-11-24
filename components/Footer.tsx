@@ -94,7 +94,7 @@ const Footer: React.FC = () => {
           <div className="lg:col-span-3">
             <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-6">Our Services</h3>
             <ul className="space-y-3">
-                {['Mobile Applications', 'Web Applications', 'Business Platforms', 'UI/UX Design', 'Software Support'].map((service) => (
+                {['Website Development', 'SEO Optimization', 'App Development', 'Shopify Development', 'WordPress'].map((service) => (
                      <li key={service}>
                         <Link to="/services" className="text-slate-400 hover:text-white transition-colors duration-300 text-sm">
                             {service}
