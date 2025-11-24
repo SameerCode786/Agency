@@ -562,8 +562,10 @@ const HomePage: React.FC = () => {
       <section className="py-24 sm:py-32 bg-slate-950 relative z-10">
         <div className="container mx-auto px-4">
             <div className="text-center max-w-3xl mx-auto">
-                <AnimatedHeading text="Our Expert Services" className="text-4xl md:text-5xl font-bold mb-4" />
-                <p className="text-slate-400 text-lg mb-16">We provide end-to-end digital solutions tailored to your business needs.</p>
+                <AnimatedHeading text="Precision-Engineered Digital Services" className="text-4xl md:text-5xl font-bold mb-4" />
+                <p className="text-slate-400 text-lg mb-16">
+                    We combine technical mastery with creative brilliance to build digital products that set you apart. From complex enterprise platforms to stunning brand identities, we deliver solutions that perform as beautifully as they look.
+                </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <ServiceCard 
@@ -590,6 +592,11 @@ const HomePage: React.FC = () => {
                     features={['WordPress Development', 'WooCommerce Stores', 'Website Maintenance']}
                     price="₹6,999"
                 />
+            </div>
+            <div className="mt-16 text-center">
+                <Link to="/services">
+                    <PremiumButton>View All Services</PremiumButton>
+                </Link>
             </div>
         </div>
       </section>

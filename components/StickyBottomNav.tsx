@@ -6,7 +6,7 @@ import PremiumButton from './PremiumButton';
 
 const navLinks = [
   { name: 'Services', path: '/services' },
-  { name: 'Portfolio', path: '/portfolio' },
+  { name: 'Work', path: '/portfolio' },
   { name: 'About', path: '/about' },
   { name: 'Blog', path: '/blog' },
 ];

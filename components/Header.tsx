@@ -5,9 +5,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import PremiumButton from './PremiumButton';
 
 const navLinks = [
-  { name: 'Home', path: '/' },
   { name: 'Services', path: '/services' },
-  { name: 'Portfolio', path: '/portfolio' },
+  { name: 'Work', path: '/portfolio' },
   { name: 'About', path: '/about' },
   { name: 'Blog', path: '/blog' },
 ];
