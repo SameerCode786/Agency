@@ -240,12 +240,6 @@ const HomePage: React.FC = () => {
                         variants={{ hidden: { opacity: 0, y: -10 }, visible: { opacity: 1, y: 0 } }}
                         className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-900/20 border border-cyan-500/30 text-cyan-300 mb-3 backdrop-blur-sm shadow-lg shadow-cyan-500/10"
                     >
-                        <motion.div
-                            animate={{ rotate: [0, -15, 15, -15, 15, 0] }}
-                            transition={{ duration: 2, repeat: Infinity, repeatDelay: 3, ease: "easeInOut" }}
-                        >
-                            <StarIcon className="w-4 h-4 text-cyan-300" />
-                        </motion.div>
                         <span className="font-bold tracking-widest uppercase text-[14px]">
                             Web & Mobile App Development Agency
                         </span>
@@ -283,20 +277,18 @@ const HomePage: React.FC = () => {
 
                     <motion.div 
                         variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: 'easeOut' } }}}
-                        className="flex flex-wrap items-center gap-4"
+                        className="flex items-center"
                     >
-                        <Link to="/contact">
-                            <PremiumButton>Start Your Project</PremiumButton>
-                        </Link>
-                        <Link to="/portfolio">
-                            <motion.button 
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                className="px-8 py-4 bg-transparent border border-slate-700 text-white rounded-full font-bold hover:bg-white/5 hover:border-white transition-all duration-300"
-                            >
-                                View Our Work
-                            </motion.button>
-                        </Link>
+                        <div className="inline-flex items-center p-1 rounded-full border border-slate-700 bg-slate-900/40 backdrop-blur-sm">
+                            <Link to="/contact">
+                                <PremiumButton className="!m-0">Start Your Project</PremiumButton>
+                            </Link>
+                            <Link to="/portfolio">
+                                <span className="px-6 py-4 text-slate-300 font-bold hover:text-white transition-colors duration-300 cursor-pointer">
+                                    View Our Work
+                                </span>
+                            </Link>
+                        </div>
                     </motion.div>
                 </motion.div>
 

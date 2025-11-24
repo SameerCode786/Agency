@@ -31,7 +31,8 @@ const PremiumButton: React.FC<PremiumButtonProps> = ({
              <span className="block transition-transform duration-500 group-hover:-translate-y-full">
                 {children}
              </span>
-             <span className="absolute top-0 left-0 block translate-y-full transition-transform duration-500 group-hover:translate-y-0 text-white">
+             {/* Removed text-white to allow inheriting hover text colors from className */}
+             <span className="absolute top-0 left-0 block translate-y-full transition-transform duration-500 group-hover:translate-y-0">
                 {children}
              </span>
           </span>
