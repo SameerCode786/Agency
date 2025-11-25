@@ -13,7 +13,7 @@ import {
     CodeIcon, 
     MobileIcon, 
     WordPressIcon, 
-    SpeedIcon,
+    SpeedIcon, 
     WalletIcon,
     MaintenanceIcon,
     PhoneIcon,
@@ -237,7 +237,7 @@ const HomePage: React.FC = () => {
 
         <ParticleBackground />
 
-        <div className="container mx-auto px-4 sm:px-6 lg:px-16 z-20 relative w-full h-full flex items-center py-24 lg:py-32">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 z-20 relative w-full h-full flex items-center py-24 lg:py-32">
             <div className="flex flex-col lg:flex-row items-center justify-between w-full gap-12">
                 
                 {/* Left Side */}
@@ -384,7 +384,7 @@ const HomePage: React.FC = () => {
 
       {/* DIGITAL PROCESS SECTION */}
       <section className="py-24 bg-slate-950 text-white border-b border-slate-900">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-16">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20">
                 <div>
                     <motion.h2 

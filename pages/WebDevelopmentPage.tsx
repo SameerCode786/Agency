@@ -130,6 +130,7 @@ const WebDevelopmentPage: React.FC = () => {
     const { title, description } = useSeoContent('Web Development');
     const [activeFaq, setActiveFaq] = useState<number | null>(null);
     const techSectionRef = useRef<HTMLDivElement>(null);
+    const whoWeWorkWithRef = useRef<HTMLDivElement>(null);
 
     const toggleFaq = (index: number) => {
         setActiveFaq(activeFaq === index ? null : index);
@@ -139,13 +140,17 @@ const WebDevelopmentPage: React.FC = () => {
         techSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
 
+    const scrollToWhoWeWorkWith = () => {
+        whoWeWorkWithRef.current?.scrollIntoView({ behavior: 'smooth' });
+    };
+
     return (
         <PageWrapper>
             <title>{title}</title>
             <meta name="description" content={description} />
             
             {/* HERO SECTION */}
-            <section className="relative pt-48 pb-24 bg-slate-950 px-4 sm:px-6 lg:px-16 overflow-hidden">
+            <section className="relative pt-48 pb-24 bg-slate-950 px-4 sm:px-6 lg:px-8 overflow-hidden">
                 <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[100px] pointer-events-none"></div>
                 <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-cyan-600/10 rounded-full blur-[100px] pointer-events-none"></div>
 
@@ -173,11 +178,39 @@ const WebDevelopmentPage: React.FC = () => {
                 </div>
             </section>
 
+             {/* DISCOVER MORE VISUAL SECTION */}
+             <section className="py-12 bg-slate-950">
+                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                     <motion.div 
+                         initial={{ opacity: 0, scale: 0.95 }}
+                         whileInView={{ opacity: 1, scale: 1 }}
+                         viewport={{ once: true }}
+                         transition={{ duration: 0.8 }}
+                         className="relative w-full h-[60vh] md:h-[70vh] rounded-3xl overflow-hidden group shadow-2xl shadow-black/50"
+                     >
+                         <img 
+                             src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2301&auto=format&fit=crop" 
+                             alt="Modern Office" 
+                             className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                         />
+                         <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-500"></div>
+                         
+                         <button 
+                             onClick={scrollToWhoWeWorkWith}
+                             className="absolute top-8 left-8 bg-[#111] text-white px-6 py-3 rounded-full flex items-center gap-3 hover:bg-black transition-all duration-300 border border-white/10 shadow-xl group/btn z-20"
+                         >
+                             <span className="text-sm font-medium">Discover more</span>
+                             <ArrowRightIcon className="w-4 h-4 transform -rotate-45 text-gray-400 group-hover/btn:text-white transition-colors" />
+                         </button>
+                     </motion.div>
+                 </div>
+            </section>
+
             {/* WHO WE WORK WITH & CAPABILITIES */}
-            <section className="py-32 bg-slate-900 border-t border-slate-800 relative overflow-hidden">
+            <section ref={whoWeWorkWithRef} className="py-32 bg-slate-900 border-t border-slate-800 relative overflow-hidden">
                  <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent"></div>
                  
-                 <div className="container mx-auto px-4 sm:px-6 lg:px-16 relative z-10">
+                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
                         {/* Left Column: Who We Work With */}
                         <div className="flex flex-col justify-center">
@@ -188,7 +221,7 @@ const WebDevelopmentPage: React.FC = () => {
                                 transition={{ duration: 0.6 }}
                             >
                                 <span className="inline-block py-1 px-3 rounded-full bg-cyan-500/10 text-cyan-400 text-sm font-bold tracking-widest uppercase mb-6 border border-cyan-500/20">
-                                    Our Clients
+                                    Partnerships
                                 </span>
                                 <h3 className="text-5xl md:text-6xl font-bold text-white mb-8 leading-tight">
                                     Who We Work With
@@ -201,15 +234,6 @@ const WebDevelopmentPage: React.FC = () => {
                                     <Link to="/contact">
                                         <PremiumButton className="px-8 py-4">Get in touch</PremiumButton>
                                     </Link>
-                                    <button 
-                                        onClick={scrollToTech}
-                                        className="group flex items-center gap-3 px-8 py-4 rounded-full border border-slate-700 hover:border-cyan-500/50 hover:bg-slate-800 transition-all duration-300 text-white font-semibold"
-                                    >
-                                        <span>Discover More</span>
-                                        <div className="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center group-hover:bg-cyan-500 group-hover:text-black transition-colors duration-300">
-                                             <ArrowRightIcon className="w-4 h-4 transform rotate-90" />
-                                        </div>
-                                    </button>
                                 </div>
                             </motion.div>
                         </div>
@@ -257,7 +281,7 @@ const WebDevelopmentPage: React.FC = () => {
 
             {/* PRECISION & PASSION - Text Left, Image Right */}
             <section ref={techSectionRef} className="py-24 bg-gradient-to-b from-slate-950 to-slate-900">
-                <div className="container mx-auto px-4 sm:px-6 lg:px-16">
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                         
                         {/* Content Left */}
@@ -313,7 +337,7 @@ const WebDevelopmentPage: React.FC = () => {
 
             {/* FAQs - Sticky Layout */}
             <section className="py-32 bg-slate-950 relative border-t border-slate-900">
-                <div className="container mx-auto px-4 sm:px-6 lg:px-16">
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex flex-col lg:flex-row gap-16 relative">
                         
                         {/* Sticky Sidebar - Left */}
