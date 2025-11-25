@@ -16,13 +16,7 @@ import {
     FigmaIcon, 
     NpmIcon, 
     TailwindIcon,
-    ArrowRightIcon,
-    DesignIcon,
-    WalletIcon,
-    TargetIcon,
-    MobileIcon,
-    WireframeGlobeIcon,
-    StrategyIcon
+    ArrowRightIcon
 } from '../components/Icons';
 
 // --- Scroll Velocity Component ---
@@ -132,20 +126,10 @@ const faqs = [
     { q: "I have a limited budget, can you still work with me?", a: "Yes, as long as our vision aligns. If you’re serious about growing your brand online, we’re happy to guide you. Just share your budget and we’ll recommend the most effective way to use it." },
 ];
 
-const whatWeDoData = [
-    { title: "Web Design", desc: "Custom layouts crafted to match your brand, goals, and audience.", icon: <DesignIcon className="w-8 h-8 text-purple-400"/> },
-    { title: "eCommerce Development", desc: "Secure, fast, and user-friendly online stores built to convert.", icon: <WalletIcon className="w-8 h-8 text-green-400"/> },
-    { title: "UX Design", desc: "Clear, intuitive experiences that keep visitors engaged.", icon: <TargetIcon className="w-8 h-8 text-red-400"/> },
-    { title: "Responsive Development", desc: "Perfectly optimized for all devices, screens, and browsers.", icon: <MobileIcon className="w-8 h-8 text-blue-400"/> },
-    { title: "Wireframing & Prototyping", desc: "Visual planning to define structure, flow, and functionality.", icon: <WireframeGlobeIcon className="w-8 h-8 text-cyan-400"/> },
-    { title: "Digital Strategy", desc: "Growth-focused planning backed by insights and data.", icon: <StrategyIcon className="w-8 h-8 text-yellow-400"/> }
-];
-
 const WebDevelopmentPage: React.FC = () => {
     const { title, description } = useSeoContent('Web Development');
     const [activeFaq, setActiveFaq] = useState<number | null>(null);
     const techSectionRef = useRef<HTMLDivElement>(null);
-    const whatWeDoRef = useRef<HTMLDivElement>(null);
     const whoWeWorkWithRef = useRef<HTMLDivElement>(null);
 
     const toggleFaq = (index: number) => {
@@ -156,8 +140,8 @@ const WebDevelopmentPage: React.FC = () => {
         techSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
 
-    const scrollToWhatWeDo = () => {
-        whatWeDoRef.current?.scrollIntoView({ behavior: 'smooth' });
+    const scrollToWhoWeWorkWith = () => {
+        whoWeWorkWithRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
 
     return (
@@ -212,7 +196,7 @@ const WebDevelopmentPage: React.FC = () => {
                          <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-500"></div>
                          
                          <button 
-                             onClick={scrollToWhatWeDo}
+                             onClick={scrollToWhoWeWorkWith}
                              className="absolute top-8 left-8 bg-[#111] text-white px-6 py-3 rounded-full flex items-center gap-3 hover:bg-black transition-all duration-300 border border-white/10 shadow-xl group/btn z-20"
                          >
                              <span className="text-sm font-medium">Discover more</span>
@@ -222,48 +206,78 @@ const WebDevelopmentPage: React.FC = () => {
                  </div>
             </section>
 
-            {/* WHAT WE DO SECTION */}
-            <section ref={whatWeDoRef} className="py-24 bg-slate-900 border-t border-slate-800">
-                <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
-                        <div className="max-w-2xl">
-                            <span className="text-cyan-400 font-bold tracking-widest uppercase mb-4 block text-sm">Our Expertise</span>
-                            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">What We Do</h2>
-                            <p className="text-xl text-slate-400 leading-relaxed">
-                                We design and build high-performing websites that elevate brands, engage users, and support long-term business growth.
-                            </p>
-                        </div>
-                        <Link to="/contact">
-                            <PremiumButton>Start Your Project</PremiumButton>
-                        </Link>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-                        {whatWeDoData.map((service, index) => (
-                            <motion.div 
-                                key={index} 
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
+            {/* WHO WE WORK WITH & CAPABILITIES */}
+            <section ref={whoWeWorkWithRef} className="py-32 bg-slate-900 border-t border-slate-800 relative overflow-hidden">
+                 <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent"></div>
+                 
+                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
+                        {/* Left Column: Who We Work With */}
+                        <div className="flex flex-col justify-center">
+                            <motion.div
+                                initial={{ opacity: 0, x: -30 }}
+                                whileInView={{ opacity: 1, x: 0 }}
                                 viewport={{ once: true }}
-                                transition={{ delay: index * 0.1 }}
-                                className="bg-slate-950 p-8 rounded-2xl border border-slate-800 hover:border-cyan-500/30 transition-all duration-300 group hover:-translate-y-1"
+                                transition={{ duration: 0.6 }}
                             >
-                                <div className="mb-6 p-4 bg-slate-900/50 rounded-xl inline-block group-hover:bg-slate-900 transition-colors">
-                                    {service.icon}
+                                <span className="inline-block py-1 px-3 rounded-full bg-cyan-500/10 text-cyan-400 text-sm font-bold tracking-widest uppercase mb-6 border border-cyan-500/20">
+                                    Partnerships
+                                </span>
+                                <h3 className="text-5xl md:text-6xl font-bold text-white mb-8 leading-tight">
+                                    Who We Work With
+                                </h3>
+                                <p className="text-slate-300 text-lg md:text-xl leading-relaxed mb-10 font-light">
+                                    We work with startups, small businesses, agencies, and international clients. No matter your size or industry, we help you move forward with confidence.
+                                </p>
+                                
+                                <div className="flex flex-wrap gap-6 items-center">
+                                    <Link to="/contact">
+                                        <PremiumButton className="px-8 py-4">Get in touch</PremiumButton>
+                                    </Link>
                                 </div>
-                                <h3 className="text-2xl font-bold text-white mb-4">{service.title}</h3>
-                                <p className="text-slate-400 leading-relaxed">{service.desc}</p>
                             </motion.div>
-                        ))}
+                        </div>
+
+                        {/* Right Column: Capabilities */}
+                        <div className="relative">
+                            <motion.div
+                                initial={{ opacity: 0, x: 30 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.6, delay: 0.2 }}
+                                className="bg-slate-950 p-10 rounded-3xl border border-slate-800 shadow-2xl relative overflow-hidden group"
+                            >
+                                <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/5 rounded-full blur-3xl group-hover:bg-cyan-500/10 transition-colors duration-500"></div>
+                                
+                                <h3 className="text-3xl font-bold text-white mb-10 relative z-10 border-b border-slate-800 pb-6">
+                                    Our Website Capabilities
+                                </h3>
+                                
+                                <div className="space-y-4 relative z-10">
+                                    {capabilities.map((cap, i) => (
+                                        <motion.div 
+                                            key={i}
+                                            initial={{ opacity: 0, y: 10 }}
+                                            whileInView={{ opacity: 1, y: 0 }}
+                                            viewport={{ once: true }}
+                                            transition={{ delay: i * 0.1 }}
+                                            className="flex items-center justify-between p-4 rounded-xl hover:bg-slate-900 transition-colors duration-300 cursor-default border border-transparent hover:border-slate-800 group/item"
+                                        >
+                                            <span className="text-xl text-slate-300 font-light group-hover/item:text-cyan-400 transition-colors">{cap}</span>
+                                            <ArrowRightIcon className="w-5 h-5 text-slate-600 group-hover/item:text-cyan-400 transition-colors opacity-0 group-hover/item:opacity-100 transform -translate-x-4 group-hover/item:translate-x-0 duration-300" />
+                                        </motion.div>
+                                    ))}
+                                </div>
+                            </motion.div>
+                        </div>
                     </div>
-                    
-                    <div className="text-center">
-                        <Link to="/contact">
-                            <PremiumButton className="bg-transparent border border-cyan-500/50 hover:bg-cyan-500/10" icon={true}>Book a Free Consultation</PremiumButton>
-                        </Link>
-                    </div>
-                </div>
+                 </div>
             </section>
+
+             {/* SCROLLING TEXT */}
+             <section className="py-12 bg-slate-950 overflow-hidden border-t border-slate-900">
+                <ParallaxText baseVelocity={3}>Let's work together.</ParallaxText>
+             </section>
 
             {/* PRECISION & PASSION - Text Left, Image Right */}
             <section ref={techSectionRef} className="py-24 bg-gradient-to-b from-slate-950 to-slate-900">
@@ -319,63 +333,6 @@ const WebDevelopmentPage: React.FC = () => {
                 </div>
                 
                 <TechMarquee />
-            </section>
-
-             {/* SCROLLING TEXT */}
-             <section className="py-12 bg-slate-950 overflow-hidden border-t border-slate-900">
-                <ParallaxText baseVelocity={3}>Let's work together.</ParallaxText>
-             </section>
-
-             {/* WHO WE WORK WITH (PARTNERSHIPS) - Moved above FAQs */}
-            <section ref={whoWeWorkWithRef} className="py-24 bg-slate-950 relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent"></div>
-                <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-center">
-                        
-                        {/* Left Col (5 cols) - Partnerships Text */}
-                        <motion.div 
-                            className="lg:col-span-5 flex flex-col justify-center"
-                            initial={{ opacity: 0, x: -30 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6 }}
-                        >
-                            <span className="text-cyan-400 font-bold tracking-widest uppercase mb-4 block text-sm">Partnerships</span>
-                            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">Who We Work With</h2>
-                            <p className="text-lg text-slate-400 leading-relaxed mb-10">
-                                We work with startups, small businesses, agencies, and international clients. No matter your size or industry, we help you move forward with confidence.
-                            </p>
-                            <div>
-                                <Link to="/contact">
-                                    <PremiumButton className="px-10 py-4">Get in touch</PremiumButton>
-                                </Link>
-                            </div>
-                        </motion.div>
-
-                        {/* Right Col (7 cols) - Capabilities List */}
-                        <motion.div 
-                            className="lg:col-span-7"
-                            initial={{ opacity: 0, x: 30 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6, delay: 0.2 }}
-                        >
-                            <div className="bg-slate-900/50 p-8 md:p-12 rounded-3xl border border-slate-800 shadow-2xl relative overflow-hidden">
-                                <div className="absolute top-0 right-0 w-40 h-40 bg-cyan-500/5 rounded-full blur-3xl"></div>
-                                <h3 className="text-2xl font-bold text-white mb-8 border-b border-slate-800 pb-4">Our Website Capabilities</h3>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-8">
-                                    {capabilities.map((cap, i) => (
-                                        <div key={i} className="flex items-center gap-3 group cursor-default">
-                                            <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 group-hover:scale-150 transition-transform duration-300"></span>
-                                            <span className="text-lg text-slate-300 group-hover:text-white transition-colors">{cap}</span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </motion.div>
-
-                    </div>
-                </div>
             </section>
 
             {/* FAQs - Sticky Layout */}
