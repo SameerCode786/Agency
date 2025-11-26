@@ -17,6 +17,7 @@ import AboutPage from './pages/AboutPage';
 import BlogPage from './pages/BlogPage';
 import ContactPage from './pages/ContactPage';
 import WebDevelopmentPage from './pages/WebDevelopmentPage'; // Import new page
+import SeoOptimizationPage from './pages/SeoOptimizationPage'; // Import new SEO page
 
 const AnimatedRoutes: React.FC = () => {
     const location = useLocation();
@@ -31,6 +32,7 @@ const AnimatedRoutes: React.FC = () => {
                 <Route path="/blog" element={<BlogPage />} />
                 <Route path="/contact" element={<ContactPage />} />
                 <Route path="/web-development" element={<WebDevelopmentPage />} />
+                <Route path="/seo-optimization" element={<SeoOptimizationPage />} />
             </Routes>
         </AnimatePresence>
     );

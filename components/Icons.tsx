@@ -132,3 +132,7 @@ export const WireframeGlobeIcon: React.FC<React.SVGProps<SVGSVGElement>> = (prop
 export const AtomIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
     <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="2"></circle><path d="M20.2 20.2c2.04-2.03 2.46-5.63.92-8.06-1.54-2.43-4.86-2.69-7.42-0.58-2.55 2.11-2.81 5.43-0.58 7.42 2.23 1.99 5.03 3.26 7.08 1.22z"></path><path d="M3.8 20.2c-2.04-2.03-2.46-5.63-.92-8.06 1.54-2.43 4.86-2.69 7.42-0.58 2.55 2.11 2.81 5.43 0.58 7.42-2.23 1.99-5.03 3.26-7.08 1.22z"></path><path d="M20.2 3.8c2.04 2.03 2.46 5.63.92 8.06-1.54 2.43-4.86 2.69-7.42 0.58-2.55-2.11-2.81-5.43-0.58-7.42 2.23-1.99 5.03-3.26 7.08-1.22z"></path></svg>
 );
+
+export const SearchIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+);

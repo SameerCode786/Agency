@@ -169,14 +169,14 @@ const coreServicesData = [
         desc: "We design and develop modern, responsive, and high-performance websites that strengthen your brand and convert visitors into customers.",
         video: "https://res.cloudinary.com/dow2sbjsp/video/upload/v1763927887/website_g6erpv.mp4",
         colSpan: "lg:col-span-2",
-        link: "/web-development" // Added link
+        link: "/web-development"
     },
     {
         title: "SEO Optimization",
         desc: "We improve your search rankings with clean, strategic, and data-driven SEO—bringing you more visibility, more traffic, and more real business results.",
         video: "https://res.cloudinary.com/dow2sbjsp/video/upload/v1763927973/Seo_Search_h9ua0s.mp4",
         colSpan: "lg:col-span-1",
-        link: "/services"
+        link: "/seo-optimization"
     },
     {
         title: "App Development",
