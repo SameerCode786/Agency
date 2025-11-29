@@ -18,6 +18,9 @@ import BlogPage from './pages/BlogPage';
 import ContactPage from './pages/ContactPage';
 import WebDevelopmentPage from './pages/WebDevelopmentPage'; // Import new page
 import SeoOptimizationPage from './pages/SeoOptimizationPage'; // Import new SEO page
+import AppDevelopmentPage from './pages/AppDevelopmentPage';
+import ShopifyDevelopmentPage from './pages/ShopifyDevelopmentPage';
+import WordPressPage from './pages/WordPressPage';
 
 const AnimatedRoutes: React.FC = () => {
     const location = useLocation();
@@ -33,6 +36,9 @@ const AnimatedRoutes: React.FC = () => {
                 <Route path="/contact" element={<ContactPage />} />
                 <Route path="/web-development" element={<WebDevelopmentPage />} />
                 <Route path="/seo-optimization" element={<SeoOptimizationPage />} />
+                <Route path="/app-development" element={<AppDevelopmentPage />} />
+                <Route path="/shopify-development" element={<ShopifyDevelopmentPage />} />
+                <Route path="/wordpress-customization" element={<WordPressPage />} />
             </Routes>
         </AnimatePresence>
     );

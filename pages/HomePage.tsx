@@ -22,9 +22,27 @@ import {
     JsIcon,
     ExpoIcon,
     SupabaseIcon,
-    ArrowRightIcon
+    ArrowRightIcon,
+    FigmaIcon,
+    DesignIcon,
+    StrategyIcon,
+    RocketIcon,
+    TargetIcon
 } from '../components/Icons';
 import { useSeoContent } from '../hooks/useSeoContent';
+
+// --- Types ---
+interface ProjectData {
+    title: string;
+    category: string;
+    description: string;
+    image1: string;
+    image2: string;
+    tools: React.ReactNode[];
+    role: string;
+    timeline: string;
+    fullImage: string;
+}
 
 interface ServiceCardProps {
     icon: React.ReactNode;
@@ -155,6 +173,128 @@ function ParallaxText({ children, baseVelocity = 100 }: ParallaxTextProps) {
   );
 }
 
+// --- PROJECT MODAL COMPONENT ---
+interface ProjectModalProps {
+    project: ProjectData;
+    onClose: () => void;
+}
+
+const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
+    // Lock body scroll when modal is open
+    useEffect(() => {
+        document.body.style.overflow = 'hidden';
+        return () => {
+            document.body.style.overflow = 'auto';
+        };
+    }, []);
+
+    return (
+        <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8 bg-slate-950/90 backdrop-blur-sm"
+            onClick={onClose}
+        >
+            <motion.div
+                initial={{ scale: 0.9, opacity: 0, y: 50 }}
+                animate={{ scale: 1, opacity: 1, y: 0 }}
+                exit={{ scale: 0.9, opacity: 0, y: 50 }}
+                transition={{ type: "spring", duration: 0.6 }}
+                className="bg-slate-900 border border-slate-700 w-full max-w-6xl h-[90vh] md:h-[85vh] rounded-2xl overflow-hidden flex flex-col md:flex-row shadow-2xl shadow-cyan-500/20 relative"
+                onClick={(e) => e.stopPropagation()}
+            >
+                {/* Close Button */}
+                <button 
+                    onClick={onClose}
+                    className="absolute top-4 right-4 z-50 p-2 bg-slate-800/80 rounded-full text-white hover:bg-red-500/80 transition-colors"
+                >
+                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+
+                {/* LEFT SIDE: DETAILS */}
+                <div className="w-full md:w-5/12 p-8 md:p-10 overflow-y-auto custom-scrollbar border-r border-slate-800 flex flex-col">
+                    <div className="mb-6">
+                         <span className="inline-block px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-bold uppercase tracking-wider mb-3">
+                            {project.category}
+                        </span>
+                        <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">{project.title}</h2>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-6 mb-8 border-y border-slate-800 py-6">
+                        <div>
+                            <span className="block text-slate-500 text-xs uppercase tracking-widest mb-1">Role</span>
+                            <span className="text-slate-200 font-semibold">{project.role}</span>
+                        </div>
+                        <div>
+                            <span className="block text-slate-500 text-xs uppercase tracking-widest mb-1">Timeline</span>
+                            <span className="text-slate-200 font-semibold">{project.timeline}</span>
+                        </div>
+                    </div>
+
+                    <div className="mb-8">
+                        <h3 className="text-lg font-bold text-white mb-3">Project Overview</h3>
+                        <p className="text-slate-400 leading-relaxed text-sm md:text-base">
+                            {project.description}
+                        </p>
+                        <p className="text-slate-400 leading-relaxed text-sm md:text-base mt-4">
+                            We focused on creating a seamless user experience that balances aesthetic appeal with high-performance functionality. The goal was to drive conversions while telling a compelling brand story.
+                        </p>
+                    </div>
+
+                    <div className="mb-8">
+                        <h3 className="text-lg font-bold text-white mb-3">Tech Stack</h3>
+                        <div className="flex flex-wrap gap-2">
+                            {project.tools.map((tool, idx) => (
+                                <div key={idx} className="bg-slate-800 text-slate-300 px-3 py-1.5 rounded-md text-sm border border-slate-700">
+                                    {tool}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="mt-auto">
+                        <Link to="/contact">
+                            <PremiumButton width="full" icon={true}>Visit Live Site</PremiumButton>
+                        </Link>
+                    </div>
+                </div>
+
+                {/* RIGHT SIDE: SCROLLING IMAGE */}
+                <div className="w-full md:w-7/12 h-full bg-slate-950 relative overflow-hidden group">
+                    <div className="absolute inset-0 w-full h-full">
+                         {/* CSS Animation for Auto Scrolling */}
+                         <style>{`
+                            @keyframes scroll-image {
+                                0% { transform: translateY(0); }
+                                100% { transform: translateY(calc(-100% + 100vh)); } 
+                            }
+                            .animate-scroll-image {
+                                animation: scroll-image 15s linear infinite alternate;
+                            }
+                            .animate-scroll-image:hover {
+                                animation-play-state: paused;
+                            }
+                         `}</style>
+                        <img 
+                            src={project.fullImage} 
+                            alt={`${project.title} Full Page`} 
+                            className="w-full h-auto object-cover animate-scroll-image"
+                        />
+                    </div>
+                    
+                    {/* Overlay hint */}
+                    <div className="absolute bottom-6 right-6 bg-black/60 backdrop-blur px-4 py-2 rounded-full text-white text-xs font-bold pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
+                        Scrolling Preview
+                    </div>
+                </div>
+            </motion.div>
+        </motion.div>
+    );
+};
+
 const animatedHeadings = [
     "Digital Products",
     "Successful Businesses",
@@ -183,21 +323,91 @@ const coreServicesData = [
         desc: "We create smooth, user-friendly, and scalable mobile applications that help your business reach customers anywhere, on any device.",
         video: "https://res.cloudinary.com/dow2sbjsp/video/upload/v1763927584/app_cwwxyt.mp4",
         colSpan: "lg:col-span-1",
-        link: "/services"
+        link: "/app-development"
     },
     {
         title: "Shopify Development",
         desc: "We build optimized Shopify stores with premium design, fast performance, and conversion-focused layouts that boost sales.",
         video: "https://res.cloudinary.com/dow2sbjsp/video/upload/v1763928151/shopigy_pnq2kb.mp4",
         colSpan: "lg:col-span-1",
-        link: "/services"
+        link: "/shopify-development"
     },
     {
         title: "WordPress Customization",
         desc: "We upgrade, redesign, and fully customize WordPress sites—making them faster, cleaner, and perfectly aligned with your brand.",
         video: "https://res.cloudinary.com/dow2sbjsp/video/upload/v1763927832/wordpress_z7f2lk.mp4",
         colSpan: "lg:col-span-1",
-        link: "/services"
+        link: "/wordpress-customization"
+    }
+];
+
+// Mock Projects Data
+const selectedProjects: ProjectData[] = [
+    {
+        title: "Elegantnast",
+        category: "Luxury Beauty Brand",
+        description: "Created a multilingual luxury website for Elegantnast, focusing on elegance and premium brand aesthetics.",
+        image1: "https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=2070&auto=format&fit=crop",
+        image2: "https://images.unsplash.com/photo-1596462502278-27bfdd403348?q=80&w=2070&auto=format&fit=crop",
+        tools: [<WordPressIcon className="w-5 h-5 text-blue-400" />, <FigmaIcon className="w-5 h-5 text-purple-400" />, <JsIcon className="w-5 h-5 text-yellow-400" />],
+        role: "Lead Developer & Designer",
+        timeline: "6 Weeks",
+        fullImage: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1764387541/ittefaq_xlwtfu.jpg"
+    },
+    {
+        title: "Macrostate Landing Page",
+        category: "SaaS Landing Page",
+        description: "I designed and developed a high-converting solution landing page for MacroState in Webflow, showcasing their UniFi Door Access solutions.",
+        image1: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop",
+        image2: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop",
+        tools: [<ReactIcon className="w-5 h-5 text-cyan-400" />, <FigmaIcon className="w-5 h-5 text-purple-400" />, <JsIcon className="w-5 h-5 text-yellow-400" />],
+        role: "Frontend Developer",
+        timeline: "3 Weeks",
+        fullImage: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1764387541/ittefaq_xlwtfu.jpg"
+    },
+    {
+        title: "MAJER Sales – Conversion",
+        category: "Corporate Website",
+        description: "High converting landing page for MAJER Sales — licensing the 'Automakler-System' (auto brokerage system) for partners in Germany.",
+        image1: "https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?q=80&w=2070&auto=format&fit=crop",
+        image2: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2070&auto=format&fit=crop",
+        tools: [<WordPressIcon className="w-5 h-5 text-blue-400" />, <ReactIcon className="w-5 h-5 text-cyan-400" />, <JsIcon className="w-5 h-5 text-yellow-400" />],
+        role: "Full Stack Developer",
+        timeline: "5 Weeks",
+        fullImage: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1764387541/ittefaq_xlwtfu.jpg"
+    },
+    {
+        title: "GWP's Aerospace",
+        category: "Industrial / Aerospace",
+        description: "For this project, I partnered with Brafton to establish the digital presence of a company specializing in Aluminum Wing Skins.",
+        image1: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=2070&auto=format&fit=crop",
+        image2: "https://images.unsplash.com/photo-1537462715879-360eeb61a0ad?q=80&w=2106&auto=format&fit=crop",
+        tools: [<ReactIcon className="w-5 h-5 text-cyan-400" />, <ExpoIcon className="w-5 h-5 text-white" />, <SupabaseIcon className="w-5 h-5 text-green-400" />],
+        role: "Lead Developer",
+        timeline: "8 Weeks",
+        fullImage: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1764387541/ittefaq_xlwtfu.jpg"
+    },
+    {
+        title: "NeonFlux E-Com",
+        category: "E-Commerce",
+        description: "A futuristic fashion e-commerce store built with Shopify Hydrogen. Blazing fast speeds and immersive product interactions.",
+        image1: "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?q=80&w=2070&auto=format&fit=crop",
+        image2: "https://images.unsplash.com/photo-1550989460-0adf9ea622e2?q=80&w=2074&auto=format&fit=crop",
+        tools: [<ReactIcon className="w-5 h-5 text-blue-400" />, <JsIcon className="w-5 h-5 text-yellow-400" />, <FigmaIcon className="w-5 h-5 text-purple-400" />],
+        role: "Shopify Developer",
+        timeline: "4 Weeks",
+        fullImage: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1764387541/ittefaq_xlwtfu.jpg"
+    },
+    {
+        title: "Zenith Health App",
+        category: "Mobile Application",
+        description: "Cross-platform mobile app for tracking mindfulness and meditation stats, integrated with Apple Health and Google Fit.",
+        image1: "https://images.unsplash.com/photo-1555774698-0b77e0d5fac6?q=80&w=2070&auto=format&fit=crop",
+        image2: "https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?q=80&w=2074&auto=format&fit=crop",
+        tools: [<ReactIcon className="w-5 h-5 text-cyan-400" />, <ExpoIcon className="w-5 h-5 text-white" />, <SupabaseIcon className="w-5 h-5 text-green-400" />],
+        role: "Mobile App Developer",
+        timeline: "10 Weeks",
+        fullImage: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1764387541/ittefaq_xlwtfu.jpg"
     }
 ];
 
@@ -205,6 +415,16 @@ const HomePage: React.FC = () => {
     const { title, description } = useSeoContent('Home');
     const [currentHeadingIndex, setCurrentHeadingIndex] = useState(0);
     const { setCursorVariant, setCursorText } = useCursor(); // Use cursor hook
+    const workContainerRef = useRef<HTMLDivElement>(null);
+    const [selectedProject, setSelectedProject] = useState<ProjectData | null>(null);
+
+    const { scrollYProgress } = useScroll({
+        target: workContainerRef,
+        offset: ["start end", "end start"]
+    });
+    
+    // Parallax effect for "Our Work" text
+    const parallaxX = useTransform(scrollYProgress, [0, 1], ["10%", "-10%"]);
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -221,6 +441,16 @@ const HomePage: React.FC = () => {
       <title>{title}</title>
       <meta name="description" content={description} />
       
+      {/* Project Details Modal */}
+      <AnimatePresence>
+        {selectedProject && (
+            <ProjectModal 
+                project={selectedProject} 
+                onClose={() => setSelectedProject(null)} 
+            />
+        )}
+      </AnimatePresence>
+
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-slate-950">
         <video 
@@ -585,6 +815,118 @@ const HomePage: React.FC = () => {
                     </Link>
                 </div>
             </motion.div>
+        </div>
+      </section>
+
+      {/* NEW SELECTED WORK SECTION */}
+      <section className="relative py-32 bg-slate-950 overflow-hidden" ref={workContainerRef}>
+        {/* Parallax Background Text - Moved down to be behind content */}
+        <motion.div 
+            style={{ x: parallaxX }}
+            className="absolute top-40 left-0 text-[18vw] font-black text-white/[0.03] whitespace-nowrap leading-none select-none pointer-events-none z-0"
+        >
+            Our Work
+        </motion.div>
+
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+                <motion.div
+                    initial={{ opacity: 0, x: -50 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                >
+                    <span className="text-cyan-400 text-sm font-bold tracking-[0.2em] uppercase mb-4 block">Projects</span>
+                    <h2 className="text-5xl md:text-6xl font-bold text-white mb-4">Selected Work</h2>
+                    <p className="text-slate-400 max-w-xl text-lg">
+                        Craft meets conversion. Here are a few recent projects that pushed boundaries.
+                    </p>
+                </motion.div>
+                
+                <motion.div
+                     initial={{ opacity: 0, x: 50 }}
+                     whileInView={{ opacity: 1, x: 0 }}
+                     viewport={{ once: true }}
+                >
+                    <Link to="/portfolio">
+                        <button className="flex items-center gap-2 text-white border-b border-white pb-1 hover:text-cyan-400 hover:border-cyan-400 transition-colors">
+                            View All Work <ArrowRightIcon className="w-5 h-5"/>
+                        </button>
+                    </Link>
+                </motion.div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {selectedProjects.map((project, index) => (
+                    <motion.div
+                        key={index}
+                        initial={{ opacity: 0, y: 50 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: index * 0.2 }}
+                        className="relative group rounded-2xl p-[2px] overflow-hidden" 
+                    >
+                         {/* Animated Rotating Border (Cyan + Purple) */}
+                        <div className="absolute inset-[-50%] bg-[conic-gradient(from_0deg_at_50%_50%,#0f172a_0%,#0f172a_40%,#22d3ee_50%,#0f172a_60%,#0f172a_90%,#8936ea_100%)] animate-[spin_4s_linear_infinite] opacity-70 group-hover:opacity-100 transition-opacity duration-500" />
+                        
+                         {/* Inner Card */}
+                        <div className="relative h-full bg-slate-950 rounded-xl overflow-hidden flex flex-col">
+                            {/* Image Container */}
+                            <div className="relative aspect-[4/3] w-full overflow-hidden bg-slate-900 border-b border-slate-800">
+                                {/* Base Image */}
+                                <img 
+                                    src={project.image1} 
+                                    alt={project.title} 
+                                    className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-100 group-hover:opacity-0"
+                                />
+                                {/* Hover Image */}
+                                <img 
+                                    src={project.image2} 
+                                    alt={`${project.title} hover`} 
+                                    className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0 group-hover:opacity-100 scale-105"
+                                />
+                                
+                                {/* Overlay Gradient */}
+                                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/50 via-transparent to-transparent opacity-60"></div>
+                            </div>
+
+                            {/* Content Below */}
+                            <div className="p-6 md:p-8 flex flex-col flex-grow">
+                                <div className="flex justify-between items-start mb-4">
+                                     <div>
+                                        <span className="text-cyan-400 text-xs font-bold uppercase tracking-wider mb-2 block">{project.category}</span>
+                                        <h3 className="text-2xl md:text-3xl font-bold text-white group-hover:text-cyan-400 transition-colors">{project.title}</h3>
+                                     </div>
+                                      <Link to="/portfolio" className="text-slate-500 hover:text-cyan-400 transition-colors">
+                                            <ArrowRightIcon className="w-6 h-6 -rotate-45" />
+                                     </Link>
+                                </div>
+                                <p className="text-slate-400 leading-relaxed mb-6 line-clamp-3 flex-grow">
+                                    {project.description}
+                                </p>
+                                
+                                 {/* Footer: Button & Tech Stack */}
+                                <div className="mt-auto pt-6 border-t border-slate-800 flex flex-wrap items-center justify-between gap-4">
+                                    <button 
+                                        onClick={() => setSelectedProject(project)}
+                                        className="bg-slate-900 hover:bg-slate-800 text-white border border-slate-700 hover:border-cyan-500/50 px-6 py-2 rounded-full text-sm font-bold transition-all shadow-lg shadow-cyan-500/5 flex items-center gap-2 group/btn"
+                                    >
+                                        View Project
+                                        <ArrowRightIcon className="w-4 h-4 transform group-hover/btn:translate-x-1 transition-transform" />
+                                    </button>
+
+                                    <div className="flex items-center gap-3">
+                                        {project.tools.map((tool, tIndex) => (
+                                            <div key={tIndex} className="text-slate-400 hover:text-white transition-colors p-1.5 bg-slate-900 rounded-md border border-slate-800 shadow-sm hover:border-purple-500/30">
+                                                {tool}
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </motion.div>
+                ))}
+            </div>
         </div>
       </section>
 
