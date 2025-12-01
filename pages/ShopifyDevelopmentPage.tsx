@@ -19,7 +19,9 @@ import {
     RocketIcon,
     SpeedIcon,
     CodeIcon,
-    LightbulbIcon
+    LightbulbIcon,
+    AtomIcon,
+    ReactIcon
 } from '../components/Icons';
 
 // --- Scroll Velocity Component ---
@@ -76,16 +78,10 @@ const techStack = [
     { name: 'Shopify Plus', icon: <WalletIcon className="w-12 h-12 text-green-400" /> },
     { name: 'Liquid', icon: <CodeIcon className="w-12 h-12 text-blue-400" /> },
     { name: 'Hydrogen', icon: <AtomIcon className="w-12 h-12 text-purple-400" /> },
-    { name: 'React', icon: <CodeIcon className="w-12 h-12 text-cyan-400" /> },
+    { name: 'React', icon: <ReactIcon className="w-12 h-12 text-cyan-400" /> },
     { name: 'Klaviyo', icon: <StrategyIcon className="w-12 h-12 text-red-400" /> },
     { name: 'Google Analytics', icon: <StrategyIcon className="w-12 h-12 text-orange-400" /> },
 ];
-
-function AtomIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="2"></circle><path d="M20.2 20.2c2.04-2.03 2.46-5.63.92-8.06-1.54-2.43-4.86-2.69-7.42-0.58-2.55 2.11-2.81 5.43-0.58 7.42 2.23 1.99 5.03 3.26 7.08 1.22z"></path><path d="M3.8 20.2c-2.04-2.03-2.46-5.63-.92-8.06 1.54-2.43 4.86-2.69 7.42-0.58 2.55 2.11 2.81 5.43 0.58 7.42-2.23 1.99-5.03 3.26-7.08 1.22z"></path><path d="M20.2 3.8c2.04 2.03 2.46 5.63.92 8.06-1.54 2.43-4.86 2.69-7.42 0.58-2.55-2.11-2.81-5.43-0.58-7.42 2.23-1.99 5.03-3.26 7.08-1.22z"></path></svg>
-  );
-}
 
 const TechMarquee = () => {
     return (
