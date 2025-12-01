@@ -1,5 +1,5 @@
 
-import { GoogleGenAI, Type } from "@google/genai";
+// import { GoogleGenAI, Type } from "@google/genai";
 
 // IMPORTANT: This service is designed to use the Gemini API.
 // For this app to be fully functional, an API_KEY environment variable must be provided.
@@ -59,6 +59,7 @@ export const generateSeoContent = async (pageName: string): Promise<SeoContent> 
             return mockSeoData[pageName];
         }
 
+        // import { GoogleGenAI, Type } from "@google/genai";
         const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
         const prompt = `Generate an SEO-friendly title and meta description for the '${pageName}' page of a futuristic digital agency called 'Sameer Digital Lab'. Return the result as a JSON object with keys "title" and "description". The tone should be professional, modern, and premium.`;
         

@@ -8,7 +8,6 @@ import { useSeoContent } from '../hooks/useSeoContent';
 import { Link } from 'react-router-dom';
 import ParticleBackground from '../components/ParticleBackground';
 import { 
-    CheckIcon, 
     ReactIcon, 
     JsIcon, 
     SupabaseIcon, 

@@ -8,11 +8,8 @@ import { useSeoContent } from '../hooks/useSeoContent';
 import { Link } from 'react-router-dom';
 import ParticleBackground from '../components/ParticleBackground';
 import { 
-    CheckIcon, 
     ArrowRightIcon,
     DesignIcon,
-    WalletIcon,
-    TargetIcon,
     MobileIcon,
     WireframeGlobeIcon,
     StrategyIcon,
@@ -261,7 +258,7 @@ const AppDevelopmentPage: React.FC = () => {
             </section>
 
             {/* WHAT WE DO */}
-            <section className="py-24 bg-slate-950 relative z-10">
+            <section className="py-24 bg-slate-900 relative z-10">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6">
                         <motion.div

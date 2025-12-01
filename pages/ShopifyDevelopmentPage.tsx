@@ -8,18 +8,14 @@ import { useSeoContent } from '../hooks/useSeoContent';
 import { Link } from 'react-router-dom';
 import ParticleBackground from '../components/ParticleBackground';
 import { 
-    CheckIcon, 
     ArrowRightIcon,
     DesignIcon,
     WalletIcon,
-    TargetIcon,
-    MobileIcon,
     WireframeGlobeIcon,
     StrategyIcon,
     RocketIcon,
     SpeedIcon,
     CodeIcon,
-    LightbulbIcon,
     AtomIcon,
     ReactIcon
 } from '../components/Icons';

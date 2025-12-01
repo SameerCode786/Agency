@@ -9,25 +9,14 @@ import ParticleBackground from '../components/ParticleBackground';
 import PremiumButton from '../components/PremiumButton';
 import { useCursor } from '../components/CustomCursor'; // Import hook
 import { 
-    CheckIcon, 
-    CodeIcon, 
-    MobileIcon, 
     WordPressIcon, 
-    SpeedIcon, 
-    WalletIcon,
-    MaintenanceIcon,
-    PhoneIcon,
     StarIcon,
     ReactIcon,
     JsIcon,
     ExpoIcon,
     SupabaseIcon,
     ArrowRightIcon,
-    FigmaIcon,
-    DesignIcon,
-    StrategyIcon,
-    RocketIcon,
-    TargetIcon
+    FigmaIcon
 } from '../components/Icons';
 import { useSeoContent } from '../hooks/useSeoContent';
 
