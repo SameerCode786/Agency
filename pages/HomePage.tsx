@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import PageWrapper from '../components/PageWrapper';
 import { motion, AnimatePresence, useScroll, useTransform, useSpring, useMotionValue, useVelocity, useAnimationFrame } from 'framer-motion';
 import { wrap } from "@motionone/utils";
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import AnimatedHeading from '../components/AnimatedHeading';
 import ParticleBackground from '../components/ParticleBackground';
 import PremiumButton from '../components/PremiumButton';
@@ -44,85 +44,84 @@ interface ProjectData {
     fullImage: string;
 }
 
-interface ServiceCardProps {
-    icon: React.ReactNode;
-    title: string;
-    desc: string;
-    features: string[];
-    price: string;
-    index: number;
-}
+// --- REVIEWS & FAQ DATA ---
+const reviewsData = [
+    {
+        name: "David M.",
+        role: "Project Lead",
+        quote: "Sameer Digital Lab is a very quick study and is very creative across many different skill sets which we used for this project. I would highly recommend them to anyone needing premium services. It was a joy to work with, detailed oriented and always able to make excellent recommendations.",
+        stars: 5,
+        image: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1764442737/mantwo_dwcstk.png" // Man 2
+    },
+    {
+        name: "James T.",
+        role: "CEO, TechFlow",
+        quote: "Sameer Digital Lab did an awesome job. They were proactive with communication, gave additional tips on SEO, and completed the task as expected. Great choice if you're looking to get your SEO up and running.",
+        stars: 5,
+        image: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1764442767/manthree_ol3l4l.png" // Man 3
+    },
+    {
+        name: "Sarah Jenkins",
+        role: "Marketing Director",
+        quote: "The team at Sameer Digital Lab transformed our online presence. Their design sense is impeccable, and the development quality is top-notch. Our conversion rates have doubled since the launch.",
+        stars: 5,
+        image: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1764442822/women_y9wmlf.png" // Woman
+    },
+    {
+        name: "Michael R.",
+        role: "Founder, StartupX",
+        quote: "I was impressed by the speed and efficiency. Sameer Digital Lab delivered a complex React application ahead of schedule without compromising on quality. Highly recommended for scalable solutions.",
+        stars: 5,
+        image: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1764442792/man_wrn6b3.png" // Man 1
+    }
+];
 
-const ServiceCard = ({ icon, title, desc, features, price, index }: ServiceCardProps) => {
-    const { setCursorVariant, setCursorText } = useCursor();
+const faqCategories = ['General', 'Process', 'Other'];
 
-    return (
-        <motion.div
-            className="bg-slate-900/30 p-8 rounded-2xl border border-slate-800 hover:border-cyan-500/30 hover:shadow-[0_0_40px_rgba(34,211,238,0.1)] transition-all duration-300 transform hover:-translate-y-2 flex flex-col group cursor-none"
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 0.5, delay: index * 0.1 }}
-            onMouseEnter={() => {
-                setCursorVariant('view-more');
-                setCursorText('View More');
-            }}
-            onMouseLeave={() => {
-                setCursorVariant('default');
-                setCursorText('');
-            }}
-        >
-            <div className="mb-4 text-cyan-400 group-hover:text-cyan-300 transition-colors">{icon}</div>
-            <h3 className="text-2xl font-bold mb-2 text-slate-100 group-hover:text-white transition-colors">{title}</h3>
-            <p className="text-slate-400 mb-4 flex-grow">{desc}</p>
-            <ul className="text-slate-300 space-y-2 mb-6 text-sm">
-                {features.map(feature => <li key={feature} className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-cyan-500"></span>{feature}</li>)}
-            </ul>
-            <div className="mt-auto pt-4 border-t border-slate-800 group-hover:border-cyan-500/20 transition-colors">
-                <p className="text-slate-300 text-lg font-semibold">Starting at <span className="text-cyan-400">{price}</span></p>
-            </div>
-        </motion.div>
-    );
+const faqData: Record<string, {q: string, a: string}[]> = {
+    'General': [
+        { q: "How long does a website project usually take to complete?", a: "It depends on the scope. A brochure site might take 2-4 weeks, while complex e-commerce or web apps can take 8-12 weeks." },
+        { q: "How much does a website cost?", a: "Pricing is tailored to requirements. We offer packages starting from reasonable rates for startups up to enterprise-level custom development." },
+        { q: "How easy is it for me to change content myself?", a: "Very easy. We build with CMS solutions like WordPress or headless CMS that allow you to edit text and images without coding." },
+        { q: "Can I create PPC landing pages myself?", a: "Yes, we can set up templates that allow you to spin up new landing pages for campaigns quickly." },
+        { q: "We have a limited budget, will you still work with us?", a: "We try to accommodate various budgets by offering phased approaches or specific packages." },
+        { q: "Do you outsource any work?", a: "No, all our core development and design is handled in-house to ensure quality and communication." }
+    ],
+    'Process': [
+        { q: "How many meetings can we have?", a: "As many as needed, though we value your time. We typically have a kickoff, weekly updates, and milestone reviews." },
+        { q: "Do we have a dedicated project manager?", a: "Yes, every project is assigned a lead point of contact to ensure smooth communication." },
+        { q: "What are your payment terms?", a: "Standard terms are 50% deposit and 50% on completion, though we can discuss milestones for larger projects." },
+        { q: "We’re not based in Manchester, does that matter?", a: "We work with clients all over the UK..... all over the world in fact. So location does not matter, we will guide you through the process and communicate clearly at certain stages via Email, and sometimes Zoom. If available, we are happy to have F2F meetings." }
+    ],
+    'Other': [
+        { q: "What services do you offer?", a: "We offer Web Development, Mobile App Development, SEO, UI/UX Design, and Digital Strategy." }
+    ]
 };
 
-interface WhyChooseCardProps {
-    icon: React.ReactNode;
-    title: string;
-    desc: string;
-}
+const latestBlogs = [
+    {
+        id: 1,
+        title: "The Future of Web Development in 2024",
+        category: "Technology",
+        image: "https://images.unsplash.com/photo-1504639725590-34d0984388bd?q=80&w=1974&auto=format&fit=crop",
+        link: "/blog"
+    },
+    {
+        id: 2,
+        title: "5 UI/UX Principles for Higher Conversion",
+        category: "Design",
+        image: "https://images.unsplash.com/photo-1586717791821-3f44a5638d48?q=80&w=2070&auto=format&fit=crop",
+        link: "/blog"
+    },
+    {
+        id: 3,
+        title: "Why Your Business Needs a Mobile App",
+        category: "Business",
+        image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=2070&auto=format&fit=crop",
+        link: "/blog"
+    }
+];
 
-const WhyChooseCard = ({ icon, title, desc }: WhyChooseCardProps) => (
-    <div className="bg-slate-900/30 p-6 rounded-lg border border-slate-800 text-center hover:bg-slate-900/50 transition-colors hover:border-cyan-500/30">
-        <div className="text-cyan-400 w-12 h-12 mx-auto mb-4 flex items-center justify-center">{icon}</div>
-        <h3 className="text-xl font-bold text-white mb-2">{title}</h3>
-        <p className="text-slate-400 text-sm">{desc}</p>
-    </div>
-);
-
-interface TestimonialCardProps {
-    quote: string;
-    name: string;
-    role: string;
-}
-
-const TestimonialCard = ({ quote, name, role }: TestimonialCardProps) => (
-    <motion.div 
-        className="bg-slate-900/30 p-8 rounded-2xl border border-slate-800 hover:border-cyan-500/30 transition-all duration-300"
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.5 }}
-        transition={{ duration: 0.6 }}
-    >
-        <div className="flex mb-4 text-yellow-400">
-            {[...Array(5)].map((_, i) => <StarIcon key={i} className="h-5 w-5" />)}
-        </div>
-        <p className="text-slate-300 italic mb-6">"{quote}"</p>
-        <div>
-            <h4 className="font-bold text-white">{name}</h4>
-            <p className="text-cyan-400 text-sm">{role}</p>
-        </div>
-    </motion.div>
-);
 
 interface ParallaxTextProps {
   children?: React.ReactNode;
@@ -417,6 +416,53 @@ const HomePage: React.FC = () => {
     const { setCursorVariant, setCursorText } = useCursor(); // Use cursor hook
     const workContainerRef = useRef<HTMLDivElement>(null);
     const [selectedProject, setSelectedProject] = useState<ProjectData | null>(null);
+
+    // Reviews Section Animation Refs
+    const reviewsContainerRef = useRef<HTMLDivElement>(null);
+    const [activeTab, setActiveTab] = useState<'reviews' | 'faqs'>('reviews');
+    const [activeFaqCategory, setActiveFaqCategory] = useState('General');
+    const [activeFaq, setActiveFaq] = useState<number | null>(null);
+    
+    // Check for navigation state to scroll to reviews
+    const location = useLocation();
+    
+    useEffect(() => {
+        if (location.state && (location.state as any).scrollTo === 'reviews') {
+            const element = document.getElementById('reviews');
+            if (element) {
+                // Small delay to ensure rendering is complete
+                setTimeout(() => {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }, [location]);
+
+    // Review Slider Logic
+    const [reviewIndex, setReviewIndex] = useState(0);
+    const reviewsPerPage = 2;
+
+    const nextReview = () => {
+        setReviewIndex((prev) => (prev + reviewsPerPage) % reviewsData.length);
+    };
+
+    const prevReview = () => {
+        setReviewIndex((prev) => (prev - reviewsPerPage + reviewsData.length) % reviewsData.length);
+    };
+
+    const currentReviews = reviewsData.slice(reviewIndex, reviewIndex + reviewsPerPage);
+
+
+    const { scrollYProgress: reviewsScrollProgress } = useScroll({
+        target: reviewsContainerRef,
+        offset: ["start end", "center center"]
+    });
+
+    // Grow animation for the new section
+    const scale = useTransform(reviewsScrollProgress, [0, 1], [0.92, 1]);
+    const borderRadius = useTransform(reviewsScrollProgress, [0, 1], ["2rem", "0rem"]);
+    const opacity = useTransform(reviewsScrollProgress, [0, 0.3], [0.5, 1]);
+
 
     const { scrollYProgress } = useScroll({
         target: workContainerRef,
@@ -818,7 +864,7 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* NEW SELECTED WORK SECTION */}
+      {/* SELECTED WORK SECTION */}
       <section className="relative py-32 bg-slate-950 overflow-hidden" ref={workContainerRef}>
         {/* Parallax Background Text - Moved down to be behind content */}
         <motion.div 
@@ -930,159 +976,258 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* Services Section */}
-      <section className="py-24 sm:py-32 bg-slate-950 relative z-10">
-        <div className="container mx-auto px-4">
-            <div className="text-center max-w-3xl mx-auto">
-                <AnimatedHeading text="Precision-Engineered Digital Services" className="text-4xl md:text-5xl font-bold mb-4" />
-                <p className="text-slate-400 text-lg mb-16">
-                    We combine technical mastery with creative brilliance to build digital products that set you apart. From complex enterprise platforms to stunning brand identities, we deliver solutions that perform as beautifully as they look.
-                </p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <ServiceCard 
-                    index={0}
-                    icon={<CodeIcon className="h-10 w-10"/>} 
-                    title="Website Development"
-                    desc="Custom websites built with HTML5, CSS3, JavaScript - Fast, responsive, and SEO-optimized."
-                    features={['Business Websites', 'E-commerce Stores', 'Landing Pages']}
-                    price="₹8,999"
-                />
-                <ServiceCard
-                    index={1} 
-                    icon={<MobileIcon className="h-10 w-10"/>} 
-                    title="Mobile App Development"
-                    desc="Cross-platform mobile apps using React Native & Expo - One code for iOS & Android."
-                    features={['Business Apps', 'E-commerce Apps', 'Custom Solutions']}
-                    price="₹15,999"
-                />
-                <ServiceCard 
-                    index={2}
-                    icon={<WordPressIcon className="h-10 w-10"/>} 
-                    title="WordPress Solutions"
-                    desc="Professional WordPress websites with custom themes & plugins."
-                    features={['WordPress Development', 'WooCommerce Stores', 'Website Maintenance']}
-                    price="₹6,999"
-                />
-            </div>
-            <div className="mt-16 text-center">
-                <Link to="/services">
-                    <PremiumButton>View All Services</PremiumButton>
-                </Link>
-            </div>
-        </div>
-      </section>
-      
-      {/* Special Offers Section */}
-      <section className="py-24 sm:py-32 bg-slate-950 relative z-10 border-t border-slate-900">
-        <div className="container mx-auto px-4">
-          <div className="text-center max-w-3xl mx-auto">
-              <AnimatedHeading text="🚀 Limited Time Offers" className="text-4xl md:text-5xl font-bold mb-16" />
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
-              <motion.div initial={{opacity:0, x:-50}} whileInView={{opacity:1, x:0}} viewport={{once: true}} transition={{duration:0.7}} className="bg-gradient-to-br from-purple-900/30 to-indigo-900/30 p-8 rounded-2xl border border-purple-500/30 flex flex-col text-center">
-                  <span className="font-bold bg-yellow-400 text-black px-3 py-1 rounded-full self-center mb-4">[HOT]</span>
-                  <h3 className="text-2xl font-bold text-white mb-2">Website + Mobile App Package</h3>
-                  <p className="text-slate-300 mb-4">Get both website and mobile app at <span className="text-yellow-300 font-bold">30% discount</span></p>
-                  <p className="text-slate-400 line-through text-lg">Original Price: ₹35,000</p>
-                  <p className="text-purple-300 text-3xl font-bold">Discount Price: ₹24,500 Only</p>
-              </motion.div>
-              <motion.div initial={{opacity:0, x:50}} whileInView={{opacity:1, x:0}} viewport={{once: true}} transition={{duration:0.7, delay: 0.2}} className="bg-slate-900/50 p-8 rounded-2xl border border-slate-700 flex flex-col text-center">
-                  <span className="font-bold bg-green-400 text-black px-3 py-1 rounded-full self-center mb-4">[NEW]</span>
-                  <h3 className="text-2xl font-bold text-white mb-2">Free SEO for 3 Months</h3>
-                  <p className="text-slate-300 mb-4">Get any website project and receive FREE SEO services for 3 months</p>
-                  <p className="text-green-400 text-3xl font-bold">Value: ₹9,000 FREE</p>
-              </motion.div>
-          </div>
-        </div>
+      {/* NEW: REVIEWS & FAQs SECTION */}
+      <section ref={reviewsContainerRef} id="reviews" className="py-24 bg-slate-950 relative overflow-hidden">
+        <motion.div 
+            style={{ 
+                scale, 
+                borderRadius, 
+                opacity 
+            }} 
+            className="w-full max-w-[100%] mx-auto bg-slate-900 shadow-2xl overflow-hidden relative"
+        >
+             {/* Background Effects */}
+             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[100px] pointer-events-none"></div>
+             <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-cyan-600/10 rounded-full blur-[100px] pointer-events-none"></div>
+
+             <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10">
+                 
+                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+                     {/* Left Column: Context & Controls */}
+                     <div className="lg:col-span-5 flex flex-col items-start justify-center">
+                         <span className="inline-block px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-sm font-bold tracking-[0.2em] uppercase mb-4">
+                            Client Success & Insights
+                         </span>
+                         <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
+                            What People Say & Ask
+                         </h2>
+                         <p className="text-slate-400 text-lg leading-relaxed mb-10 max-w-md">
+                             We pride ourselves on transparent communication and exceptional results. Here's what our partners say and answers to common questions.
+                         </p>
+                         
+                         {/* Custom Toggle Switch */}
+                         <div className="inline-flex bg-slate-950 p-1.5 rounded-full border border-slate-800 relative w-full sm:w-auto">
+                             <motion.div 
+                                className="absolute top-1.5 bottom-1.5 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full shadow-lg"
+                                initial={false}
+                                animate={{ 
+                                    left: activeTab === 'reviews' ? '6px' : '50%', 
+                                    width: 'calc(50% - 6px)' 
+                                }}
+                                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                             />
+                             <button 
+                                onClick={() => setActiveTab('reviews')}
+                                className={`relative z-10 px-6 py-3 rounded-full text-sm font-bold transition-colors duration-300 flex-1 sm:w-40 text-center ${activeTab === 'reviews' ? 'text-white' : 'text-slate-400 hover:text-white'}`}
+                             >
+                                 Client Reviews
+                             </button>
+                             <button 
+                                onClick={() => setActiveTab('faqs')}
+                                className={`relative z-10 px-6 py-3 rounded-full text-sm font-bold transition-colors duration-300 flex-1 sm:w-40 text-center ${activeTab === 'faqs' ? 'text-white' : 'text-slate-400 hover:text-white'}`}
+                             >
+                                 Common Questions
+                             </button>
+                         </div>
+                     </div>
+
+                     {/* Right Column: Dynamic Content */}
+                     <div className="lg:col-span-7 min-h-[400px]">
+                         <AnimatePresence mode="wait">
+                             {activeTab === 'reviews' ? (
+                                 <motion.div
+                                    key="reviews"
+                                    initial={{ opacity: 0, x: 20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, x: -20 }}
+                                    transition={{ duration: 0.5 }}
+                                    className="flex flex-col h-full"
+                                 >
+                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                         {currentReviews.map((review, i) => (
+                                             <motion.div 
+                                                key={review.name} // Key based on content to trigger animation
+                                                initial={{ opacity: 0, y: 20 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                exit={{ opacity: 0, y: -20 }}
+                                                transition={{ duration: 0.4, delay: i * 0.1 }}
+                                                className="bg-slate-950/50 backdrop-blur-md p-6 rounded-2xl border border-slate-800/60 hover:border-cyan-500/30 transition-all duration-300 shadow-xl group hover:shadow-cyan-500/10 flex flex-col items-start h-full"
+                                             >
+                                                 <div className="flex items-center gap-4 mb-4">
+                                                     <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-slate-800 relative flex-shrink-0">
+                                                        <img src={review.image} alt={review.name} className="w-full h-full object-cover" />
+                                                        <div className="absolute inset-0 bg-black/40"></div>
+                                                     </div>
+                                                     <div>
+                                                         <h4 className="font-bold text-white text-base">{review.name}</h4>
+                                                         <p className="text-cyan-400 text-xs">{review.role}</p>
+                                                     </div>
+                                                 </div>
+                                                 <div className="flex gap-1 text-yellow-400 mb-3">
+                                                     {[...Array(review.stars)].map((_, idx) => <StarIcon key={idx} className="w-4 h-4 fill-current" />)}
+                                                 </div>
+                                                 <p className="text-slate-300 text-sm leading-relaxed italic">"{review.quote}"</p>
+                                             </motion.div>
+                                         ))}
+                                     </div>
+
+                                     {/* Slider Controls */}
+                                     <div className="flex justify-center gap-4 mt-auto">
+                                         <button 
+                                            onClick={prevReview}
+                                            className="p-3 rounded-full bg-slate-950 border border-slate-800 hover:border-cyan-500 text-white transition-all hover:bg-slate-900"
+                                         >
+                                             <ArrowRightIcon className="w-5 h-5 rotate-180" />
+                                         </button>
+                                         <button 
+                                            onClick={nextReview}
+                                            className="p-3 rounded-full bg-slate-950 border border-slate-800 hover:border-cyan-500 text-white transition-all hover:bg-slate-900"
+                                         >
+                                              <ArrowRightIcon className="w-5 h-5" />
+                                         </button>
+                                     </div>
+                                 </motion.div>
+                             ) : (
+                                 <motion.div
+                                    key="faqs"
+                                    initial={{ opacity: 0, x: 20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, x: -20 }}
+                                    transition={{ duration: 0.5 }}
+                                    className="flex flex-col h-full"
+                                 >
+                                     {/* Nested FAQ Tabs */}
+                                     <div className="flex border-b border-slate-800 mb-6 overflow-x-auto no-scrollbar">
+                                         {faqCategories.map((cat) => (
+                                             <button
+                                                 key={cat}
+                                                 onClick={() => {
+                                                     setActiveFaqCategory(cat);
+                                                     setActiveFaq(null); // Reset open accordion
+                                                 }}
+                                                 className={`px-6 py-3 text-sm font-bold whitespace-nowrap transition-all relative ${
+                                                     activeFaqCategory === cat 
+                                                     ? 'text-cyan-400' 
+                                                     : 'text-slate-500 hover:text-slate-300'
+                                                 }`}
+                                             >
+                                                 {cat === 'Process' ? 'Working with Shape' : cat}
+                                                 {activeFaqCategory === cat && (
+                                                     <motion.div 
+                                                         layoutId="faqTabIndicator"
+                                                         className="absolute bottom-0 left-0 right-0 h-0.5 bg-cyan-400"
+                                                     />
+                                                 )}
+                                             </button>
+                                         ))}
+                                     </div>
+
+                                     {/* FAQ Accordion List */}
+                                     <div className="space-y-3">
+                                         <AnimatePresence mode="wait">
+                                            <motion.div
+                                                key={activeFaqCategory}
+                                                initial={{ opacity: 0, y: 10 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                exit={{ opacity: 0, y: -10 }}
+                                                transition={{ duration: 0.2 }}
+                                                className="space-y-3"
+                                            >
+                                                {faqData[activeFaqCategory].map((faq, i) => (
+                                                    <motion.div 
+                                                        key={i}
+                                                        className="border border-slate-800 rounded-xl bg-slate-950/50 overflow-hidden"
+                                                    >
+                                                        <button 
+                                                            onClick={() => setActiveFaq(activeFaq === i ? null : i)}
+                                                            className="w-full text-left p-5 flex justify-between items-start hover:bg-slate-800/30 transition-colors gap-4"
+                                                        >
+                                                            <span className={`text-base font-bold transition-colors duration-300 leading-snug ${activeFaq === i ? 'text-cyan-400' : 'text-slate-200'}`}>
+                                                                {faq.q}
+                                                            </span>
+                                                            <span className={`transform transition-transform duration-300 mt-1 ${activeFaq === i ? 'rotate-180 text-cyan-400' : 'text-slate-500'}`}>
+                                                                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                                                </svg>
+                                                            </span>
+                                                        </button>
+                                                        <AnimatePresence>
+                                                            {activeFaq === i && (
+                                                                <motion.div
+                                                                    initial={{ height: 0, opacity: 0 }}
+                                                                    animate={{ height: "auto", opacity: 1 }}
+                                                                    exit={{ height: 0, opacity: 0 }}
+                                                                    transition={{ duration: 0.3 }}
+                                                                >
+                                                                    <div className="p-5 pt-0 text-slate-400 text-sm leading-relaxed border-t border-slate-800/50">
+                                                                        {faq.a}
+                                                                    </div>
+                                                                </motion.div>
+                                                            )}
+                                                        </AnimatePresence>
+                                                    </motion.div>
+                                                ))}
+                                            </motion.div>
+                                         </AnimatePresence>
+                                     </div>
+                                 </motion.div>
+                             )}
+                         </AnimatePresence>
+                     </div>
+                 </div>
+
+             </div>
+        </motion.div>
       </section>
 
-      {/* Why Choose Us Section */}
-       <section className="py-24 sm:py-32 bg-slate-950 relative z-10">
-        <div className="container mx-auto px-4">
-            <div className="text-center max-w-3xl mx-auto">
-                <AnimatedHeading text="Why Choose Sameer Digital Lab?" className="text-4xl md:text-5xl font-bold mb-16" />
-            </div>
-            <motion.div 
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ staggerChildren: 0.2 }}
-            >
-                <motion.div variants={{hidden: {opacity: 0, y:50}, visible: {opacity:1, y:0}}}>
-                    <WhyChooseCard icon={<SpeedIcon className="w-10 h-10"/>} title="⚡ Fast Delivery" desc="Websites in 5-7 days, apps in 2-3 weeks" />
-                </motion.div>
-                 <motion.div variants={{hidden: {opacity: 0, y:50}, visible: {opacity:1, y:0}}}>
-                    <WhyChooseCard icon={<WalletIcon className="w-10 h-10"/>} title="💰 Budget-Friendly" desc="Quality work at competitive Indian market prices" />
-                </motion.div>
-                 <motion.div variants={{hidden: {opacity: 0, y:50}, visible: {opacity:1, y:0}}}>
-                    <WhyChooseCard icon={<MaintenanceIcon className="w-10 h-10"/>} title="🔧 Post-Launch Support" desc="15 days free support on every project" />
-                </motion.div>
-                 <motion.div variants={{hidden: {opacity: 0, y:50}, visible: {opacity:1, y:0}}}>
-                    <WhyChooseCard icon={<PhoneIcon className="w-10 h-10"/>} title="📞 Direct Communication" desc="Work directly with the developer - No middlemen" />
-                </motion.div>
-            </motion.div>
-        </div>
-      </section>
-
-      {/* Testimonials Section */}
-      <section className="py-24 sm:py-32 bg-slate-950 relative z-10 border-t border-slate-900">
-        <div className="container mx-auto px-4">
-          <div className="text-center max-w-3xl mx-auto">
-              <AnimatedHeading text="What Our Clients Say" className="text-4xl md:text-5xl font-bold mb-16" />
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            <TestimonialCard 
-              quote="Sameer delivered our website in just 6 days! The quality exceeded our expectations. Highly recommended!"
-              name="Raj Sharma, Mumbai"
-              role="Business Owner"
-            />
-            <TestimonialCard 
-              quote="The mobile app developed by SameerCodes Studios helped us increase our sales by 40%. Great work!"
-              name="Priya Patel, Delhi"
-              role="Startup Founder"
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Final CTA Section */}
-      <section className="py-24 sm:py-32 bg-slate-950 relative z-10 border-t border-slate-900">
-        <div className="container mx-auto px-4 text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.5 }}
-              transition={{ duration: 0.7 }}
-            >
-              <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">Ready to Transform Your Business?</h2>
-              <p className="max-w-2xl mx-auto text-slate-400 text-lg mb-8">Get a FREE website/app consultation and project estimate.</p>
-              
-              <div className="flex flex-wrap justify-center gap-x-8 gap-y-4 mb-8 text-slate-400 font-semibold">
-                <span className="flex items-center gap-2"><CheckIcon className="h-5 w-5 text-green-500"/> No Advance Payment</span>
-                <span className="flex items-center gap-2"><CheckIcon className="h-5 w-5 text-green-500"/> 100% Satisfaction</span>
-                <span className="flex items-center gap-2"><CheckIcon className="h-5 w-5 text-green-500"/> Money-Back Guarantee</span>
+      {/* NEW BLOG SECTION */}
+      <section className="py-24 bg-slate-950 relative border-t border-slate-900">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+                  <div>
+                      <span className="text-cyan-400 text-sm font-bold tracking-[0.2em] uppercase mb-4 block">Blog</span>
+                      <h2 className="text-4xl md:text-5xl font-bold text-white">The latest from our design studio</h2>
+                  </div>
+                   <Link to="/blog">
+                       <PremiumButton icon={true}>View All</PremiumButton>
+                   </Link>
               </div>
-              
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                  <Link to="/contact">
-                      <PremiumButton className="px-10 py-4 text-lg">Start Your Project Today</PremiumButton>
-                  </Link>
-                  <a href="tel:+910000000000">
-                      <motion.button 
-                        whileHover={{ scale: 1.05 }} 
-                        whileTap={{ scale: 0.95 }} 
-                        className="px-10 py-4 bg-transparent border border-green-500 text-green-400 font-bold rounded-full text-xl shadow-lg shadow-green-500/10 transition-all duration-300 hover:bg-green-500 hover:text-white"
-                      >
-                          Call Now
-                      </motion.button>
-                  </a>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {latestBlogs.map((blog, index) => (
+                      <Link to={blog.link} key={blog.id} className="group cursor-pointer">
+                          <motion.div
+                              initial={{ opacity: 0, y: 30 }}
+                              whileInView={{ opacity: 1, y: 0 }}
+                              viewport={{ once: true }}
+                              transition={{ delay: index * 0.1 }}
+                              className="bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 hover:border-cyan-500/50 transition-all duration-300"
+                          >
+                              <div className="relative h-64 overflow-hidden">
+                                  <img 
+                                      src={blog.image} 
+                                      alt={blog.title} 
+                                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                  />
+                                  <div className="absolute top-4 left-4 bg-slate-950/80 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-cyan-400 uppercase tracking-wider">
+                                      {blog.category}
+                                  </div>
+                              </div>
+                              <div className="p-8">
+                                  <h3 className="text-xl font-bold text-white mb-4 leading-tight group-hover:text-cyan-400 transition-colors">
+                                      {blog.title}
+                                  </h3>
+                                  <div className="flex items-center text-slate-500 text-sm font-semibold group-hover:text-white transition-colors">
+                                      Read Article <ArrowRightIcon className="w-4 h-4 ml-2" />
+                                  </div>
+                              </div>
+                          </motion.div>
+                      </Link>
+                  ))}
               </div>
-              <p className="mt-6 text-slate-500">Or email us at: <a href="mailto:support@sameercodes.online" className="text-cyan-400 font-semibold hover:underline">support@sameercodes.online</a></p>
-            </motion.div>
-        </div>
+          </div>
       </section>
+
     </PageWrapper>
   );
 };
