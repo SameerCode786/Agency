@@ -460,8 +460,8 @@ const ServicesPage: React.FC = () => {
                     </motion.div>
 
                     {/* H1 Heading */}
-                    <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-8 leading-[1.1] tracking-tight drop-shadow-2xl">
-                        We Build Modern Websites That <br className="hidden md:block"/>
+                    <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-8 leading-[1.1] tracking-tight drop-shadow-2xl">
+                        We Build Modern Websites & Apps That <br className="hidden md:block"/>
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 animate-gradient-x">
                             Grow Your Business
                         </span>
@@ -469,17 +469,17 @@ const ServicesPage: React.FC = () => {
                     
                     {/* Subheading */}
                     <h2 className="text-lg md:text-2xl text-slate-200 font-medium mb-8 max-w-3xl mx-auto">
-                        Fast, clean, responsive, and powered by the latest web technologies — designed to make your brand stand out.
+                        Fast, clean, responsive, and powered by the latest web & mobile technologies — designed to make your brand stand out.
                     </h2>
 
                     {/* Paragraph */}
                     <p className="text-slate-400 text-base md:text-lg leading-relaxed mb-10 max-w-2xl mx-auto">
-                        We design and develop high-performance websites that look stunning and convert visitors into customers. From front-end design to full backend systems, we deliver scalable digital solutions built for speed, security, and real business results.
+                        We design and develop high-performance websites and mobile applications that look stunning and convert visitors into customers. From front-end design to full backend systems, we deliver scalable digital solutions built for speed, security, and real business results.
                     </p>
 
                     {/* Trust Checkmarks Grid */}
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-y-4 gap-x-8 mb-12 max-w-3xl mx-auto text-sm md:text-base font-medium text-slate-300">
-                         {['Custom Design', 'SEO-Ready Structure', 'Optimized Performance', 'Latest Tech Stack', 'Fully Editable CMS', 'Zoom/Slack Support'].map((item, i) => (
+                         {['Custom Design', 'SEO-Ready Structure', 'Optimized Performance', 'Latest Tech Stack', 'iOS & Android', 'Zoom/Slack Support'].map((item, i) => (
                             <motion.div 
                                 key={i} 
                                 initial={{ opacity: 0, x: -10 }}
