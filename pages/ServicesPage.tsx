@@ -8,20 +8,23 @@ import {
     CodeIcon, 
     MobileIcon, 
     DesignIcon, 
-    SpeedIcon, 
-    MaintenanceIcon, 
     StrategyIcon,
     ArrowRightIcon,
     WalletIcon,
     WordPressIcon,
-    TargetIcon,
-    RocketIcon,
     SearchIcon,
     ReactIcon,
-    TailwindIcon,
-    AtomIcon,
-    CheckIcon,
-    LayersIcon
+    JsIcon,
+    VueIcon,
+    NuxtIcon,
+    LaravelIcon,
+    PhpIcon,
+    DatabaseIcon,
+    CubeIcon,
+    ApiIcon,
+    ShoppingCartIcon,
+    CloudIcon,
+    CheckIcon
 } from '../components/Icons';
 import { Link } from 'react-router-dom';
 import { useSeoContent } from '../hooks/useSeoContent';
@@ -55,13 +58,6 @@ const MagneticParticles = () => {
 
         window.addEventListener('mousemove', handleMouseMove);
         window.addEventListener('mouseleave', handleMouseLeave);
-
-        const resizeCanvas = () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            init();
-        };
-        window.addEventListener('resize', resizeCanvas);
 
         class Particle {
             x: number;
@@ -140,12 +136,16 @@ const MagneticParticles = () => {
             }
         };
 
+        const resizeCanvas = () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            init();
+        };
+        window.addEventListener('resize', resizeCanvas);
+
         const animate = () => {
             if (!ctx) return;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            // Draw connecting lines if close enough
-            // (Optional: can be expensive with many particles, keeping it simple for attraction demo)
             
             particles.forEach(particle => {
                 particle.update();
@@ -400,25 +400,26 @@ const expertiseRows = [
     ["Redis", "MongoDB", "React Native"]
 ];
 
-const techImages: Record<string, string> = {
-    "JavaScript": "https://images.unsplash.com/photo-1579468118864-1b9ea3c0db4a?q=80&w=1000&auto=format&fit=crop",
-    "Vue.js": "https://images.unsplash.com/photo-1607799275518-dbebb27725dc?q=80&w=1000&auto=format&fit=crop",
-    "Nuxt.js": "https://images.unsplash.com/photo-1627398242454-45a1465c2479?q=80&w=1000&auto=format&fit=crop",
-    "Laravel": "https://images.unsplash.com/photo-1605745341112-85968b19335b?q=80&w=1000&auto=format&fit=crop",
-    "WordPress": "https://images.unsplash.com/photo-1542831371-29b0f74f9713?q=80&w=1000&auto=format&fit=crop",
-    "Opencart": "https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?q=80&w=1000&auto=format&fit=crop",
-    "Prismic": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1000&auto=format&fit=crop",
-    "PHP": "https://images.unsplash.com/photo-1599507593499-a3f7d7d97667?q=80&w=1000&auto=format&fit=crop",
-    "MySQL": "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?q=80&w=1000&auto=format&fit=crop", 
-    "PostgreSQL": "https://images.unsplash.com/photo-1544383835-bda2bc66a55d?q=80&w=1000&auto=format&fit=crop",
-    "Web3js": "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?q=80&w=1000&auto=format&fit=crop",
-    "Three.js": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000&auto=format&fit=crop",
-    "WebAR": "https://images.unsplash.com/photo-1617802690992-15d93263d3a9?q=80&w=1000&auto=format&fit=crop",
-    "REST API": "https://images.unsplash.com/photo-1516116216624-53e697fedbea?q=80&w=1000&auto=format&fit=crop",
-    "WebSocket": "https://images.unsplash.com/photo-1558494949-efc02570fbc9?q=80&w=1000&auto=format&fit=crop",
-    "Redis": "https://images.unsplash.com/photo-1555099962-4199c345e5dd?q=80&w=1000&auto=format&fit=crop",
-    "MongoDB": "https://images.unsplash.com/photo-1555099962-4199c345e5dd?q=80&w=1000&auto=format&fit=crop",
-    "React Native": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=1000&auto=format&fit=crop"
+// Mapping technology names to their corresponding icons and colors
+const techIcons: Record<string, { icon: React.ReactNode, color: string }> = {
+    "JavaScript": { icon: <JsIcon className="w-full h-full" />, color: "#F7DF1E" },
+    "Vue.js": { icon: <VueIcon className="w-full h-full" />, color: "#4FC08D" },
+    "Nuxt.js": { icon: <NuxtIcon className="w-full h-full" />, color: "#00C58E" },
+    "Laravel": { icon: <LaravelIcon className="w-full h-full" />, color: "#FF2D20" },
+    "WordPress": { icon: <WordPressIcon className="w-full h-full" />, color: "#21759B" },
+    "Opencart": { icon: <ShoppingCartIcon className="w-full h-full" />, color: "#26B4D6" },
+    "Prismic": { icon: <CloudIcon className="w-full h-full" />, color: "#5163BA" },
+    "PHP": { icon: <PhpIcon className="w-full h-full" />, color: "#777BB4" },
+    "MySQL": { icon: <DatabaseIcon className="w-full h-full" />, color: "#4479A1" },
+    "PostgreSQL": { icon: <DatabaseIcon className="w-full h-full" />, color: "#336791" },
+    "Web3js": { icon: <CubeIcon className="w-full h-full" />, color: "#F16822" },
+    "Three.js": { icon: <CubeIcon className="w-full h-full" />, color: "#FFFFFF" },
+    "WebAR": { icon: <CubeIcon className="w-full h-full" />, color: "#22d3ee" },
+    "REST API": { icon: <ApiIcon className="w-full h-full" />, color: "#8936ea" },
+    "WebSocket": { icon: <ApiIcon className="w-full h-full" />, color: "#00C58E" },
+    "Redis": { icon: <DatabaseIcon className="w-full h-full" />, color: "#DC382D" },
+    "MongoDB": { icon: <DatabaseIcon className="w-full h-full" />, color: "#47A248" },
+    "React Native": { icon: <ReactIcon className="w-full h-full" />, color: "#61DAFB" }
 };
 
 
@@ -688,35 +689,36 @@ const ServicesPage: React.FC = () => {
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
                     
-                    {/* Left Side: Dynamic Image Card */}
+                    {/* Left Side: Centered Icon Box */}
                     <div className="lg:col-span-4 lg:sticky lg:top-32 h-fit">
                         <div className="mb-6">
                             <h2 className="text-white text-3xl font-bold font-sans tracking-tight">Our Expertise</h2>
                         </div>
-                        <div className="relative aspect-[3/4] w-full rounded-2xl overflow-hidden shadow-2xl shadow-cyan-500/10 border border-slate-800 bg-slate-900">
+                        <div className="relative aspect-[3/4] w-full rounded-2xl overflow-hidden shadow-2xl shadow-cyan-500/10 border border-slate-800 bg-slate-900 flex items-center justify-center p-12">
                              <AnimatePresence mode="wait">
-                                <motion.img 
+                                <motion.div
                                     key={hoveredTech}
-                                    src={techImages[hoveredTech] || techImages["MySQL"]}
-                                    alt={hoveredTech}
-                                    initial={{ opacity: 0, scale: 1.1 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    exit={{ opacity: 0 }}
-                                    transition={{ duration: 0.4 }}
-                                    className="absolute inset-0 w-full h-full object-cover"
-                                />
+                                    initial={{ opacity: 0, scale: 0.8, rotate: -10 }}
+                                    animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                                    exit={{ opacity: 0, scale: 0.8, rotate: 10 }}
+                                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                                    className="w-full h-full flex items-center justify-center"
+                                    style={{ color: techIcons[hoveredTech]?.color || '#ffffff' }}
+                                >
+                                    {techIcons[hoveredTech]?.icon || techIcons["MySQL"].icon}
+                                </motion.div>
                              </AnimatePresence>
-                             {/* Gradient Overlay */}
-                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
                              
-                             <div className="absolute bottom-8 left-8 right-8">
+                             {/* Subtle Glow behind icon */}
+                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none"></div>
+                             
+                             <div className="absolute bottom-8 left-0 right-0 text-center">
                                 <motion.div
                                     key={hoveredTech + "text"}
                                     initial={{ opacity: 0, y: 10 }}
                                     animate={{ opacity: 1, y: 0 }}
-                                    className="bg-black/50 backdrop-blur-md p-4 rounded-xl border border-white/10"
                                 >
-                                    <span className="text-cyan-400 text-xs font-bold uppercase tracking-wider mb-1 block">Technology</span>
+                                    <span className="text-slate-500 text-xs font-bold uppercase tracking-wider mb-2 block">Technology</span>
                                     <h3 className="text-white text-2xl font-bold">{hoveredTech}</h3>
                                 </motion.div>
                              </div>
