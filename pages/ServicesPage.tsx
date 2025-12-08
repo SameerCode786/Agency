@@ -220,63 +220,6 @@ function ParallaxText({ children, baseVelocity = 100 }: ParallaxTextProps) {
     );
 }
 
-const services = [
-  {
-    icon: <CodeIcon className="h-12 w-12 text-cyan-400" />,
-    title: 'Web Development',
-    description: 'Custom, high-performance websites built with React, Next.js, and modern technologies. We create digital experiences that convert.',
-    link: '/web-development',
-    color: 'border-cyan-500/30',
-    glow: 'shadow-cyan-500/20',
-    gradient: 'from-cyan-500 to-blue-600'
-  },
-  {
-    icon: <SearchIcon className="h-12 w-12 text-[#8936ea]" />,
-    title: 'SEO Optimization',
-    description: 'Data-driven SEO strategies to dominate search results. We help your business get found by the people who matter most.',
-    link: '/seo-optimization',
-    color: 'border-[#8936ea]/30',
-    glow: 'shadow-[#8936ea]/20',
-    gradient: 'from-[#8936ea] to-pink-600'
-  },
-  {
-    icon: <MobileIcon className="h-12 w-12 text-blue-400" />,
-    title: 'App Development',
-    description: 'Native and cross-platform mobile applications for iOS and Android. Scalable, secure, and user-centric mobile solutions.',
-    link: '/app-development',
-    color: 'border-blue-500/30',
-    glow: 'shadow-blue-500/20',
-    gradient: 'from-blue-500 to-indigo-600'
-  },
-  {
-    icon: <WalletIcon className="h-12 w-12 text-green-400" />,
-    title: 'Shopify Solutions',
-    description: 'High-converting e-commerce stores. From custom themes to complex integrations, we build engines for revenue.',
-    link: '/shopify-development',
-    color: 'border-green-500/30',
-    glow: 'shadow-green-500/20',
-    gradient: 'from-green-500 to-emerald-600'
-  },
-  {
-    icon: <WordPressIcon className="h-12 w-12 text-indigo-400" />,
-    title: 'WordPress Dev',
-    description: 'Flexible and manageable CMS solutions. Custom themes and plugins that give you full control over your content.',
-    link: '/wordpress-customization',
-    color: 'border-indigo-500/30',
-    glow: 'shadow-indigo-500/20',
-    gradient: 'from-indigo-500 to-purple-600'
-  },
-  {
-    icon: <DesignIcon className="h-12 w-12 text-pink-400" />,
-    title: 'UI/UX Design',
-    description: 'User-centric design that blends aesthetics with functionality. We craft interfaces that users love to interact with.',
-    link: '/services', // Generic link or specific if available
-    color: 'border-pink-500/30',
-    glow: 'shadow-pink-500/20',
-    gradient: 'from-pink-500 to-rose-600'
-  },
-];
-
 const buildProcess = [
     {
         title: "STRATEGY",
@@ -586,90 +529,115 @@ const ServicesPage: React.FC = () => {
             </div>
        </section>
 
-       {/* NEW: WHAT WE DELIVER SECTION (PREMIUM SHAPE-STYLE) */}
-       <section className="py-24 bg-slate-950 relative overflow-hidden border-t border-slate-900">
-           {/* Futuristic Background Elements */}
-            <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-cyan-500/5 rounded-full blur-[100px] pointer-events-none animate-pulse"></div>
-            <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-[100px] pointer-events-none animate-pulse"></div>
-            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 pointer-events-none"></div>
-
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                <div className="text-center mb-16">
+       {/* NEW: WHAT WE DELIVER SECTION (BRAND TRANSFORMATION STYLE) */}
+       <section className="py-32 bg-slate-950 relative overflow-hidden border-t border-slate-900">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 max-w-7xl">
+                {/* Header */}
+                <div className="text-center mb-20">
                     <span className="text-cyan-400 font-bold uppercase tracking-[0.2em] text-sm mb-4 block">What We Deliver</span>
-                    <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">High-Quality Digital Services</h2>
+                    <h2 className="text-5xl md:text-7xl font-bold text-white mb-8 tracking-tight font-sans">
+                        High-Quality Digital Services
+                    </h2>
                     <p className="text-slate-400 max-w-2xl mx-auto text-lg leading-relaxed">
                         Crafted by our in-house team—designed to elevate your brand, engage your users, and fuel long-term growth.
                     </p>
+                    
+                    {/* Navigation Tabs */}
+                    <div className="flex flex-wrap justify-center gap-4 mt-12">
+                        {Object.keys(deliveryContent).map((tab) => (
+                            <button
+                                key={tab}
+                                onClick={() => setActiveDeliveryTab(tab as DeliveryCategory)}
+                                className={`px-6 py-2.5 rounded-full text-sm font-bold tracking-wider transition-all duration-300 border ${
+                                    activeDeliveryTab === tab
+                                        ? 'bg-cyan-500 text-black border-cyan-500 shadow-[0_0_20px_rgba(34,211,238,0.4)]'
+                                        : 'bg-transparent text-slate-400 border-slate-700 hover:text-white hover:border-slate-500'
+                                }`}
+                            >
+                                {tab}
+                            </button>
+                        ))}
+                    </div>
                 </div>
 
-                {/* Navigation Tabs */}
-                <div className="flex flex-wrap justify-center gap-4 mb-16">
-                    {Object.keys(deliveryContent).map((tab) => (
-                        <button
-                            key={tab}
-                            onClick={() => setActiveDeliveryTab(tab as DeliveryCategory)}
-                            className={`px-6 py-3 rounded-full text-sm font-bold tracking-wider transition-all duration-300 border ${
-                                activeDeliveryTab === tab
-                                    ? 'bg-slate-100 text-slate-900 border-white shadow-[0_0_20px_rgba(255,255,255,0.3)]'
-                                    : 'bg-slate-900/50 text-slate-400 border-slate-700 hover:text-white hover:border-slate-500'
-                            }`}
-                        >
-                            {tab}
-                        </button>
-                    ))}
-                </div>
-
-                {/* Content Area */}
-                <div className="max-w-5xl mx-auto">
-                    <AnimatePresence mode="wait">
+                {/* Content Area - Split Layout Matching Reference */}
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-start">
+                    
+                    {/* LEFT SIDE: BRAND CARD (Dark Premium) */}
+                    <div className="lg:col-span-5 sticky top-32">
                         <motion.div
-                            key={activeDeliveryTab}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -20 }}
+                            key={activeDeliveryTab + "-card"}
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.5 }}
-                            className="bg-slate-900/30 backdrop-blur-xl border border-slate-800 rounded-3xl p-8 md:p-12 shadow-2xl relative overflow-hidden"
+                            className="bg-[#1e293b] border border-slate-700 p-10 rounded-[2rem] relative overflow-hidden shadow-2xl group min-h-[500px] flex flex-col justify-between hover:shadow-cyan-500/10 transition-shadow duration-500"
                         >
-                            {/* Glow Effect */}
-                            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 via-purple-500 to-cyan-500 opacity-50"></div>
+                            {/* Hover Gradient */}
+                            <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/10 rounded-full blur-[80px] pointer-events-none group-hover:bg-cyan-500/20 transition-colors duration-500"></div>
                             
-                            <div className="mb-10 text-center md:text-left">
-                                <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
-                                    {activeDeliveryTab} Solutions
-                                </h3>
-                                <p className="text-slate-300 text-lg">
-                                    {deliveryContent[activeDeliveryTab].subtitle}
-                                </p>
-                            </div>
+                            {/* Card Content Structure */}
+                            <div className="relative z-10 flex flex-col h-full justify-between">
+                                {/* Top Section: Title & Label */}
+                                <div className="flex justify-between items-start">
+                                    <div className="max-w-[70%]">
+                                        <h2 className="text-4xl md:text-5xl font-black tracking-tighter leading-[0.9] text-white break-words">
+                                            {activeDeliveryTab}
+                                        </h2>
+                                    </div>
+                                    <div className="flex-shrink-0">
+                                        <span className="inline-block px-3 py-1 rounded-full border border-slate-600 bg-slate-800 text-[10px] font-bold uppercase tracking-widest text-cyan-400">
+                                            Solutions
+                                        </span>
+                                    </div>
+                                </div>
+                                
+                                {/* Middle Section (optional spacing) */}
+                                <div className="flex-grow"></div>
 
-                            <div className="grid grid-cols-1 gap-6">
+                                {/* Bottom Section: Large Description */}
+                                <div>
+                                    <div className="h-1 w-16 bg-gradient-to-r from-cyan-500 to-purple-500 mb-6"></div>
+                                    <p className="text-2xl font-medium leading-tight tracking-tight text-white">
+                                        {deliveryContent[activeDeliveryTab].subtitle}
+                                    </p>
+                                </div>
+                            </div>
+                        </motion.div>
+                    </div>
+
+                    {/* RIGHT SIDE: LIST (2 Column Grid, Transparent) */}
+                    <div className="lg:col-span-7">
+                        <AnimatePresence mode="wait">
+                            <motion.div
+                                key={activeDeliveryTab + "-list"}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -20 }}
+                                transition={{ duration: 0.4 }}
+                                className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16"
+                            >
                                 {deliveryContent[activeDeliveryTab].items.map((item, index) => (
                                     <motion.div
                                         key={item.id}
-                                        initial={{ opacity: 0, x: -20 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        transition={{ delay: index * 0.1 }}
-                                        className="group flex flex-col md:flex-row md:items-center gap-6 p-6 rounded-xl hover:bg-slate-800/50 transition-colors border border-transparent hover:border-slate-700/50"
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        transition={{ delay: index * 0.05 }}
+                                        className="group flex flex-col items-start"
                                     >
-                                        <div className="text-5xl font-black text-slate-800 group-hover:text-slate-700 transition-colors select-none font-mono">
+                                        <span className="text-5xl md:text-6xl font-light text-slate-800 mb-4 font-mono group-hover:text-cyan-500/20 transition-colors duration-300">
                                             {item.id}
-                                        </div>
-                                        <div className="flex-grow">
-                                            <h4 className="text-xl font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors">
-                                                {item.title}
-                                            </h4>
-                                            <p className="text-slate-400 leading-relaxed text-sm md:text-base">
-                                                {item.description}
-                                            </p>
-                                        </div>
-                                        <div className="md:opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
-                                            <ArrowRightIcon className="w-6 h-6 text-cyan-500 -rotate-45" />
-                                        </div>
+                                        </span>
+                                        <h4 className="text-xl font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors leading-tight">
+                                            {item.title}
+                                        </h4>
+                                        <p className="text-slate-400 text-sm leading-relaxed">
+                                            {item.description}
+                                        </p>
                                     </motion.div>
                                 ))}
-                            </div>
-                        </motion.div>
-                    </AnimatePresence>
+                            </motion.div>
+                        </AnimatePresence>
+                    </div>
                 </div>
             </div>
        </section>
