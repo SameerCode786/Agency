@@ -1,5 +1,5 @@
 
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import PageWrapper from '../components/PageWrapper';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useSeoContent } from '../hooks/useSeoContent';
@@ -32,6 +32,120 @@ const cultureImages = [
     "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=2070&auto=format&fit=crop"
 ];
 
+// Process & Expertise Data
+type CategoryType = 'Design' | 'Development' | 'Marketing';
+
+interface Tag {
+    label: string;
+    category: CategoryType;
+}
+
+const allTags: Tag[] = [
+    { label: "iOS/Android", category: "Development" },
+    { label: "Performance Reporting", category: "Marketing" },
+    { label: "User Experience Optimization", category: "Design" },
+    { label: "Software Development", category: "Development" },
+    { label: "Wireframes & Prototyping", category: "Design" },
+    { label: "Analytics", category: "Marketing" },
+    { label: "Web Apps", category: "Development" },
+    { label: "CMS Integration", category: "Development" },
+    { label: "Branding", category: "Design" },
+    { label: "Digital Ad Campaigns", category: "Marketing" },
+    { label: "Content Creation", category: "Marketing" },
+    { label: "SEO", category: "Marketing" },
+    { label: "Marketing", category: "Marketing" },
+    { label: "Website Development", category: "Development" },
+    { label: "Logo", category: "Design" },
+    { label: "User Interface Design", category: "Design" },
+];
+
+const categories: CategoryType[] = ['Design', 'Development', 'Marketing'];
+
+
+const ProcessExpertiseSection = () => {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [activeCategory, setActiveCategory] = useState<CategoryType>('Design');
+    
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ["start start", "end end"]
+    });
+
+    useEffect(() => {
+        const unsubscribe = scrollYProgress.on('change', (latest) => {
+            if (latest < 0.33) {
+                setActiveCategory('Design');
+            } else if (latest < 0.66) {
+                setActiveCategory('Development');
+            } else {
+                setActiveCategory('Marketing');
+            }
+        });
+        return () => unsubscribe();
+    }, [scrollYProgress]);
+
+    return (
+        <section ref={containerRef} className="relative h-[250vh] bg-black">
+            <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
+                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col justify-center">
+                    
+                    <div className="mb-12">
+                        <span className="text-white font-bold uppercase tracking-widest text-sm block mb-2">
+                             OUR PROCESS AND EXPERTISE
+                        </span>
+                    </div>
+
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+                        {/* Left Side: Categories */}
+                        <div className="flex flex-col gap-6 lg:gap-12">
+                            {categories.map((cat) => (
+                                <motion.div
+                                    key={cat}
+                                    className="transition-all duration-500 ease-in-out"
+                                    animate={{ 
+                                        opacity: activeCategory === cat ? 1 : 0.3,
+                                        x: activeCategory === cat ? 20 : 0
+                                    }}
+                                >
+                                    <h2 className="text-5xl md:text-7xl lg:text-8xl font-serif-italic text-white">
+                                        {cat}
+                                    </h2>
+                                </motion.div>
+                            ))}
+                        </div>
+
+                        {/* Right Side: Tags Cloud */}
+                        <div className="flex flex-wrap justify-end gap-3 md:gap-4 content-center">
+                            {allTags.map((tag, idx) => {
+                                const isActive = tag.category === activeCategory;
+                                return (
+                                    <motion.div
+                                        key={idx}
+                                        className={`px-4 py-2 md:px-6 md:py-3 rounded-full border transition-all duration-500 text-sm md:text-base font-medium cursor-default
+                                            ${isActive 
+                                                ? 'bg-slate-800 border-white/40 text-white shadow-[0_0_15px_rgba(255,255,255,0.1)]' 
+                                                : 'bg-slate-900/50 border-slate-800 text-slate-600'
+                                            }
+                                        `}
+                                        animate={{
+                                            scale: isActive ? 1.05 : 1,
+                                            opacity: isActive ? 1 : 0.4
+                                        }}
+                                    >
+                                        {tag.label}
+                                    </motion.div>
+                                );
+                            })}
+                        </div>
+                    </div>
+
+                 </div>
+            </div>
+        </section>
+    );
+};
+
+
 const AboutPage: React.FC = () => {
     const { title, description } = useSeoContent('About');
     const containerRef = useRef<HTMLDivElement>(null);
@@ -45,7 +159,7 @@ const AboutPage: React.FC = () => {
       <title>{title}</title>
       <meta name="description" content={description} />
       
-      {/* 1. HERO SECTION: "Good design makes life better." */}
+      {/* 1. HERO SECTION */}
       <section ref={containerRef} className="relative pt-32 pb-24 lg:pt-48 lg:pb-32 bg-slate-950 overflow-hidden">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="text-center mb-20">
@@ -88,7 +202,10 @@ const AboutPage: React.FC = () => {
         </div>
       </section>
 
-      {/* 2. INTRO & STATS */}
+      {/* 2. NEW PROCESS & EXPERTISE SECTION */}
+      <ProcessExpertiseSection />
+
+      {/* 3. INTRO & STATS */}
       <section className="py-24 bg-slate-900 border-t border-slate-800">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-24">
@@ -135,7 +252,7 @@ const AboutPage: React.FC = () => {
           </div>
       </section>
 
-      {/* 3. VIDEO BREAK */}
+      {/* 4. VIDEO BREAK */}
       <section className="bg-slate-950">
           <div className="w-full h-[60vh] md:h-[80vh] relative">
               <video 
@@ -158,7 +275,7 @@ const AboutPage: React.FC = () => {
           </div>
       </section>
 
-      {/* 4. TEAM SECTION: "Multiple personalities, No egos." */}
+      {/* 5. TEAM SECTION */}
       <section className="py-32 bg-slate-950">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center mb-20">
@@ -210,7 +327,7 @@ const AboutPage: React.FC = () => {
           </div>
       </section>
 
-      {/* 5. CULTURE SECTION */}
+      {/* 6. CULTURE SECTION */}
       <section className="py-24 bg-slate-900 border-t border-slate-800 relative overflow-hidden">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
