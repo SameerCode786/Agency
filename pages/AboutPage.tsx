@@ -5,7 +5,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { useSeoContent } from '../hooks/useSeoContent';
 import PremiumButton from '../components/PremiumButton';
 import { Link } from 'react-router-dom';
-import { StarIcon, ArrowRightIcon, RocketIcon, CodeIcon, DesignIcon, StrategyIcon } from '../components/Icons';
+import { StarIcon, ArrowRightIcon, RocketIcon, CodeIcon, StrategyIcon } from '../components/Icons';
 
 // --- DATA ---
 
@@ -41,26 +41,25 @@ interface Tag {
 }
 
 const allTags: Tag[] = [
-    { label: "iOS/Android", category: "Development" },
-    { label: "Performance Reporting", category: "Marketing" },
-    { label: "User Experience Optimization", category: "Design" },
-    { label: "Software Development", category: "Development" },
-    { label: "Wireframes & Prototyping", category: "Design" },
-    { label: "Analytics", category: "Marketing" },
-    { label: "Web Apps", category: "Development" },
-    { label: "CMS Integration", category: "Development" },
-    { label: "Branding", category: "Design" },
-    { label: "Digital Ad Campaigns", category: "Marketing" },
-    { label: "Content Creation", category: "Marketing" },
-    { label: "SEO", category: "Marketing" },
-    { label: "Marketing", category: "Marketing" },
-    { label: "Website Development", category: "Development" },
-    { label: "Logo", category: "Design" },
     { label: "User Interface Design", category: "Design" },
+    { label: "Website Development", category: "Development" },
+    { label: "Marketing", category: "Marketing" },
+    { label: "Logo", category: "Design" },
+    { label: "SEO", category: "Marketing" },
+    { label: "Content Creation", category: "Marketing" },
+    { label: "Digital Ad Campaigns", category: "Marketing" },
+    { label: "Branding", category: "Design" },
+    { label: "CMS Integration", category: "Development" },
+    { label: "Web Apps", category: "Development" },
+    { label: "Analytics", category: "Marketing" },
+    { label: "Wireframes & Prototyping", category: "Design" },
+    { label: "Software Development", category: "Development" },
+    { label: "User Experience Optimization", category: "Design" },
+    { label: "Performance Reporting", category: "Marketing" },
+    { label: "iOS/Android", category: "Development" },
 ];
 
 const categories: CategoryType[] = ['Design', 'Development', 'Marketing'];
-
 
 const ProcessExpertiseSection = () => {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -73,9 +72,9 @@ const ProcessExpertiseSection = () => {
 
     useEffect(() => {
         const unsubscribe = scrollYProgress.on('change', (latest) => {
-            if (latest < 0.33) {
+            if (latest < 0.3) {
                 setActiveCategory('Design');
-            } else if (latest < 0.66) {
+            } else if (latest < 0.6) {
                 setActiveCategory('Development');
             } else {
                 setActiveCategory('Marketing');
@@ -85,29 +84,38 @@ const ProcessExpertiseSection = () => {
     }, [scrollYProgress]);
 
     return (
-        <section ref={containerRef} className="relative h-[250vh] bg-black">
+        <section ref={containerRef} className="relative h-[300vh] bg-slate-950">
             <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
-                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col justify-center">
+                 {/* Decorative Background Blurs matching site theme */}
+                 <div className="absolute top-1/4 left-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none transition-opacity duration-1000" style={{ opacity: activeCategory === 'Development' ? 1 : 0.5 }} />
+                 <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-purple-500/10 rounded-full blur-[120px] pointer-events-none transition-opacity duration-1000" style={{ opacity: activeCategory === 'Design' ? 1 : 0.5 }} />
+                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-600/5 rounded-full blur-[150px] pointer-events-none" />
+
+                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col justify-center relative z-10">
                     
-                    <div className="mb-12">
-                        <span className="text-white font-bold uppercase tracking-widest text-sm block mb-2">
+                    <div className="mb-12 md:mb-20">
+                        <span className="text-cyan-400 font-bold uppercase tracking-[0.2em] text-sm block mb-4">
                              OUR PROCESS AND EXPERTISE
                         </span>
                     </div>
 
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-center">
                         {/* Left Side: Categories */}
-                        <div className="flex flex-col gap-6 lg:gap-12">
+                        <div className="lg:col-span-5 flex flex-col gap-8 lg:gap-12">
                             {categories.map((cat) => (
                                 <motion.div
                                     key={cat}
-                                    className="transition-all duration-500 ease-in-out"
+                                    className="cursor-pointer transition-all duration-500"
                                     animate={{ 
-                                        opacity: activeCategory === cat ? 1 : 0.3,
+                                        opacity: activeCategory === cat ? 1 : 0.2,
                                         x: activeCategory === cat ? 20 : 0
                                     }}
                                 >
-                                    <h2 className="text-5xl md:text-7xl lg:text-8xl font-serif-italic text-white">
+                                    <h2 
+                                        className={`text-5xl md:text-7xl lg:text-8xl font-serif-italic transition-colors duration-500 ${
+                                            activeCategory === cat ? 'text-white' : 'text-slate-700'
+                                        }`}
+                                    >
                                         {cat}
                                     </h2>
                                 </motion.div>
@@ -115,22 +123,23 @@ const ProcessExpertiseSection = () => {
                         </div>
 
                         {/* Right Side: Tags Cloud */}
-                        <div className="flex flex-wrap justify-end gap-3 md:gap-4 content-center">
+                        <div className="lg:col-span-7 flex flex-wrap justify-start lg:justify-end gap-3 md:gap-4 content-center">
                             {allTags.map((tag, idx) => {
                                 const isActive = tag.category === activeCategory;
                                 return (
                                     <motion.div
                                         key={idx}
-                                        className={`px-4 py-2 md:px-6 md:py-3 rounded-full border transition-all duration-500 text-sm md:text-base font-medium cursor-default
-                                            ${isActive 
-                                                ? 'bg-slate-800 border-white/40 text-white shadow-[0_0_15px_rgba(255,255,255,0.1)]' 
-                                                : 'bg-slate-900/50 border-slate-800 text-slate-600'
-                                            }
-                                        `}
+                                        layout
+                                        initial={false}
                                         animate={{
+                                            backgroundColor: isActive ? 'rgba(34, 211, 238, 0.1)' : 'rgba(15, 23, 42, 0.3)', // cyan-400/10 vs slate-900/30
+                                            borderColor: isActive ? 'rgba(34, 211, 238, 0.4)' : 'rgba(30, 41, 59, 0.5)', // cyan vs slate-800
+                                            color: isActive ? '#22d3ee' : '#475569', // cyan-400 vs slate-600
                                             scale: isActive ? 1.05 : 1,
-                                            opacity: isActive ? 1 : 0.4
+                                            opacity: isActive ? 1 : 0.4,
                                         }}
+                                        transition={{ duration: 0.4 }}
+                                        className={`px-4 py-2 md:px-6 md:py-3 rounded-full border text-sm md:text-base font-medium cursor-default backdrop-blur-md`}
                                     >
                                         {tag.label}
                                     </motion.div>
