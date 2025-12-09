@@ -6,7 +6,6 @@ import { motion, AnimatePresence, useScroll, useTransform, useSpring, useMotionV
 import { wrap } from "@motionone/utils";
 import { 
     CodeIcon, 
-    MobileIcon, 
     DesignIcon, 
     StrategyIcon,
     ArrowRightIcon,
@@ -275,13 +274,15 @@ interface DeliveryItem {
 }
 
 interface DeliverySection {
-    subtitle: string;
+    tagline: string;
+    statement: string;
     items: DeliveryItem[];
 }
 
 const deliveryContent: Record<DeliveryCategory, DeliverySection> = {
     WORDPRESS: {
-        subtitle: "Custom WordPress solutions crafted with speed, security, and scalability in mind.",
+        tagline: "The world's most popular CMS, optimized for performance.",
+        statement: "Custom WordPress solutions crafted with speed, security, and scalability in mind.",
         items: [
             { id: "01", title: "WordPress Development", description: "Custom, fast, and secure WordPress websites developed with clean, scalable code." },
             { id: "02", title: "Theme Customization", description: "Pixel-perfect customization for Elementor, Gutenberg, and any premium theme." },
@@ -291,7 +292,8 @@ const deliveryContent: Record<DeliveryCategory, DeliverySection> = {
         ]
     },
     "WEB DEVELOPMENT": {
-        subtitle: "Modern, responsive, and scalable websites that meet the highest industry standards.",
+        tagline: "Building the foundation of your digital presence.",
+        statement: "Modern, responsive, and scalable websites that meet the highest industry standards.",
         items: [
             { id: "01", title: "Custom Web Development", description: "Fully custom websites built using modern frameworks & clean architecture." },
             { id: "02", title: "Frontend Development", description: "HTML, CSS, JavaScript, React, Tailwind — crafted to perfection." },
@@ -301,7 +303,8 @@ const deliveryContent: Record<DeliveryCategory, DeliverySection> = {
         ]
     },
     SHOPIFY: {
-        subtitle: "Powerful eCommerce stores built for sales, speed, and branding.",
+        tagline: "E-commerce solutions that drive sales and retention.",
+        statement: "Powerful eCommerce stores built for sales, speed, and branding.",
         items: [
             { id: "01", title: "Shopify Store Setup", description: "Complete store setup, theme installation & layout customization." },
             { id: "02", title: "Shopify Custom Theme", description: "Unique and conversion-focused theme development for your brand." },
@@ -311,7 +314,8 @@ const deliveryContent: Record<DeliveryCategory, DeliverySection> = {
         ]
     },
     "APP DEVELOPMENT": {
-        subtitle: "Cross-platform apps designed for seamless user experience across iOS & Android.",
+        tagline: "Native performance on iOS and Android devices.",
+        statement: "Cross-platform apps designed for seamless user experience across iOS & Android.",
         items: [
             { id: "01", title: "Mobile App Development", description: "React Native apps with clean UI and smooth functionality." },
             { id: "02", title: "UI/UX for Mobile", description: "User-friendly, intuitive interfaces designed for engagement." },
@@ -321,7 +325,8 @@ const deliveryContent: Record<DeliveryCategory, DeliverySection> = {
         ]
     },
     SEO: {
-        subtitle: "Data-driven SEO strategies designed to grow your visibility and traffic.",
+        tagline: "Visibility strategies that put you ahead of competitors.",
+        statement: "Data-driven SEO strategies designed to grow your visibility and traffic.",
         items: [
             { id: "01", title: "On-Page SEO", description: "Titles, headings, URLs, meta tags, schema — fully optimized." },
             { id: "02", title: "Technical SEO", description: "Fix crawling, indexing, speed & structure issues." },
@@ -529,7 +534,7 @@ const ServicesPage: React.FC = () => {
             </div>
        </section>
 
-       {/* NEW: WHAT WE DELIVER SECTION (BRAND TRANSFORMATION STYLE) */}
+       {/* NEW: WHAT WE DELIVER SECTION (BRAND TRANSFORMATION STYLE - HIGH CONTRAST) */}
        <section className="py-32 bg-slate-950 relative overflow-hidden border-t border-slate-900">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 max-w-7xl">
                 {/* Header */}
@@ -548,10 +553,10 @@ const ServicesPage: React.FC = () => {
                             <button
                                 key={tab}
                                 onClick={() => setActiveDeliveryTab(tab as DeliveryCategory)}
-                                className={`px-6 py-2.5 rounded-full text-sm font-bold tracking-wider transition-all duration-300 border ${
+                                className={`px-6 py-2.5 rounded-full text-xs md:text-sm font-bold tracking-wider transition-all duration-300 border uppercase ${
                                     activeDeliveryTab === tab
-                                        ? 'bg-cyan-500 text-black border-cyan-500 shadow-[0_0_20px_rgba(34,211,238,0.4)]'
-                                        : 'bg-transparent text-slate-400 border-slate-700 hover:text-white hover:border-slate-500'
+                                        ? 'bg-white text-black border-white shadow-[0_0_20px_rgba(255,255,255,0.4)]'
+                                        : 'bg-transparent text-slate-400 border-slate-700 hover:text-white hover:border-white'
                                 }`}
                             >
                                 {tab}
@@ -561,44 +566,34 @@ const ServicesPage: React.FC = () => {
                 </div>
 
                 {/* Content Area - Split Layout Matching Reference */}
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-start">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-stretch">
                     
-                    {/* LEFT SIDE: BRAND CARD (Dark Premium) */}
-                    <div className="lg:col-span-5 sticky top-32">
+                    {/* LEFT SIDE: BRAND CARD (High Contrast - White) */}
+                    <div className="lg:col-span-6 sticky top-32 h-full">
                         <motion.div
                             key={activeDeliveryTab + "-card"}
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.5 }}
-                            className="bg-[#1e293b] border border-slate-700 p-10 rounded-[2rem] relative overflow-hidden shadow-2xl group min-h-[500px] flex flex-col justify-between hover:shadow-cyan-500/10 transition-shadow duration-500"
+                            className="bg-white p-10 rounded-[2.5rem] relative overflow-hidden shadow-2xl group min-h-[500px] flex flex-col hover:scale-[1.02] transition-transform duration-500"
                         >
-                            {/* Hover Gradient */}
-                            <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/10 rounded-full blur-[80px] pointer-events-none group-hover:bg-cyan-500/20 transition-colors duration-500"></div>
-                            
                             {/* Card Content Structure */}
                             <div className="relative z-10 flex flex-col h-full justify-between">
-                                {/* Top Section: Title & Label */}
-                                <div className="flex justify-between items-start">
-                                    <div className="max-w-[70%]">
-                                        <h2 className="text-4xl md:text-5xl font-black tracking-tighter leading-[0.9] text-white break-words">
-                                            {activeDeliveryTab}
-                                        </h2>
-                                    </div>
-                                    <div className="flex-shrink-0">
-                                        <span className="inline-block px-3 py-1 rounded-full border border-slate-600 bg-slate-800 text-[10px] font-bold uppercase tracking-widest text-cyan-400">
-                                            Solutions
-                                        </span>
-                                    </div>
+                                {/* Top Section: Title (Left) & Tagline (Right) */}
+                                <div className="flex justify-between items-start gap-8">
+                                    <h2 className="text-5xl md:text-6xl font-black tracking-tighter leading-[0.9] text-slate-950 uppercase break-words hyphens-auto">
+                                        {activeDeliveryTab}
+                                    </h2>
+                                    <p className="text-sm font-bold text-slate-500 max-w-[200px] text-right pt-1 leading-snug">
+                                        {deliveryContent[activeDeliveryTab].tagline}
+                                    </p>
                                 </div>
                                 
-                                {/* Middle Section (optional spacing) */}
-                                <div className="flex-grow"></div>
-
-                                {/* Bottom Section: Large Description */}
-                                <div>
-                                    <div className="h-1 w-16 bg-gradient-to-r from-cyan-500 to-purple-500 mb-6"></div>
-                                    <p className="text-2xl font-medium leading-tight tracking-tight text-white">
-                                        {deliveryContent[activeDeliveryTab].subtitle}
+                                {/* Bottom Section: Large Statement pinned to bottom */}
+                                <div className="mt-auto pt-24">
+                                     <div className="h-1.5 w-16 bg-slate-900 mb-6"></div>
+                                     <p className="text-3xl md:text-4xl font-medium leading-[1.1] tracking-tight text-slate-900">
+                                        {deliveryContent[activeDeliveryTab].statement}
                                     </p>
                                 </div>
                             </div>
@@ -606,7 +601,7 @@ const ServicesPage: React.FC = () => {
                     </div>
 
                     {/* RIGHT SIDE: LIST (2 Column Grid, Transparent) */}
-                    <div className="lg:col-span-7">
+                    <div className="lg:col-span-6 flex items-center">
                         <AnimatePresence mode="wait">
                             <motion.div
                                 key={activeDeliveryTab + "-list"}
@@ -614,7 +609,7 @@ const ServicesPage: React.FC = () => {
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: -20 }}
                                 transition={{ duration: 0.4 }}
-                                className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16"
+                                className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16 w-full"
                             >
                                 {deliveryContent[activeDeliveryTab].items.map((item, index) => (
                                     <motion.div
@@ -622,12 +617,12 @@ const ServicesPage: React.FC = () => {
                                         initial={{ opacity: 0 }}
                                         animate={{ opacity: 1 }}
                                         transition={{ delay: index * 0.05 }}
-                                        className="group flex flex-col items-start"
+                                        className="group flex flex-col items-start border-l-2 border-slate-800 pl-6 hover:border-cyan-500 transition-colors duration-300"
                                     >
-                                        <span className="text-5xl md:text-6xl font-light text-slate-800 mb-4 font-mono group-hover:text-cyan-500/20 transition-colors duration-300">
+                                        <span className="text-4xl font-light text-slate-600 mb-2 font-mono group-hover:text-cyan-400 transition-colors duration-300">
                                             {item.id}
                                         </span>
-                                        <h4 className="text-xl font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors leading-tight">
+                                        <h4 className="text-xl font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors leading-tight">
                                             {item.title}
                                         </h4>
                                         <p className="text-slate-400 text-sm leading-relaxed">

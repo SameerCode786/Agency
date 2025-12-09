@@ -1,168 +1,273 @@
 
-import React from 'react';
+import React, { useRef } from 'react';
 import PageWrapper from '../components/PageWrapper';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { useSeoContent } from '../hooks/useSeoContent';
-import ParticleBackground from '../components/ParticleBackground';
 import PremiumButton from '../components/PremiumButton';
 import { Link } from 'react-router-dom';
-import { CodeIcon, DesignIcon, StrategyIcon, RocketIcon, CheckIcon } from '../components/Icons';
+import { StarIcon, ArrowRightIcon, RocketIcon, CodeIcon, DesignIcon, StrategyIcon } from '../components/Icons';
 
-const experienceData = [
-    { year: '2018', role: 'The Beginning', desc: 'Started as a solo freelancer, building custom websites for small businesses and mastering the core web technologies.' },
-    { year: '2020', role: 'Scaling Up', desc: 'Expanded into full-stack development, working with startups to build scalable React applications and robust backends.' },
-    { year: '2022', role: 'Team Leadership', desc: 'Took on lead engineering roles, mentoring developers and architecting complex systems for enterprise clients.' },
-    { year: '2024', role: 'Sameer Digital Lab', desc: 'Founded the agency to bridge the gap between creative design and technical excellence, delivering premium digital solutions.' },
+// --- DATA ---
+
+const stats = [
+    { label: "Site of the Day", value: "5.0", sub: "Google Reviews", icon: <StarIcon className="w-5 h-5 text-yellow-400" /> },
+    { label: "Awwwards", value: "38", sub: "Honorable Mentions", icon: <RocketIcon className="w-5 h-5 text-cyan-400" /> },
+    { label: "Projects", value: "250+", sub: "Successfully Delivered", icon: <CodeIcon className="w-5 h-5 text-purple-400" /> },
+    { label: "Years", value: "10+", sub: "Of Digital Excellence", icon: <StrategyIcon className="w-5 h-5 text-blue-400" /> },
 ];
 
-const values = [
-    {
-        title: "Innovation First",
-        desc: "We don't just follow trends; we set them. Utilizing the latest tech like AI and Web3 to keep you ahead.",
-        icon: <RocketIcon className="w-8 h-8 text-cyan-400" />
-    },
-    {
-        title: "Pixel Perfection",
-        desc: "Every detail matters. From the micro-interactions to the overall layout, we obsess over quality.",
-        icon: <DesignIcon className="w-8 h-8 text-purple-400" />
-    },
-    {
-        title: "Transparent Process",
-        desc: "No hidden costs, no jargon. Just clear communication and a roadmap you can follow.",
-        icon: <StrategyIcon className="w-8 h-8 text-blue-400" />
-    },
-    {
-        title: "Clean Code",
-        desc: "Scalable, maintainable, and fast. We write code that future developers will thank us for.",
-        icon: <CodeIcon className="w-8 h-8 text-green-400" />
-    }
+const teamMembers = [
+    { name: "Sameer", role: "Founder & Lead Developer", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1887&auto=format&fit=crop" },
+    { name: "Natasia", role: "Content Writer", image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1887&auto=format&fit=crop" },
+    { name: "Chris", role: "Accounts & Finance", image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=2070&auto=format&fit=crop" },
+    { name: "Ruby", role: "Design Intern", image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=1887&auto=format&fit=crop" },
+    { name: "Joe", role: "Web Developer", image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1887&auto=format&fit=crop" },
+    { name: "Sarah", role: "UI/UX Designer", image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1964&auto=format&fit=crop" },
+];
+
+const cultureImages = [
+    "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=2070&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=2070&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=2070&auto=format&fit=crop"
 ];
 
 const AboutPage: React.FC = () => {
     const { title, description } = useSeoContent('About');
+    const containerRef = useRef<HTMLDivElement>(null);
+    const { scrollYProgress } = useScroll({ target: containerRef });
+    
+    const y1 = useTransform(scrollYProgress, [0, 1], [0, -100]);
+    const y2 = useTransform(scrollYProgress, [0, 1], [0, 100]);
 
   return (
     <PageWrapper>
       <title>{title}</title>
       <meta name="description" content={description} />
       
-      {/* HERO SECTION */}
-      <section className="relative pt-40 pb-24 bg-slate-950 overflow-hidden">
-        <ParticleBackground />
-        <div className="absolute inset-0 bg-slate-950/80 z-0"></div>
-        
+      {/* 1. HERO SECTION: "Good design makes life better." */}
+      <section ref={containerRef} className="relative pt-32 pb-24 lg:pt-48 lg:pb-32 bg-slate-950 overflow-hidden">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                <motion.div
-                    initial={{ opacity: 0, x: -50 }}
-                    animate={{ opacity: 1, x: 0 }}
+            <div className="text-center mb-20">
+                <motion.h1 
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8 }}
+                    className="text-5xl md:text-7xl lg:text-9xl font-bold text-white tracking-tighter leading-[0.9]"
                 >
-                    <span className="text-cyan-400 font-bold tracking-[0.2em] uppercase text-sm mb-4 block">Who We Are</span>
-                    <h1 className="text-5xl md:text-7xl font-bold text-white mb-8 leading-tight">
-                        The Minds Behind <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">The Magic</span>
-                    </h1>
-                    <p className="text-slate-400 text-lg leading-relaxed mb-8">
-                        Sameer Digital Lab is more than just a dev shop. We are a collective of creative technologists, designers, and strategists passionate about building the future of the web. 
-                    </p>
-                    <p className="text-slate-400 text-lg leading-relaxed mb-8">
-                        Founded by Sameer, a veteran developer with a vision to merge aesthetic beauty with engineering rigor, we help ambitious brands transform their digital presence.
-                    </p>
-                    <Link to="/contact">
-                        <PremiumButton>Work With Us</PremiumButton>
-                    </Link>
-                </motion.div>
+                    Good design <br />
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500">makes life better.</span>
+                </motion.h1>
+            </div>
 
-                <motion.div
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.8, delay: 0.2 }}
-                    className="relative"
-                >
-                    <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500/20 to-purple-500/20 rounded-3xl blur-2xl"></div>
-                    <div className="relative rounded-3xl overflow-hidden border border-slate-700 shadow-2xl">
-                        <img 
-                            src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070&auto=format&fit=crop" 
-                            alt="Team Collaboration" 
-                            className="w-full h-full object-cover"
-                        />
-                        <div className="absolute inset-0 bg-slate-950/30"></div>
-                    </div>
+            {/* Parallax Image Grid */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 h-[50vh] md:h-[60vh] overflow-hidden">
+                <motion.div style={{ y: y2 }} className="flex flex-col gap-4 mt-12">
+                    <img src={cultureImages[0]} alt="Office" className="rounded-2xl w-full h-64 object-cover opacity-80 hover:opacity-100 transition-opacity duration-500" />
+                    <img src={cultureImages[1]} alt="Team" className="rounded-2xl w-full h-48 object-cover opacity-80 hover:opacity-100 transition-opacity duration-500" />
                 </motion.div>
+                <motion.div style={{ y: y1 }} className="flex flex-col gap-4">
+                    <img src={cultureImages[2]} alt="Meeting" className="rounded-2xl w-full h-80 object-cover opacity-80 hover:opacity-100 transition-opacity duration-500" />
+                    <img src={cultureImages[3]} alt="Work" className="rounded-2xl w-full h-56 object-cover opacity-80 hover:opacity-100 transition-opacity duration-500" />
+                </motion.div>
+                <motion.div style={{ y: y2 }} className="hidden md:flex flex-col gap-4 mt-8">
+                    <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=2070&auto=format&fit=crop" alt="Strategy" className="rounded-2xl w-full h-56 object-cover opacity-80 hover:opacity-100 transition-opacity duration-500" />
+                    <img src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=2070&auto=format&fit=crop" alt="Coding" className="rounded-2xl w-full h-72 object-cover opacity-80 hover:opacity-100 transition-opacity duration-500" />
+                </motion.div>
+                <motion.div style={{ y: y1 }} className="hidden md:flex flex-col gap-4">
+                    <img src="https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?q=80&w=2070&auto=format&fit=crop" alt="Discussion" className="rounded-2xl w-full h-64 object-cover opacity-80 hover:opacity-100 transition-opacity duration-500" />
+                    <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2071&auto=format&fit=crop" alt="Laughing" className="rounded-2xl w-full h-48 object-cover opacity-80 hover:opacity-100 transition-opacity duration-500" />
+                </motion.div>
+            </div>
+            
+            <div className="flex justify-center mt-12">
+                <Link to="/about">
+                    <PremiumButton icon={false} className="!px-8 !py-3 text-sm">About us</PremiumButton>
+                </Link>
             </div>
         </div>
       </section>
 
-      {/* DIGITAL DNA (VALUES) */}
-      <section className="py-24 bg-slate-900 border-y border-slate-800 relative">
+      {/* 2. INTRO & STATS */}
+      <section className="py-24 bg-slate-900 border-t border-slate-800">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="text-center mb-16">
-                  <h2 className="text-4xl font-bold text-white mb-4">Our Digital DNA</h2>
-                  <p className="text-slate-400">The core principles that drive every pixel and line of code.</p>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-24">
+                  <div className="text-slate-500 font-bold uppercase tracking-widest text-sm">About Us</div>
+                  <div>
+                      <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight mb-8">
+                          Expert web designers and web developers trained in the digital industry who offer a bespoke, professional and trustworthy service.
+                      </h2>
+                      <div className="space-y-6 text-slate-400 text-lg leading-relaxed">
+                          <p>
+                              We are an Award-Winning Branding and Web Design Agency based in Cyberspace, specialising in Web Design, Web Development, eCommerce and Organic SEO.
+                          </p>
+                          <p>
+                              With over a decade of experience, Sameer Digital Lab is an energetic, fresh and vibrant team offering creative talent, industry knowledge and extremely high standards.
+                          </p>
+                          <p>
+                              We work with ambitious start-up businesses through to large global organisations such as Blackberry, NHS and L'Occitane so we can tailor our services to suit your needs.
+                          </p>
+                      </div>
+                  </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                  {values.map((val, i) => (
-                      <motion.div
+              {/* Stats Row */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-8 border-t border-slate-800 pt-12">
+                  {stats.map((stat, i) => (
+                      <motion.div 
                         key={i}
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: i * 0.1 }}
-                        className="bg-slate-950/50 p-8 rounded-2xl border border-slate-800 hover:border-cyan-500/30 transition-all hover:-translate-y-2 group"
+                        className="text-center"
                       >
-                          <div className="mb-6 p-4 rounded-full bg-slate-900 border border-slate-800 w-fit group-hover:scale-110 transition-transform">
-                              {val.icon}
+                          <div className="flex justify-center mb-4">
+                              <div className="p-3 bg-slate-950 rounded-full border border-slate-800 shadow-lg shadow-cyan-500/10">
+                                  {stat.icon}
+                              </div>
                           </div>
-                          <h3 className="text-xl font-bold text-white mb-3">{val.title}</h3>
-                          <p className="text-slate-400 text-sm leading-relaxed">{val.desc}</p>
+                          <div className="text-3xl md:text-4xl font-bold text-white mb-2">{stat.value}</div>
+                          <div className="text-xs md:text-sm font-bold text-slate-500 uppercase tracking-wider">{stat.sub}</div>
                       </motion.div>
                   ))}
               </div>
           </div>
       </section>
 
-      {/* JOURNEY TIMELINE */}
-      <section className="py-24 bg-slate-950 relative overflow-hidden">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      {/* 3. VIDEO BREAK */}
+      <section className="bg-slate-950">
+          <div className="w-full h-[60vh] md:h-[80vh] relative">
+              <video 
+                  autoPlay 
+                  loop 
+                  muted 
+                  playsInline 
+                  className="w-full h-full object-cover opacity-60"
+              >
+                  <source src="https://res.cloudinary.com/dow2sbjsp/video/upload/v1763557903/Website_Background_Videos_Download_The_BEST_Free_4k_Stock_Video_io7gxb.mp4" type="video/mp4" />
+              </video>
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-slate-950/20"></div>
+              
+              {/* Play Button Overlay (Visual only) */}
+              <div className="absolute bottom-8 right-8 flex items-center gap-4">
+                  <div className="px-4 py-2 bg-black/50 backdrop-blur rounded-full text-white text-xs font-bold uppercase tracking-widest border border-white/20">
+                      Showreel 2024
+                  </div>
+              </div>
+          </div>
+      </section>
+
+      {/* 4. TEAM SECTION: "Multiple personalities, No egos." */}
+      <section className="py-32 bg-slate-950">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center mb-20">
-                  <span className="text-purple-400 font-bold tracking-widest uppercase text-sm mb-4 block">Evolution</span>
-                  <h2 className="text-4xl md:text-5xl font-bold text-white">Our Journey</h2>
+                  <span className="text-cyan-400 font-bold uppercase tracking-widest text-sm mb-4 block">Our Team</span>
+                  <h2 className="text-4xl md:text-6xl font-bold text-white">
+                      Multiple personalities, <br />
+                      <span className="text-slate-600">No egos.</span>
+                  </h2>
               </div>
 
-              <div className="relative max-w-4xl mx-auto">
-                  {/* Central Line */}
-                  <div className="absolute left-[15px] md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-cyan-500 via-purple-500 to-slate-800 md:-translate-x-1/2"></div>
-
-                  <div className="space-y-12">
-                      {experienceData.map((item, index) => (
-                          <motion.div 
-                            key={index}
-                            initial={{ opacity: 0, y: 50 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6 }}
-                            className={`flex flex-col md:flex-row items-start md:items-center gap-8 ${index % 2 === 0 ? 'md:flex-row-reverse' : ''}`}
-                          >
-                              <div className="hidden md:block w-1/2"></div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {teamMembers.map((member, i) => (
+                      <motion.div
+                          key={i}
+                          initial={{ opacity: 0, scale: 0.9 }}
+                          whileInView={{ opacity: 1, scale: 1 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: i * 0.1 }}
+                          className="group relative"
+                      >
+                          <div className="relative overflow-hidden rounded-3xl bg-slate-900 border border-slate-800 aspect-[4/5]">
+                              <img 
+                                  src={member.image} 
+                                  alt={member.name} 
+                                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0" 
+                              />
+                              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity"></div>
                               
-                              {/* Timeline Node */}
-                              <div className="z-10 flex-shrink-0 w-8 h-8 rounded-full bg-slate-950 border-4 border-cyan-500 shadow-[0_0_15px_rgba(34,211,238,0.5)]"></div>
-                              
-                              {/* Content Card */}
-                              <div className="w-full md:w-1/2 pl-8 md:pl-0 md:pr-0">
-                                  <div className={`bg-slate-900 border border-slate-800 p-6 rounded-xl hover:border-cyan-500/30 transition-colors relative ${index % 2 === 0 ? 'md:mr-8' : 'md:ml-8'}`}>
-                                      {/* Arrow for Desktop */}
-                                      <div className={`hidden md:block absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-slate-900 border-l border-t border-slate-800 transform rotate-45 ${index % 2 === 0 ? '-right-2.5 border-r border-b border-l-0 border-t-0 bg-slate-900' : '-left-2.5'}`}></div>
-                                      
-                                      <span className="text-cyan-400 font-bold text-xl mb-2 block">{item.year}</span>
-                                      <h3 className="text-white text-lg font-bold mb-2">{item.role}</h3>
-                                      <p className="text-slate-400 text-sm leading-relaxed">{item.desc}</p>
+                              <div className="absolute top-4 right-4">
+                                  <div className="bg-white/10 backdrop-blur p-2 rounded-full border border-white/20 opacity-0 group-hover:opacity-100 transition-all translate-y-4 group-hover:translate-y-0 duration-300">
+                                      <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
                                   </div>
                               </div>
-                          </motion.div>
-                      ))}
+
+                              <div className="absolute bottom-0 left-0 p-8 w-full">
+                                  <h3 className="text-2xl font-bold text-white mb-1 translate-y-4 group-hover:translate-y-0 transition-transform duration-300">{member.name}</h3>
+                                  <p className="text-cyan-400 text-sm font-bold uppercase tracking-wider translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75">{member.role}</p>
+                              </div>
+                          </div>
+                      </motion.div>
+                  ))}
+              </div>
+
+              <div className="flex justify-center mt-16">
+                  <Link to="/contact">
+                      <PremiumButton icon={false}>Meet the whole Team</PremiumButton>
+                  </Link>
+              </div>
+          </div>
+      </section>
+
+      {/* 5. CULTURE SECTION */}
+      <section className="py-24 bg-slate-900 border-t border-slate-800 relative overflow-hidden">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                  
+                  {/* Image Block */}
+                  <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-cyan-500/10 order-2 lg:order-1">
+                      <img 
+                          src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070&auto=format&fit=crop" 
+                          alt="Our Culture" 
+                          className="w-full h-full object-cover min-h-[500px]"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-tr from-slate-900/60 to-transparent"></div>
+                  </div>
+
+                  {/* Text Block */}
+                  <div className="order-1 lg:order-2">
+                      <div className="mb-6">
+                          <span className="text-purple-400 font-bold uppercase tracking-widest text-sm mb-2 block">Our Culture</span>
+                          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
+                              We've created an environment where everyone feels comfortable and open.
+                          </h2>
+                      </div>
+                      
+                      <div className="space-y-6 text-slate-400 text-lg leading-relaxed mb-8">
+                          <p>
+                              We produce good work for good people, and with the idea that staff and the client will be happy throughout the full process. This in return will bring more work our way, whether that's via recommendation or further work from that client.
+                          </p>
+                      </div>
+
+                      {/* Founder Quote Box */}
+                      <div className="bg-lime-300/10 border border-lime-300/30 p-6 rounded-2xl relative">
+                          <div className="flex gap-4">
+                              <div className="text-lime-300 text-4xl leading-none">“</div>
+                              <div>
+                                  <p className="text-lime-200 font-medium italic mb-4">
+                                      My vision has always been to look after the clients we work with, but to also look after the staff just as much. That will get the best results for everyone.
+                                  </p>
+                                  <div className="flex items-center gap-3">
+                                      <div className="w-10 h-10 rounded-full bg-slate-800 overflow-hidden">
+                                          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1887&auto=format&fit=crop" alt="Sameer" className="w-full h-full object-cover" />
+                                      </div>
+                                      <div>
+                                          <p className="text-white font-bold text-sm">Sameer</p>
+                                          <p className="text-lime-300 text-xs uppercase tracking-wider">Founder</p>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      
+                      <div className="mt-8 flex justify-end">
+                          <Link to="/about">
+                              <button className="flex items-center gap-2 text-white border border-slate-700 rounded-full px-6 py-2 hover:bg-slate-800 transition-colors text-sm">
+                                  Learn about our culture <ArrowRightIcon className="w-4 h-4 -rotate-45"/>
+                              </button>
+                          </Link>
+                      </div>
                   </div>
               </div>
           </div>
