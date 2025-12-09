@@ -2,7 +2,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import PageWrapper from '../components/PageWrapper';
 import PremiumButton from '../components/PremiumButton';
-import { motion, AnimatePresence, useScroll, useTransform, useSpring, useMotionValue, useVelocity, useAnimationFrame } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform, useSpring, useMotionValue, useVelocity, useAnimationFrame, MotionValue } from 'framer-motion';
 import { wrap } from "@motionone/utils";
 import { 
     CodeIcon, 
@@ -219,6 +219,153 @@ function ParallaxText({ children, baseVelocity = 100 }: ParallaxTextProps) {
     );
 }
 
+// --- NEW 3D PROCESS CARD COMPONENT ---
+interface ProcessCardProps {
+    i: number;
+    title: string;
+    subtitle: string;
+    description: string;
+    points: string[];
+    icon: React.ReactNode;
+    scrollYProgress: MotionValue<number>;
+    total: number;
+    color: string;
+}
+
+const ThreeDProcessCard: React.FC<ProcessCardProps> = ({ i, title, subtitle, description, points, icon, scrollYProgress, total, color }) => {
+    // Map scroll progress [0, 1] to a continuous step value [0, total - 1]
+    const step = useTransform(scrollYProgress, [0, 1], [0, total - 1]);
+
+    // TRANSFORMATION LOGIC
+    // i is the card index (0, 1, 2)
+    // When step == i, the card is in the center (Active).
+    // When step < i (e.g., step 0, card 1), card is "future" -> Should be bottom-right, small.
+    // When step > i (e.g., step 1, card 0), card is "past" -> Should be top-left, exiting.
+
+    // Input Range relative to index:
+    // [i - 1, i, i + 1] -> [Past, Active, Future]
+    // We add buffer ranges for smoothness.
+    
+    // X Position:
+    // Future (i+1): 60% (Right)
+    // Active (i): 0% (Center)
+    // Past (i-1): -60% (Left)
+    const x = useTransform(step, 
+        [i - 1, i, i + 1], 
+        ['-80%', '0%', '80%'] 
+    );
+
+    // Y Position:
+    // Future: 20% (Bottom)
+    // Active: 0% (Center)
+    // Past: -40% (Top)
+    const y = useTransform(step,
+        [i - 1, i, i + 1],
+        ['-50%', '0%', '30%']
+    );
+
+    // Scale:
+    // Future: 0.7
+    // Active: 1.0
+    // Past: 0.7
+    const scale = useTransform(step,
+        [i - 1, i, i + 1],
+        [0.6, 1, 0.6]
+    );
+
+    // Opacity:
+    // Future: 0.5 (Visible but dim)
+    // Active: 1
+    // Past: 0 (Fade out as it goes top left)
+    const opacity = useTransform(step,
+        [i - 0.8, i, i + 0.8],
+        [0, 1, 0.4]
+    );
+
+    // Rotation: Adds 3D feel
+    const rotateY = useTransform(step,
+        [i - 1, i, i + 1],
+        [15, 0, -15]
+    );
+    
+    const rotateZ = useTransform(step,
+        [i - 1, i, i + 1],
+        [-5, 0, 5]
+    );
+
+    // Z-Index: Ensures active card is always on top visually
+    const zIndex = useTransform(step, (currentStep) => {
+        const distance = Math.abs(currentStep - i);
+        return 100 - Math.round(distance * 10);
+    });
+
+    return (
+        <motion.div 
+            style={{ 
+                x, 
+                y, 
+                scale, 
+                opacity, 
+                rotateY, 
+                rotateZ,
+                zIndex,
+                position: 'absolute',
+            }}
+            className="w-full max-w-5xl px-4 md:px-0"
+        >
+            <div className="relative flex flex-col md:flex-row w-full bg-slate-900/90 backdrop-blur-xl border border-slate-700/50 rounded-[2.5rem] p-8 md:p-12 overflow-hidden shadow-2xl shadow-black/50 origin-center h-[70vh] md:h-[60vh]">
+                
+                {/* 3D Depth Border Gradient */}
+                <div className="absolute inset-0 rounded-[2.5rem] border-2 border-transparent bg-gradient-to-br from-white/10 to-transparent opacity-50 pointer-events-none" style={{ maskImage: 'linear-gradient(white, white), linear-gradient(white, white)', maskClip: 'content-box, border-box', maskComposite: 'xor' }}></div>
+
+                {/* Colored Glow */}
+                <div className={`absolute -top-40 -right-40 w-96 h-96 ${color} rounded-full blur-[150px] opacity-20 pointer-events-none`}></div>
+                <div className={`absolute -bottom-40 -left-40 w-96 h-96 ${color} rounded-full blur-[150px] opacity-10 pointer-events-none`}></div>
+
+                {/* LEFT SIDE: ROTATING ICON */}
+                <div className="w-full md:w-1/3 flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-slate-800 pb-8 md:pb-0 md:pr-12 relative z-10">
+                    <div className="relative w-32 h-32 md:w-40 md:h-40 flex items-center justify-center mb-6">
+                        {/* Rotating Rings */}
+                        <motion.div 
+                            animate={{ rotate: 360 }}
+                            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                            className="absolute inset-0 rounded-full border border-slate-700/50 border-t-white/30 border-l-white/30"
+                        />
+                        <motion.div 
+                            animate={{ rotate: -360 }}
+                            transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+                            className="absolute inset-4 rounded-full border border-slate-700/50 border-b-white/30 border-r-white/30"
+                        />
+                         <div className={`absolute inset-0 rounded-full ${color} opacity-20 blur-2xl animate-pulse`}></div>
+                        
+                        <div className="relative z-10 bg-slate-950 rounded-full p-6 border border-slate-700 shadow-xl">
+                            {icon}
+                        </div>
+                    </div>
+                    <h3 className="text-3xl md:text-5xl font-black text-white tracking-tighter uppercase text-center">{title}</h3>
+                </div>
+
+                {/* RIGHT SIDE: CONTENT */}
+                <div className="w-full md:w-2/3 pt-8 md:pt-0 md:pl-12 flex flex-col justify-center relative z-10">
+                    <h4 className="text-lg md:text-xl font-bold text-cyan-400 mb-6 font-mono tracking-wide">{subtitle}</h4>
+                    <p className="text-slate-300 text-sm md:text-lg leading-relaxed mb-8">
+                        {description}
+                    </p>
+                    
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6">
+                        {points.map((point, idx) => (
+                             <div key={idx} className="flex items-start gap-3">
+                                <div className={`mt-1.5 w-1.5 h-1.5 rounded-full ${color}`}></div>
+                                <span className="text-slate-400 text-xs md:text-sm font-medium">{point}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </motion.div>
+    )
+}
+
 const buildProcess = [
     {
         title: "STRATEGY",
@@ -230,9 +377,8 @@ const buildProcess = [
             "Product & digital roadmaps",
             "Clear planning before design starts"
         ],
-        icon: <StrategyIcon className="w-10 h-10 text-cyan-400" />,
-        borderColor: "hover:border-cyan-500/50",
-        shadowColor: "hover:shadow-cyan-500/20"
+        icon: <StrategyIcon className="w-12 h-12 text-cyan-400" />,
+        color: "bg-cyan-500"
     },
     {
         title: "DESIGN",
@@ -244,9 +390,8 @@ const buildProcess = [
             "Design systems for consistency",
             "Intuitive, friendly user journeys"
         ],
-        icon: <DesignIcon className="w-10 h-10 text-purple-400" />,
-        borderColor: "hover:border-purple-500/50",
-        shadowColor: "hover:shadow-purple-500/20"
+        icon: <DesignIcon className="w-12 h-12 text-purple-400" />,
+        color: "bg-purple-500"
     },
     {
         title: "DEVELOPMENT",
@@ -258,9 +403,8 @@ const buildProcess = [
             "Clean, scalable code",
             "Speed, SEO & security optimized"
         ],
-        icon: <CodeIcon className="w-10 h-10 text-blue-400" />,
-        borderColor: "hover:border-blue-500/50",
-        shadowColor: "hover:shadow-blue-500/20"
+        icon: <CodeIcon className="w-12 h-12 text-blue-400" />,
+        color: "bg-blue-500"
     }
 ];
 
@@ -376,6 +520,13 @@ const ServicesPage: React.FC = () => {
     const [activeDeliveryTab, setActiveDeliveryTab] = useState<DeliveryCategory>('WORDPRESS');
     const [hoveredTech, setHoveredTech] = useState("MySQL");
 
+    // Refs for 3D Carousel Animation
+    const containerRef = useRef(null);
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ['start start', 'end end']
+    });
+
     return (
     <PageWrapper>
        <title>{title}</title>
@@ -482,54 +633,39 @@ const ServicesPage: React.FC = () => {
             <ParallaxText baseVelocity={2}>DESIGN • DEVELOPMENT • STRATEGY • GROWTH • </ParallaxText>
        </section>
 
-       {/* NEW SECTION: HOW WE BUILD */}
-       <section className="py-24 bg-slate-950 relative overflow-hidden">
-            {/* Background Atmosphere */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-indigo-600/5 rounded-full blur-[120px] pointer-events-none"></div>
-
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                <motion.div 
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    className="text-center mb-16"
-                >
-                    <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">How We Build Digital Experiences That Perform</h2>
-                    <p className="text-slate-400 max-w-3xl mx-auto text-lg leading-relaxed">
-                        At Sameer Digital Lab, every project starts with a proven digital process — backed by strategy, creativity, and modern development. We don’t guess. We research, plan, test, and deliver solutions that actually move your business forward.
-                    </p>
-                </motion.div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {buildProcess.map((item, index) => (
-                        <motion.div
-                            key={index}
-                            initial={{ opacity: 0, y: 50 }}
+       {/* NEW SECTION: 3D SCROLL CAROUSEL */}
+       <section className="bg-slate-950 relative" ref={containerRef}>
+            {/* The container needs to be very tall to allow scrolling through the stages */}
+            <div className="h-[300vh] relative">
+                <div className="sticky top-0 h-screen overflow-hidden flex flex-col items-center justify-center perspective-1000">
+                    
+                    {/* Section Header (Fixed at top until scroll ends) */}
+                    <div className="absolute top-10 md:top-20 text-center z-20 px-4">
+                         <motion.div 
+                            initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
-                            transition={{ delay: index * 0.2, duration: 0.6 }}
-                            className={`group bg-slate-900/40 backdrop-blur-md border border-slate-800 rounded-3xl p-8 hover:bg-slate-900/80 transition-all duration-500 ${item.borderColor} ${item.shadowColor} hover:shadow-2xl hover:-translate-y-2`}
                         >
-                            <div className="mb-6 p-4 bg-slate-950 border border-slate-800 rounded-2xl w-fit shadow-lg">
-                                {item.icon}
-                            </div>
-                            <h3 className="text-2xl font-bold text-white mb-3 tracking-wide">{item.title}</h3>
-                            <h4 className="text-sm font-bold text-slate-300 mb-4 uppercase tracking-wider">{item.subtitle}</h4>
-                            <p className="text-slate-400 leading-relaxed mb-6 text-sm">
-                                {item.description}
+                            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">How We Build Digital Experiences</h2>
+                            <p className="text-slate-400 max-w-2xl mx-auto text-lg">
+                                Proven digital process backed by strategy, creativity, and modern development.
                             </p>
-                            <ul className="space-y-3">
-                                {item.points.map((point, idx) => (
-                                    <li key={idx} className="flex items-start gap-3 text-sm text-slate-300">
-                                        <div className="mt-0.5 text-cyan-400">
-                                            <CheckIcon className="w-4 h-4" />
-                                        </div>
-                                        <span>{point}</span>
-                                    </li>
-                                ))}
-                            </ul>
                         </motion.div>
-                    ))}
+                    </div>
+
+                    {/* 3D Cards Container */}
+                    <div className="relative w-full h-full flex items-center justify-center perspective-1000 transform-style-3d">
+                        {buildProcess.map((item, index) => (
+                            <ThreeDProcessCard 
+                                key={index} 
+                                i={index} 
+                                {...item} 
+                                scrollYProgress={scrollYProgress}
+                                total={buildProcess.length}
+                            />
+                        ))}
+                    </div>
+
                 </div>
             </div>
        </section>
