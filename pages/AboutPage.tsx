@@ -5,15 +5,15 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { useSeoContent } from '../hooks/useSeoContent';
 import PremiumButton from '../components/PremiumButton';
 import { Link } from 'react-router-dom';
-import { StarIcon, ArrowRightIcon, RocketIcon, CodeIcon, DesignIcon, StrategyIcon } from '../components/Icons';
+import { StarIcon, ArrowRightIcon, RocketIcon, CodeIcon, StrategyIcon } from '../components/Icons';
 
 // --- DATA ---
 
 const stats = [
-    { label: "Site of the Day", value: "5.0", sub: "Google Reviews", icon: <StarIcon className="w-5 h-5 text-yellow-400" /> },
-    { label: "Awwwards", value: "38", sub: "Honorable Mentions", icon: <RocketIcon className="w-5 h-5 text-cyan-400" /> },
-    { label: "Projects", value: "250+", sub: "Successfully Delivered", icon: <CodeIcon className="w-5 h-5 text-purple-400" /> },
-    { label: "Years", value: "10+", sub: "Of Digital Excellence", icon: <StrategyIcon className="w-5 h-5 text-blue-400" /> },
+    { label: "Site of the Day", value: "5.0", sub: "Google Reviews", icon: <StarIcon className="w-6 h-6 text-yellow-400" /> },
+    { label: "Awwwards", value: "38", sub: "Honorable Mentions", icon: <RocketIcon className="w-6 h-6 text-cyan-400" /> },
+    { label: "Projects", value: "250+", sub: "Successfully Delivered", icon: <CodeIcon className="w-6 h-6 text-purple-400" /> },
+    { label: "Years", value: "10+", sub: "Of Digital Excellence", icon: <StrategyIcon className="w-6 h-6 text-blue-400" /> },
 ];
 
 const teamMembers = [
@@ -34,11 +34,24 @@ const cultureImages = [
 
 const AboutPage: React.FC = () => {
     const { title, description } = useSeoContent('About');
+    
+    // Header Scroll Logic
     const containerRef = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll({ target: containerRef });
-    
     const y1 = useTransform(scrollYProgress, [0, 1], [0, -100]);
     const y2 = useTransform(scrollYProgress, [0, 1], [0, 100]);
+
+    // Video Scroll Logic (Expansion Effect)
+    const videoSectionRef = useRef<HTMLDivElement>(null);
+    const { scrollYProgress: videoScrollProgress } = useScroll({
+        target: videoSectionRef,
+        offset: ["start end", "center center"]
+    });
+
+    // Animate from scale 0.8 (small) to 1 (full width)
+    const videoScale = useTransform(videoScrollProgress, [0, 1], [0.8, 1]);
+    const videoRadius = useTransform(videoScrollProgress, [0, 1], ["40px", "0px"]);
+    const videoOpacity = useTransform(videoScrollProgress, [0, 0.2], [0.5, 1]);
 
   return (
     <PageWrapper>
@@ -88,78 +101,100 @@ const AboutPage: React.FC = () => {
         </div>
       </section>
 
-      {/* 2. INTRO & STATS */}
-      <section className="py-24 bg-slate-900 border-t border-slate-800">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-24">
-                  <div className="text-slate-500 font-bold uppercase tracking-widest text-sm">About Us</div>
-                  <div>
-                      <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight mb-8">
-                          Expert web designers and web developers trained in the digital industry who offer a bespoke, professional and trustworthy service.
-                      </h2>
-                      <div className="space-y-6 text-slate-400 text-lg leading-relaxed">
-                          <p>
-                              We are an Award-Winning Branding and Web Design Agency based in Cyberspace, specialising in Web Design, Web Development, eCommerce and Organic SEO.
-                          </p>
-                          <p>
-                              With over a decade of experience, Sameer Digital Lab is an energetic, fresh and vibrant team offering creative talent, industry knowledge and extremely high standards.
-                          </p>
-                          <p>
-                              We work with ambitious start-up businesses through to large global organisations such as Blackberry, NHS and L'Occitane so we can tailor our services to suit your needs.
-                          </p>
-                      </div>
-                  </div>
-              </div>
-
-              {/* Stats Row */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-8 border-t border-slate-800 pt-12">
-                  {stats.map((stat, i) => (
-                      <motion.div 
-                        key={i}
+      {/* 2. RE-DESIGNED INTRO & STATS SECTION */}
+      <section className="py-32 bg-slate-950 border-t border-slate-900 relative">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+              {/* Centered Intro Text */}
+              <div className="text-center max-w-4xl mx-auto mb-20">
+                    <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
+                    >
+                        <span className="inline-block px-4 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-cyan-400 font-bold tracking-[0.2em] uppercase text-xs mb-8 shadow-lg shadow-cyan-500/10">
+                            Our Identity
+                        </span>
+                        <h2 className="text-4xl md:text-6xl font-bold text-white leading-tight mb-8">
+                            We are expert <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500">web creators</span> dedicated to bespoke, professional service.
+                        </h2>
+                        <p className="text-xl text-slate-400 leading-relaxed font-light">
+                            With over a decade of experience, Sameer Digital Lab is an energetic, fresh, and vibrant team offering creative talent, industry knowledge, and extremely high standards. We transform ambitious start-ups and global brands like Blackberry and NHS into digital leaders.
+                        </p>
+                    </motion.div>
+              </div>
+
+              {/* Stats Grid - Modern Cards */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-24">
+                  {stats.map((stat, i) => (
+                      <motion.div 
+                        key={i}
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
                         transition={{ delay: i * 0.1 }}
-                        className="text-center"
+                        className="group relative bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-3xl p-8 hover:bg-slate-900 transition-colors duration-500 overflow-hidden"
                       >
-                          <div className="flex justify-center mb-4">
-                              <div className="p-3 bg-slate-950 rounded-full border border-slate-800 shadow-lg shadow-cyan-500/10">
-                                  {stat.icon}
-                              </div>
+                          {/* Gradient Border on Hover */}
+                          <div className="absolute inset-0 border-2 border-transparent group-hover:border-cyan-500/30 rounded-3xl transition-colors duration-500 pointer-events-none"></div>
+                          <div className="absolute -right-4 -top-4 w-24 h-24 bg-gradient-to-br from-cyan-500/20 to-purple-500/20 blur-2xl rounded-full group-hover:opacity-100 opacity-0 transition-opacity duration-500"></div>
+
+                          <div className="flex items-center justify-between mb-4">
+                                <div className="p-3 bg-slate-950 border border-slate-800 rounded-2xl group-hover:scale-110 transition-transform duration-300 shadow-lg group-hover:shadow-cyan-500/20">
+                                    {stat.icon}
+                                </div>
                           </div>
-                          <div className="text-3xl md:text-4xl font-bold text-white mb-2">{stat.value}</div>
-                          <div className="text-xs md:text-sm font-bold text-slate-500 uppercase tracking-wider">{stat.sub}</div>
+                          <div className="text-4xl md:text-5xl font-bold text-white mb-2 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-slate-400 transition-all">
+                              {stat.value}
+                          </div>
+                          <div className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-1">{stat.label}</div>
+                          <div className="text-xs text-slate-600 font-medium">{stat.sub}</div>
                       </motion.div>
                   ))}
               </div>
           </div>
       </section>
 
-      {/* 3. VIDEO BREAK */}
-      <section className="bg-slate-950">
-          <div className="w-full h-[60vh] md:h-[80vh] relative">
+      {/* 3. EXPANDING VIDEO SECTION (Ander sa Baher Animation) */}
+      <section ref={videoSectionRef} className="pb-32 bg-slate-950 relative overflow-hidden">
+          <motion.div 
+            style={{ 
+                scale: videoScale, 
+                borderRadius: videoRadius,
+                opacity: videoOpacity
+            }}
+            className="w-full h-[60vh] md:h-[90vh] relative mx-auto overflow-hidden shadow-2xl shadow-cyan-500/10"
+          >
               <video 
                   autoPlay 
                   loop 
                   muted 
                   playsInline 
-                  className="w-full h-full object-cover opacity-60"
+                  className="w-full h-full object-cover"
               >
-                  <source src="https://res.cloudinary.com/dow2sbjsp/video/upload/v1763557903/Website_Background_Videos_Download_The_BEST_Free_4k_Stock_Video_io7gxb.mp4" type="video/mp4" />
+                  <source src="https://res.cloudinary.com/dow2sbjsp/video/upload/v1765300961/shape-showreel-2024_looping-v3_czfqgh.mp4" type="video/mp4" />
               </video>
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-slate-950/20"></div>
               
-              {/* Play Button Overlay (Visual only) */}
-              <div className="absolute bottom-8 right-8 flex items-center gap-4">
-                  <div className="px-4 py-2 bg-black/50 backdrop-blur rounded-full text-white text-xs font-bold uppercase tracking-widest border border-white/20">
-                      Showreel 2024
-                  </div>
+              {/* Gradient Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-slate-950/20 opacity-60"></div>
+              
+              {/* Content Overlay */}
+              <div className="absolute bottom-10 left-0 right-0 text-center z-10 p-4">
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5 }}
+                    className="inline-block"
+                  >
+                      <div className="px-6 py-3 bg-black/40 backdrop-blur-md border border-white/10 rounded-full text-white text-sm font-bold uppercase tracking-widest hover:bg-black/60 transition-colors cursor-pointer">
+                          Watch Showreel 2024
+                      </div>
+                  </motion.div>
               </div>
-          </div>
+          </motion.div>
       </section>
 
       {/* 4. TEAM SECTION: "Multiple personalities, No egos." */}
-      <section className="py-32 bg-slate-950">
+      <section className="py-32 bg-slate-950 border-t border-slate-900">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center mb-20">
                   <span className="text-cyan-400 font-bold uppercase tracking-widest text-sm mb-4 block">Our Team</span>
