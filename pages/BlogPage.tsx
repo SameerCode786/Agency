@@ -14,7 +14,7 @@ const blogPosts = [
   { id: 3, title: 'Why Your Business Needs a Mobile App', category: 'Business', image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=2070&auto=format&fit=crop', date: 'Sep 15, 2024', excerpt: 'In a mobile-first world, having a dedicated app can be a game-changer for retention and engagement.' },
   { id: 4, title: 'Mastering React Hooks: A Deep Dive', category: 'Technology', image: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=2070&auto=format&fit=crop', date: 'Aug 30, 2024', excerpt: 'Go beyond useState and useEffect to unlock the full power of React Hooks for cleaner, faster code.' },
   { id: 5, title: 'The Art of Minimalist Web Design', category: 'Design', image: 'https://images.unsplash.com/photo-1507721999472-8ed4421c4af2?q=80&w=2070&auto=format&fit=crop', date: 'Aug 10, 2024', excerpt: 'Less is more. Discover how minimalism can improve aesthetics, load times, and usability.' },
-  { id: 6, title: 'Digital Strategy for Startups', category: 'Business', image: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=2070&auto=format&fit=crop', date: 'Jul 22, 2024', excerpt: 'A roadmap for building a strong online presence from the ground up on a limited budget.' },
+  { id: 6, title: 'The Enrollment Trap: The True Cost of a Zero-Dollar Click', category: 'Business', image: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=2070&auto=format&fit=crop', date: 'Nov 26, 2025', excerpt: 'The hidden cost of free trials and why WeVersity made the 100% free commitment.' },
 ];
 
 const categories = ['All', 'Technology', 'Design', 'Business'];
@@ -30,8 +30,8 @@ const BlogPage: React.FC = () => {
       .filter(post => post.title.toLowerCase().includes(searchTerm.toLowerCase()));
   }, [searchTerm, category]);
 
-  // Featured post is the first one
-  const featuredPost = blogPosts[0];
+  // Featured post is the last one (The Enrollment Trap) for demo
+  const featuredPost = blogPosts[5];
 
   return (
     <PageWrapper>
@@ -53,40 +53,42 @@ const BlogPage: React.FC = () => {
 
                 {/* FEATURED POST */}
                 {category === 'All' && !searchTerm && (
-                    <motion.div 
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8 }}
-                        className="mb-20 relative group cursor-pointer rounded-3xl overflow-hidden border border-slate-800"
-                    >
-                        <div className="grid grid-cols-1 lg:grid-cols-2 h-full">
-                            <div className="relative h-64 lg:h-[500px] overflow-hidden">
-                                <img 
-                                    src={featuredPost.image} 
-                                    alt={featuredPost.title} 
-                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                                />
-                                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors"></div>
-                            </div>
-                            <div className="bg-slate-900/80 backdrop-blur-md p-8 lg:p-16 flex flex-col justify-center">
-                                <div className="flex items-center gap-4 mb-6">
-                                    <span className="px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 text-xs font-bold uppercase tracking-wider border border-cyan-500/20">
-                                        Featured
-                                    </span>
-                                    <span className="text-slate-500 text-sm font-semibold">{featuredPost.date}</span>
+                    <Link to={`/blog/${featuredPost.id}`}>
+                        <motion.div 
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8 }}
+                            className="mb-20 relative group cursor-pointer rounded-3xl overflow-hidden border border-slate-800"
+                        >
+                            <div className="grid grid-cols-1 lg:grid-cols-2 h-full">
+                                <div className="relative h-64 lg:h-[500px] overflow-hidden">
+                                    <img 
+                                        src={featuredPost.image} 
+                                        alt={featuredPost.title} 
+                                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                    />
+                                    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors"></div>
                                 </div>
-                                <h2 className="text-3xl md:text-4xl font-bold text-white mb-6 leading-tight group-hover:text-cyan-400 transition-colors">
-                                    {featuredPost.title}
-                                </h2>
-                                <p className="text-slate-400 text-lg leading-relaxed mb-8">
-                                    {featuredPost.excerpt}
-                                </p>
-                                <div className="flex items-center text-white font-bold group-hover:text-cyan-400 transition-colors gap-2">
-                                    Read Article <ArrowRightIcon className="w-5 h-5" />
+                                <div className="bg-slate-900/80 backdrop-blur-md p-8 lg:p-16 flex flex-col justify-center">
+                                    <div className="flex items-center gap-4 mb-6">
+                                        <span className="px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 text-xs font-bold uppercase tracking-wider border border-cyan-500/20">
+                                            Featured
+                                        </span>
+                                        <span className="text-slate-500 text-sm font-semibold">{featuredPost.date}</span>
+                                    </div>
+                                    <h2 className="text-3xl md:text-4xl font-bold text-white mb-6 leading-tight group-hover:text-cyan-400 transition-colors">
+                                        {featuredPost.title}
+                                    </h2>
+                                    <p className="text-slate-400 text-lg leading-relaxed mb-8">
+                                        {featuredPost.excerpt}
+                                    </p>
+                                    <div className="flex items-center text-white font-bold group-hover:text-cyan-400 transition-colors gap-2">
+                                        Read Article <ArrowRightIcon className="w-5 h-5" />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </motion.div>
+                        </motion.div>
+                    </Link>
                 )}
 
                 {/* SEARCH & FILTER */}
@@ -122,40 +124,41 @@ const BlogPage: React.FC = () => {
 
                 {/* POSTS GRID */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pb-24">
-                    {filteredPosts.filter(p => category === 'All' && !searchTerm ? p.id !== 1 : true).map((post, index) => (
-                        <motion.div
-                            key={post.id}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: index * 0.1 }}
-                            className="group bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 hover:border-cyan-500/50 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-cyan-500/10 cursor-pointer flex flex-col h-full"
-                        >
-                            <div className="relative h-60 overflow-hidden">
-                                <img 
-                                    src={post.image} 
-                                    alt={post.title} 
-                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
-                                />
-                                <div className="absolute top-4 left-4">
-                                    <span className="px-3 py-1 rounded-full bg-slate-950/80 backdrop-blur text-xs font-bold text-white uppercase tracking-wider border border-slate-700">
-                                        {post.category}
-                                    </span>
+                    {filteredPosts.filter(p => category === 'All' && !searchTerm ? p.id !== 6 : true).map((post, index) => (
+                        <Link to={`/blog/${post.id}`} key={post.id} className="group cursor-pointer">
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: index * 0.1 }}
+                                className="bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 hover:border-cyan-500/50 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-cyan-500/10 flex flex-col h-full"
+                            >
+                                <div className="relative h-60 overflow-hidden">
+                                    <img 
+                                        src={post.image} 
+                                        alt={post.title} 
+                                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                                    />
+                                    <div className="absolute top-4 left-4">
+                                        <span className="px-3 py-1 rounded-full bg-slate-950/80 backdrop-blur text-xs font-bold text-white uppercase tracking-wider border border-slate-700">
+                                            {post.category}
+                                        </span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="p-8 flex flex-col flex-grow">
-                                <div className="text-slate-500 text-xs font-bold mb-3 uppercase tracking-wide">{post.date}</div>
-                                <h3 className="text-xl font-bold text-white mb-4 leading-snug group-hover:text-cyan-400 transition-colors">
-                                    {post.title}
-                                </h3>
-                                <p className="text-slate-400 text-sm leading-relaxed mb-6 flex-grow">
-                                    {post.excerpt}
-                                </p>
-                                <div className="text-cyan-400 text-sm font-bold flex items-center gap-2 group-hover:gap-3 transition-all mt-auto">
-                                    Read More <ArrowRightIcon className="w-4 h-4" />
+                                <div className="p-8 flex flex-col flex-grow">
+                                    <div className="text-slate-500 text-xs font-bold mb-3 uppercase tracking-wide">{post.date}</div>
+                                    <h3 className="text-xl font-bold text-white mb-4 leading-snug group-hover:text-cyan-400 transition-colors">
+                                        {post.title}
+                                    </h3>
+                                    <p className="text-slate-400 text-sm leading-relaxed mb-6 flex-grow">
+                                        {post.excerpt}
+                                    </p>
+                                    <div className="text-cyan-400 text-sm font-bold flex items-center gap-2 group-hover:gap-3 transition-all mt-auto">
+                                        Read More <ArrowRightIcon className="w-4 h-4" />
+                                    </div>
                                 </div>
-                            </div>
-                        </motion.div>
+                            </motion.div>
+                        </Link>
                     ))}
                 </div>
                 
