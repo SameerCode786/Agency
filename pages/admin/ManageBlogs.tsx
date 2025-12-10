@@ -88,6 +88,14 @@ const ManageBlogs: React.FC = () => {
     const handleAIGenerate = async () => {
         setIsGenerating(true);
         try {
+            // Check for API Key (AI Studio Environment)
+            if ((window as any).aistudio) {
+                const hasKey = await (window as any).aistudio.hasSelectedApiKey();
+                if (!hasKey) {
+                    await (window as any).aistudio.openSelectKey();
+                }
+            }
+
             // 1. Pick topic (User input OR Random)
             const topic = aiTopic || randomTopics[Math.floor(Math.random() * randomTopics.length)];
             
@@ -112,7 +120,7 @@ const ManageBlogs: React.FC = () => {
 
         } catch (error) {
             console.error(error);
-            alert("Failed to generate blog. Check API Key configuration.");
+            alert("Failed to generate blog. If this persists, please ensure you have selected a valid API Key.");
         } finally {
             setIsGenerating(false);
         }

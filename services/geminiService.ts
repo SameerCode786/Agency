@@ -1,11 +1,6 @@
 
 import { GoogleGenAI, Type } from "@google/genai";
 
-// Initialize Gemini Client
-// NOTE: Ensure your VITE_API_KEY or API_KEY is set in your environment variables.
-const apiKey = process.env.API_KEY || ''; 
-const ai = new GoogleGenAI({ apiKey });
-
 interface SeoContent {
     title: string;
     description: string;
@@ -19,17 +14,11 @@ interface BlogPostData {
     category: string;
 }
 
-// Fallback Mock Data
-const mockSeoData: Record<string, SeoContent> = {
-    Home: {
-        title: "Sameer Digital Lab - Web & Mobile App Development Agency",
-        description: "Professional web & mobile app development agency. We build custom websites, React Native apps, WordPress solutions. Affordable prices, fast delivery.",
-    },
-    // ... (Keep existing mock data keys if needed for fallback)
-};
-
 export const generateSeoContent = async (pageName: string): Promise<SeoContent> => {
-    // Return mock data immediately if no key is present to prevent crashes during dev without key
+    // Initialize client lazily to ensure process.env.API_KEY is populated
+    const apiKey = process.env.API_KEY;
+    
+    // If no key is present, fallback to mock data (prevents crash, but warns)
     if (!apiKey) {
         console.warn("Gemini API Key missing. Using mock SEO data.");
         return new Promise((resolve) => {
@@ -41,6 +30,8 @@ export const generateSeoContent = async (pageName: string): Promise<SeoContent> 
             }, 500);
         });
     }
+
+    const ai = new GoogleGenAI({ apiKey });
 
     try {
         const prompt = `Generate a premium, SEO-friendly meta title (max 60 chars) and meta description (max 160 chars) for the '${pageName}' page of a futuristic, high-end digital agency called 'Sameer Digital Lab'. The tone should be professional, innovative, and authoritative.`;
@@ -79,10 +70,14 @@ export const generateSeoContent = async (pageName: string): Promise<SeoContent> 
  * Generates a full blog post including HTML content and an image prompt.
  */
 export const generateBlogPost = async (topic?: string, category: string = "Technology"): Promise<BlogPostData> => {
+    // Initialize client lazily. The UI component should handle the "Select Key" dialog before calling this.
+    const apiKey = process.env.API_KEY;
+
     if (!apiKey) {
-        alert("API Key is missing! Please check services/geminiService.ts");
         throw new Error("API Key Missing");
     }
+
+    const ai = new GoogleGenAI({ apiKey });
 
     const userTopic = topic || "The latest trends in Web Development and AI for Business Growth";
 
