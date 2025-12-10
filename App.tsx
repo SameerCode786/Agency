@@ -21,9 +21,15 @@ import SeoOptimizationPage from './pages/SeoOptimizationPage'; // Import new SEO
 import AppDevelopmentPage from './pages/AppDevelopmentPage';
 import ShopifyDevelopmentPage from './pages/ShopifyDevelopmentPage';
 import WordPressPage from './pages/WordPressPage';
+import AdminDashboard from './pages/admin/AdminDashboard'; // Import Admin Dashboard
 
 const AnimatedRoutes: React.FC = () => {
     const location = useLocation();
+
+    // Check if we are in the admin section to hide standard header/footer layout in styling if needed
+    // However, the current implementation uses a separate AdminDashboard component which contains its own layout.
+    // We just need to ensure the standard layout (Header/Footer) doesn't wrap the Admin route if we want it completely separate.
+    // For this App structure, we will handle the admin route distinctly below.
 
     return (
         <AnimatePresence mode="wait">
@@ -39,6 +45,7 @@ const AnimatedRoutes: React.FC = () => {
                 <Route path="/app-development" element={<AppDevelopmentPage />} />
                 <Route path="/shopify-development" element={<ShopifyDevelopmentPage />} />
                 <Route path="/wordpress-customization" element={<WordPressPage />} />
+                <Route path="/admin" element={<AdminDashboard />} />
             </Routes>
         </AnimatePresence>
     );
@@ -81,6 +88,11 @@ const App: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isLoading]);
 
+  // We need to render the Header and Footer ONLY if we are NOT on the /admin route.
+  // Since Router is inside App, we can't use useLocation here directly without moving Router up.
+  // Instead, we will perform a check inside a wrapper or just accept that Header/Footer might show briefly or handle it via CSS.
+  // Better approach: Move the Router up or use a Layout component.
+  // For simplicity with current structure, we'll wrap the content inside HashRouter.
 
   return (
     <HashRouter>
@@ -89,27 +101,50 @@ const App: React.FC = () => {
             {isLoading ? (
             <Preloader key="preloader" />
             ) : (
-            <motion.div 
-                key="main-content" 
-                initial={{ opacity: 0 }} 
-                animate={{ opacity: 1 }} 
-                transition={{ duration: 0.8 }}
-            >
-                <div className="relative z-10">
-                <Header isVisible={!showBottomNav} />
-                <main className="min-h-screen">
-                    <AnimatedRoutes />
-                </main>
-                <StylizedCta />
-                <Footer />
-                </div>
-                <StickyBottomNav isVisible={showBottomNav} />
-            </motion.div>
+             <MainContent showBottomNav={showBottomNav} />
             )}
         </AnimatePresence>
       </CursorProvider>
     </HashRouter>
   );
 };
+
+// Extracted to use useLocation hook
+const MainContent: React.FC<{showBottomNav: boolean}> = ({ showBottomNav }) => {
+    const location = useLocation();
+    const isAdminRoute = location.pathname.startsWith('/admin');
+
+    if (isAdminRoute) {
+        return (
+            <motion.div 
+                key="admin-content" 
+                initial={{ opacity: 0 }} 
+                animate={{ opacity: 1 }} 
+                transition={{ duration: 0.8 }}
+            >
+                <AnimatedRoutes />
+            </motion.div>
+        );
+    }
+
+    return (
+        <motion.div 
+            key="main-content" 
+            initial={{ opacity: 0 }} 
+            animate={{ opacity: 1 }} 
+            transition={{ duration: 0.8 }}
+        >
+            <div className="relative z-10">
+            <Header isVisible={!showBottomNav} />
+            <main className="min-h-screen">
+                <AnimatedRoutes />
+            </main>
+            <StylizedCta />
+            <Footer />
+            </div>
+            <StickyBottomNav isVisible={showBottomNav} />
+        </motion.div>
+    );
+}
 
 export default App;
