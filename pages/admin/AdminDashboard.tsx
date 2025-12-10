@@ -5,7 +5,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import PremiumButton from '../../components/PremiumButton';
 import ManageProjects from './ManageProjects';
 import ManageBlogs from './ManageBlogs';
-import { LayersIcon, CodeIcon, ArrowRightIcon, EyeIcon, EyeOffIcon } from '../../components/Icons';
+import ManageEmails from './ManageEmails';
+import { LayersIcon, CodeIcon, ArrowRightIcon, EyeIcon, EyeOffIcon, EmailIcon } from '../../components/Icons';
 
 const AdminDashboard: React.FC = () => {
     const [session, setSession] = useState<any>(null);
@@ -13,7 +14,7 @@ const AdminDashboard: React.FC = () => {
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [activeTab, setActiveTab] = useState<'projects' | 'blogs'>('projects');
+    const [activeTab, setActiveTab] = useState<'projects' | 'blogs' | 'emails'>('projects');
     const [error, setError] = useState('');
 
     useEffect(() => {
@@ -110,6 +111,15 @@ const AdminDashboard: React.FC = () => {
         );
     }
 
+    const getTitle = () => {
+        switch(activeTab) {
+            case 'projects': return 'Manage Portfolio';
+            case 'blogs': return 'Manage Blog Posts';
+            case 'emails': return 'Email Marketing';
+            default: return 'Dashboard';
+        }
+    }
+
     return (
         <div className="min-h-screen bg-slate-950 flex">
             {/* Sidebar */}
@@ -134,6 +144,13 @@ const AdminDashboard: React.FC = () => {
                         <CodeIcon className="w-5 h-5" />
                          <span className="hidden lg:block font-medium">Blogs</span>
                     </button>
+                    <button 
+                        onClick={() => setActiveTab('emails')}
+                        className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${activeTab === 'emails' ? 'bg-cyan-500/10 text-cyan-400' : 'text-slate-400 hover:text-white hover:bg-slate-800'}`}
+                    >
+                        <EmailIcon className="w-5 h-5" />
+                         <span className="hidden lg:block font-medium">Emails</span>
+                    </button>
                 </nav>
 
                 <div className="p-4 border-t border-slate-800">
@@ -153,15 +170,18 @@ const AdminDashboard: React.FC = () => {
                     <div className="mb-8 flex justify-between items-end">
                         <div>
                             <h1 className="text-3xl font-bold text-white mb-2">
-                                {activeTab === 'projects' ? 'Manage Portfolio' : 'Manage Blog Posts'}
+                                {getTitle()}
                             </h1>
-                            <p className="text-slate-400">Add, edit, and remove content from your website.</p>
+                            <p className="text-slate-400">
+                                {activeTab === 'emails' ? 'Send bulk updates to your subscribers.' : 'Add, edit, and remove content from your website.'}
+                            </p>
                         </div>
                     </div>
 
                     <div className="bg-slate-900/50 border border-slate-800 rounded-3xl p-6 md:p-8 min-h-[600px]">
                         {activeTab === 'projects' && <ManageProjects />}
                         {activeTab === 'blogs' && <ManageBlogs />}
+                        {activeTab === 'emails' && <ManageEmails />}
                     </div>
                  </div>
             </div>
