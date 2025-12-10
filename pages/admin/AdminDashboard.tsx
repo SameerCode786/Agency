@@ -5,12 +5,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import PremiumButton from '../../components/PremiumButton';
 import ManageProjects from './ManageProjects';
 import ManageBlogs from './ManageBlogs';
-import { LayersIcon, CodeIcon, ArrowRightIcon } from '../../components/Icons';
+import { LayersIcon, CodeIcon, ArrowRightIcon, EyeIcon, EyeOffIcon } from '../../components/Icons';
 
 const AdminDashboard: React.FC = () => {
     const [session, setSession] = useState<any>(null);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
     const [activeTab, setActiveTab] = useState<'projects' | 'blogs'>('projects');
     const [error, setError] = useState('');
@@ -59,11 +60,13 @@ const AdminDashboard: React.FC = () => {
                         <p className="text-slate-400 text-sm">Sameer Digital Lab</p>
                     </div>
                     
-                    <form onSubmit={handleLogin} className="space-y-6">
+                    <form onSubmit={handleLogin} className="space-y-6" autoComplete="on">
                         <div>
                             <label className="block text-xs font-bold uppercase text-slate-500 mb-2">Email</label>
                             <input 
-                                type="email" 
+                                type="email"
+                                name="email"
+                                autoComplete="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-cyan-500 transition-colors"
@@ -72,13 +75,24 @@ const AdminDashboard: React.FC = () => {
                         </div>
                         <div>
                              <label className="block text-xs font-bold uppercase text-slate-500 mb-2">Password</label>
-                             <input 
-                                type="password" 
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-cyan-500 transition-colors"
-                                required
-                            />
+                             <div className="relative">
+                                 <input 
+                                    type={showPassword ? "text" : "password"} 
+                                    name="password"
+                                    autoComplete="current-password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-cyan-500 transition-colors pr-10"
+                                    required
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white focus:outline-none"
+                                >
+                                    {showPassword ? <EyeOffIcon className="w-5 h-5" /> : <EyeIcon className="w-5 h-5" />}
+                                </button>
+                             </div>
                         </div>
                         
                         {error && <p className="text-red-400 text-sm text-center">{error}</p>}

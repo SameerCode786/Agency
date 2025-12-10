@@ -1,103 +1,132 @@
 
-// import { GoogleGenAI, Type } from "@google/genai";
+import { GoogleGenAI, Type } from "@google/genai";
 
-// IMPORTANT: This service is designed to use the Gemini API.
-// For this app to be fully functional, an API_KEY environment variable must be provided.
-// The code below includes a mock implementation for demonstration purposes.
-
-// To use the actual API, you would initialize the client like this:
-// const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// Initialize Gemini Client
+// NOTE: Ensure your VITE_API_KEY or API_KEY is set in your environment variables.
+const apiKey = process.env.API_KEY || ''; 
+const ai = new GoogleGenAI({ apiKey });
 
 interface SeoContent {
     title: string;
     description: string;
 }
 
-// Mock data to simulate Gemini API responses
+interface BlogPostData {
+    title: string;
+    excerpt: string;
+    content: string; // HTML
+    imagePrompt: string;
+    category: string;
+}
+
+// Fallback Mock Data
 const mockSeoData: Record<string, SeoContent> = {
     Home: {
         title: "Sameer Digital Lab - Web & Mobile App Development Agency",
         description: "Professional web & mobile app development agency. We build custom websites, React Native apps, WordPress solutions. Affordable prices, fast delivery.",
     },
-    Services: {
-        title: "Our Services | Sameer Digital Lab",
-        description: "Explore our services: Web & Mobile App Development, UI/UX Design, Speed Optimization, Maintenance, and Digital Strategy. We provide end-to-end solutions for your digital needs.",
-    },
-    Portfolio: {
-        title: "Portfolio | Sameer Digital Lab",
-        description: "Browse our portfolio of innovative projects. See how we've helped businesses achieve their goals with our expertise in web, mobile, and design.",
-    },
-    About: {
-        title: "About Us | Sameer Digital Lab",
-        description: "Learn about Sameer Digital Lab's journey, expertise, and the creative minds behind our success. We are passionate about code, creativity, and client success.",
-    },
-    Blog: {
-        title: "Blog | Sameer Digital Lab",
-        description: "Read our blog for insights on the latest trends in web development, design, and digital strategy. Stay informed with expert analysis from Sameer Digital Lab.",
-    },
-    Contact: {
-        title: "Contact Us | Sameer Digital Lab",
-        description: "Get in touch with Sameer Digital Lab. Let's discuss your project and how we can help you build something amazing. Contact us for a free quote.",
-    },
+    // ... (Keep existing mock data keys if needed for fallback)
 };
 
-
 export const generateSeoContent = async (pageName: string): Promise<SeoContent> => {
-    // This is a mock implementation.
-    // In a real application, you would make an API call to Gemini here.
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve(mockSeoData[pageName] || { title: "Sameer Digital Lab", description: "Premium Digital Agency." });
-        }, 200); // Simulate network delay
-    });
+    // Return mock data immediately if no key is present to prevent crashes during dev without key
+    if (!apiKey) {
+        console.warn("Gemini API Key missing. Using mock SEO data.");
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                resolve({ 
+                    title: `Sameer Digital Lab | ${pageName}`, 
+                    description: `Premium digital services for ${pageName}. Web development, mobile apps, and SEO.` 
+                });
+            }, 500);
+        });
+    }
 
-    /*
-    // REAL IMPLEMENTATION EXAMPLE:
     try {
-        if (!process.env.API_KEY) {
-            console.warn("API_KEY not found. Using mock data.");
-            return mockSeoData[pageName];
-        }
+        const prompt = `Generate a premium, SEO-friendly meta title (max 60 chars) and meta description (max 160 chars) for the '${pageName}' page of a futuristic, high-end digital agency called 'Sameer Digital Lab'. The tone should be professional, innovative, and authoritative.`;
 
-        // import { GoogleGenAI, Type } from "@google/genai";
-        const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-        const prompt = `Generate an SEO-friendly title and meta description for the '${pageName}' page of a futuristic digital agency called 'Sameer Digital Lab'. Return the result as a JSON object with keys "title" and "description". The tone should be professional, modern, and premium.`;
-        
         const response = await ai.models.generateContent({
             model: 'gemini-2.5-flash',
             contents: prompt,
             config: {
                 responseMimeType: "application/json",
-                // Fix: Add responseSchema for robust JSON output, following best practices.
                 responseSchema: {
-                  type: Type.OBJECT,
-                  properties: {
-                    title: {
-                      type: Type.STRING,
-                      description: 'SEO-friendly title for the page.',
+                    type: Type.OBJECT,
+                    properties: {
+                        title: { type: Type.STRING },
+                        description: { type: Type.STRING },
                     },
-                    description: {
-                      type: Type.STRING,
-                      description: 'SEO-friendly meta description for the page.',
-                    },
-                  },
-                  required: ['title', 'description'],
+                    required: ['title', 'description'],
                 },
             }
         });
 
-        const text = response.text.trim();
-        const jsonResponse = JSON.parse(text);
-        
-        return {
-            title: jsonResponse.title,
-            description: jsonResponse.description
-        };
+        if (response.text) {
+            return JSON.parse(response.text);
+        }
+        throw new Error("No response from AI");
 
     } catch (error) {
-        console.error(`Error fetching SEO content for ${pageName}:`, error);
-        // Fallback to mock data on error
-        return mockSeoData[pageName];
+        console.error("SEO Gen Error:", error);
+        return { 
+            title: `Sameer Digital Lab | ${pageName}`, 
+            description: `Leading digital agency for ${pageName}.` 
+        };
     }
-    */
+};
+
+/**
+ * Generates a full blog post including HTML content and an image prompt.
+ */
+export const generateBlogPost = async (topic?: string, category: string = "Technology"): Promise<BlogPostData> => {
+    if (!apiKey) {
+        alert("API Key is missing! Please check services/geminiService.ts");
+        throw new Error("API Key Missing");
+    }
+
+    const userTopic = topic || "The latest trends in Web Development and AI for Business Growth";
+
+    const prompt = `
+        You are a senior content writer for 'Sameer Digital Lab', a premium web and mobile app development agency.
+        Write a high-quality, SEO-optimized blog post about: "${userTopic}".
+        Category context: ${category}.
+
+        Requirements:
+        1. Title: Catchy, professional, and SEO-optimized.
+        2. Excerpt: A compelling summary (2 sentences).
+        3. Content: detailed, educational, and professional. Use HTML formatting (<h2>, <p>, <ul>, <li>, <strong>). Do NOT use <h1> or <html> tags. Include 3 key takeaways.
+        4. ImagePrompt: A detailed, artistic text description to generate a futuristic, cinematic, high-definition 4k wallpaper-style image representing this blog topic. (e.g. "Cyberpunk city with neon code, 4k, cinematic lighting").
+
+        Return JSON format.
+    `;
+
+    try {
+        const response = await ai.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: prompt,
+            config: {
+                responseMimeType: "application/json",
+                responseSchema: {
+                    type: Type.OBJECT,
+                    properties: {
+                        title: { type: Type.STRING },
+                        excerpt: { type: Type.STRING },
+                        content: { type: Type.STRING },
+                        imagePrompt: { type: Type.STRING },
+                        category: { type: Type.STRING }
+                    },
+                    required: ['title', 'excerpt', 'content', 'imagePrompt', 'category'],
+                },
+            }
+        });
+
+        if (response.text) {
+            return JSON.parse(response.text);
+        }
+        throw new Error("Empty response from Gemini");
+
+    } catch (error) {
+        console.error("Blog Gen Error:", error);
+        throw error;
+    }
 };
