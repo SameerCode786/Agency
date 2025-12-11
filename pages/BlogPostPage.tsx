@@ -166,15 +166,15 @@ const BlogPostPage: React.FC = () => {
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
                         
-                        {/* CENTER: Blog Article Content (Expanded Width) */}
-                        <article className="col-span-1 lg:col-span-8 lg:col-start-3">
+                        {/* LEFT: Blog Article (Content First) */}
+                        <article className="col-span-1 lg:col-span-9">
                             <div className="bg-white/5 border border-white/10 backdrop-blur-sm rounded-3xl p-8 md:p-12 shadow-2xl text-slate-300 leading-relaxed font-sans">
                                 {/* Custom CSS for content styling within the dark theme */}
                                 <style>{`
-                                    .blog-content h2 { font-family: 'Oswald', sans-serif; font-size: 2rem; font-weight: 700; color: #f8fafc; margin-top: 3rem; margin-bottom: 1.5rem; line-height: 1.2; }
-                                    .blog-content h3 { font-family: 'Oswald', sans-serif; font-size: 1.5rem; font-weight: 600; color: #e2e8f0; margin-top: 2.5rem; margin-bottom: 1rem; }
+                                    .blog-content h2 { font-family: 'Oswald', sans-serif; font-size: 2rem; font-weight: 700; color: #f8fafc; margin-top: 3rem; margin-bottom: 1.5rem; line-height: 1.2; scroll-margin-top: 100px; }
+                                    .blog-content h3 { font-family: 'Oswald', sans-serif; font-size: 1.5rem; font-weight: 600; color: #e2e8f0; margin-top: 2.5rem; margin-bottom: 1rem; scroll-margin-top: 100px; }
                                     .blog-content p { font-size: 1.125rem; margin-bottom: 1.5rem; color: #94a3b8; line-height: 1.8; }
-                                    .blog-content p.lead { font-size: 1.35rem; font-weight: 400; color: #cbd5e1; border-left: 4px solid #22d3ee; padding-left: 1rem; }
+                                    .blog-content p.lead { font-size: 1.35rem; font-weight: 400; color: #cbd5e1; border-left: 4px solid #22d3ee; padding-left: 1.5rem; margin-bottom: 2.5rem; }
                                     .blog-content ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 2rem; }
                                     .blog-content li { margin-bottom: 0.75rem; color: #94a3b8; font-size: 1.1rem; }
                                     .blog-content strong { color: #22d3ee; font-weight: 700; }
@@ -297,6 +297,59 @@ const BlogPostPage: React.FC = () => {
                                 </div>
                             </div>
                         </article>
+
+                        {/* RIGHT SIDEBAR: Table of Contents (Sticky) */}
+                        <aside className="hidden lg:block lg:col-span-3">
+                            <div className="sticky top-32 space-y-8">
+                                <div className="p-6 rounded-2xl bg-slate-900/50 border border-slate-800 backdrop-blur-sm">
+                                    <h4 className="text-white font-bold mb-4 uppercase tracking-widest text-xs flex items-center gap-2">
+                                        <div className="w-1 h-4 bg-cyan-500 rounded-full"></div>
+                                        Table of Contents
+                                    </h4>
+                                    <nav className="space-y-3 relative">
+                                        {/* Vertical line track */}
+                                        <div className="absolute left-0 top-0 bottom-0 w-px bg-slate-800 ml-1.5"></div>
+                                        
+                                        <div className="relative pl-6">
+                                            <div className="absolute left-0 top-2 w-3 h-3 bg-slate-900 border-2 border-cyan-500 rounded-full z-10"></div>
+                                            <a href="#section-1" className="block text-sm font-medium text-slate-300 hover:text-cyan-400 transition-colors">The Enrollment Trap</a>
+                                        </div>
+                                        <div className="relative pl-6">
+                                            <div className="absolute left-1 top-2 w-1.5 h-1.5 bg-slate-700 rounded-full"></div>
+                                            <a href="#section-2" className="block text-sm text-slate-400 hover:text-cyan-400 transition-colors">Three Invisible Paywalls</a>
+                                        </div>
+                                        <div className="relative pl-10 space-y-2">
+                                            <a href="#subsection-2-1" className="block text-xs text-slate-500 hover:text-cyan-400 transition-colors border-l border-slate-800 pl-3 hover:border-cyan-500/50">Psychological Momentum</a>
+                                            <a href="#subsection-2-2" className="block text-xs text-slate-500 hover:text-cyan-400 transition-colors border-l border-slate-800 pl-3 hover:border-cyan-500/50">Critical Information Gap</a>
+                                        </div>
+                                        <div className="relative pl-6">
+                                            <div className="absolute left-1 top-2 w-1.5 h-1.5 bg-slate-700 rounded-full"></div>
+                                            <a href="#section-3" className="block text-sm text-slate-400 hover:text-cyan-400 transition-colors">Mission Over Margin</a>
+                                        </div>
+                                        <div className="relative pl-6">
+                                            <div className="absolute left-1 top-2 w-1.5 h-1.5 bg-slate-700 rounded-full"></div>
+                                            <a href="#section-4" className="block text-sm text-slate-400 hover:text-cyan-400 transition-colors">Join the Discussion</a>
+                                        </div>
+                                    </nav>
+                                </div>
+                                
+                                {/* Social Share */}
+                                <div className="p-6 rounded-2xl bg-slate-900/30 border border-slate-800">
+                                    <p className="text-xs font-bold text-slate-500 uppercase mb-4 text-center">Share this article</p>
+                                    <div className="flex justify-center gap-4">
+                                        <button className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-cyan-500 hover:text-white transition-all">
+                                            <TwitterIcon className="w-4 h-4" />
+                                        </button>
+                                        <button className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-blue-600 hover:text-white transition-all">
+                                            <LinkedinIcon className="w-4 h-4" />
+                                        </button>
+                                        <button className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-purple-500 hover:text-white transition-all">
+                                            <EmailIcon className="w-4 h-4" />
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </aside>
 
                     </div>
                 </div>

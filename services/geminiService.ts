@@ -15,10 +15,9 @@ interface BlogPostData {
 }
 
 export const generateSeoContent = async (pageName: string): Promise<SeoContent> => {
-    // Initialize client lazily to ensure process.env.API_KEY is populated
-    const apiKey = process.env.API_KEY;
+    // Using the specific API Key provided
+    const apiKey = "AIzaSyA8bZXG_oJmd54ZCAfZ0OkGG4aKMBR88Lc";
     
-    // If no key is present, fallback to mock data (prevents crash, but warns)
     if (!apiKey) {
         console.warn("Gemini API Key missing. Using mock SEO data.");
         return new Promise((resolve) => {
@@ -70,8 +69,8 @@ export const generateSeoContent = async (pageName: string): Promise<SeoContent> 
  * Generates a full blog post including HTML content and an image prompt.
  */
 export const generateBlogPost = async (topic?: string, category: string = "Technology"): Promise<BlogPostData> => {
-    // Initialize client lazily. The UI component should handle the "Select Key" dialog before calling this.
-    const apiKey = process.env.API_KEY;
+    // Using the specific API Key provided
+    const apiKey = "AIzaSyA8bZXG_oJmd54ZCAfZ0OkGG4aKMBR88Lc";
 
     if (!apiKey) {
         throw new Error("API Key Missing");
