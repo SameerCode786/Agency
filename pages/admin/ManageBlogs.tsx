@@ -64,7 +64,12 @@ const ManageBlogs: React.FC = () => {
         setLoading(true);
         // Ensure your Supabase table has a 'status' column. If not, this might default to null/undefined.
         const { data, error } = await supabase.from('blogs').select('*').order('created_at', { ascending: false });
-        if (error) console.error('Error fetching blogs:', error);
+        if (error) {
+            console.error('Error fetching blogs:', error);
+            if (error.message.includes('relation "public.blogs" does not exist')) {
+                alert("Table 'blogs' not found. Please run the setup SQL script in Supabase.");
+            }
+        }
         else {
             // Normalize data to include status if missing
             const normalizedData = (data || []).map((b: any) => ({
@@ -77,29 +82,35 @@ const ManageBlogs: React.FC = () => {
     };
 
     const handleSave = async () => {
+        // Use the date from the form directly (YYYY-MM-DD). 
+        // Supabase DATE type accepts this format perfectly.
         const blogData = {
             ...currentBlog,
-            // Ensure date is formatted correctly
-            date: currentBlog.date || new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+            date: currentBlog.date 
         };
 
-        if (currentBlog.id) {
-            const { error } = await supabase.from('blogs').update(blogData).eq('id', currentBlog.id);
-            if (error) alert('Error updating blog');
-        } else {
-            const { error } = await supabase.from('blogs').insert([blogData]);
-            if (error) alert('Error creating blog');
-        }
+        try {
+            if (currentBlog.id) {
+                const { error } = await supabase.from('blogs').update(blogData).eq('id', currentBlog.id);
+                if (error) throw error;
+            } else {
+                const { error } = await supabase.from('blogs').insert([blogData]);
+                if (error) throw error;
+            }
 
-        setIsEditing(false);
-        fetchBlogs();
-        resetForm();
+            setIsEditing(false);
+            fetchBlogs();
+            resetForm();
+        } catch (error: any) {
+            console.error("Save Error:", error);
+            alert(`Error saving blog: ${error.message || 'Unknown error'}`);
+        }
     };
 
     const handleDelete = async (id: number) => {
         if (!window.confirm('Delete this post?')) return;
         const { error } = await supabase.from('blogs').delete().eq('id', id);
-        if (error) alert('Error deleting blog');
+        if (error) alert(`Error deleting blog: ${error.message}`);
         else fetchBlogs();
     };
 
@@ -195,8 +206,14 @@ const ManageBlogs: React.FC = () => {
 
     const openEdit = (blog: Blog) => {
         // Ensure date is in YYYY-MM-DD for input
-        const dateObj = new Date(blog.date);
-        const formattedDate = !isNaN(dateObj.getTime()) ? dateObj.toISOString().split('T')[0] : blog.date;
+        let formattedDate = blog.date;
+        // If date comes back as something else, try to parse it
+        if (blog.date && !blog.date.includes('-')) {
+             const dateObj = new Date(blog.date);
+             if (!isNaN(dateObj.getTime())) {
+                 formattedDate = dateObj.toISOString().split('T')[0];
+             }
+        }
 
         setCurrentBlog({
             ...blog,
