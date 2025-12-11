@@ -6,7 +6,8 @@ import PremiumButton from '../../components/PremiumButton';
 import ManageProjects from './ManageProjects';
 import ManageBlogs from './ManageBlogs';
 import ManageEmails from './ManageEmails';
-import { LayersIcon, CodeIcon, ArrowRightIcon, EyeIcon, EyeOffIcon, EmailIcon } from '../../components/Icons';
+import ManageComments from './ManageComments';
+import { LayersIcon, CodeIcon, ArrowRightIcon, EyeIcon, EyeOffIcon, EmailIcon, MessageIcon } from '../../components/Icons';
 
 const AdminDashboard: React.FC = () => {
     const [session, setSession] = useState<any>(null);
@@ -14,7 +15,7 @@ const AdminDashboard: React.FC = () => {
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [activeTab, setActiveTab] = useState<'projects' | 'blogs' | 'emails'>('projects');
+    const [activeTab, setActiveTab] = useState<'projects' | 'blogs' | 'emails' | 'comments'>('projects');
     const [error, setError] = useState('');
 
     useEffect(() => {
@@ -116,6 +117,7 @@ const AdminDashboard: React.FC = () => {
             case 'projects': return 'Manage Portfolio';
             case 'blogs': return 'Manage Blog Posts';
             case 'emails': return 'Email Marketing';
+            case 'comments': return 'Manage Comments';
             default: return 'Dashboard';
         }
     }
@@ -143,6 +145,13 @@ const AdminDashboard: React.FC = () => {
                     >
                         <CodeIcon className="w-5 h-5" />
                          <span className="hidden lg:block font-medium">Blogs</span>
+                    </button>
+                    <button 
+                        onClick={() => setActiveTab('comments')}
+                        className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${activeTab === 'comments' ? 'bg-cyan-500/10 text-cyan-400' : 'text-slate-400 hover:text-white hover:bg-slate-800'}`}
+                    >
+                        <MessageIcon className="w-5 h-5" />
+                         <span className="hidden lg:block font-medium">Comments</span>
                     </button>
                     <button 
                         onClick={() => setActiveTab('emails')}
@@ -173,7 +182,7 @@ const AdminDashboard: React.FC = () => {
                                 {getTitle()}
                             </h1>
                             <p className="text-slate-400">
-                                {activeTab === 'emails' ? 'Send bulk updates to your subscribers.' : 'Add, edit, and remove content from your website.'}
+                                {activeTab === 'emails' ? 'Send bulk updates to your subscribers.' : 'Manage content and interactions.'}
                             </p>
                         </div>
                     </div>
@@ -182,6 +191,7 @@ const AdminDashboard: React.FC = () => {
                         {activeTab === 'projects' && <ManageProjects />}
                         {activeTab === 'blogs' && <ManageBlogs />}
                         {activeTab === 'emails' && <ManageEmails />}
+                        {activeTab === 'comments' && <ManageComments />}
                     </div>
                  </div>
             </div>
