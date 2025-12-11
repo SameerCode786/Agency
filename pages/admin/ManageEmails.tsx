@@ -26,9 +26,9 @@ const ManageEmails: React.FC = () => {
     const [sendingProgress, setSendingProgress] = useState('');
     const [campaigns, setCampaigns] = useState<EmailCampaign[]>([]);
     
-    // Settings State
+    // Settings State - Pre-filled with your provided key
     const [showSettings, setShowSettings] = useState(false);
-    const [accessKey, setAccessKey] = useState(localStorage.getItem('web3forms_access_key') || '');
+    const [accessKey, setAccessKey] = useState(localStorage.getItem('web3forms_access_key') || '2c6626e8-d5f1-4249-b456-016aa2ca5607');
 
     // Derived state for email count
     const validEmails = recipients.split(/[\n,]+/).map(e => e.trim()).filter(e => e.includes('@') && e.includes('.'));
@@ -53,7 +53,7 @@ const ManageEmails: React.FC = () => {
         if (!subject) return alert("Please enter a subject.");
         if (!body) return alert("Please enter email content.");
         if (!accessKey) {
-            return alert("⚠️ Web3Forms Access Key Missing.\n\nPlease click the 'Settings' (Gear) icon at the top right to enter your Web3Forms Access Key.");
+            return alert("⚠️ Web3Forms Access Key Missing.\n\nPlease click the 'Settings' (Gear) icon to enter your Web3Forms Access Key.");
         }
 
         setIsSending(true);
@@ -67,8 +67,8 @@ const ManageEmails: React.FC = () => {
             try {
                 const formData = new FormData();
                 formData.append("access_key", accessKey);
-                formData.append("name", senderName);
-                formData.append("email", email); // Recipient email
+                formData.append("name", senderName); // Corresponds to 'name' field in Web3Forms
+                formData.append("email", email);     // Corresponds to 'email' field (often used as Reply-To in Web3Forms)
                 formData.append("subject", subject);
                 formData.append("message", body);
 
@@ -88,8 +88,8 @@ const ManageEmails: React.FC = () => {
                 console.error(`Error sending to ${email}:`, error);
             }
             
-            // Delay to prevent rate limiting
-            await new Promise(r => setTimeout(r, 1000));
+            // Small delay to be polite to the API
+            await new Promise(r => setTimeout(r, 500));
         }
 
         finishCampaign(successCount);
