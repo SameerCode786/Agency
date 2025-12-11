@@ -150,11 +150,14 @@ const BlogPostPage: React.FC = () => {
         fetchComments();
     }, [id]);
 
+    const getBlogId = () => {
+        const parsed = id ? parseInt(id, 10) : 6;
+        // Default to 6 if parsing fails (e.g. if URL is string based in future) to prevent NaN errors
+        return isNaN(parsed) ? 6 : parsed;
+    }
+
     const fetchComments = async () => {
-        // Safe Parse ID
-        const blogId = id ? parseInt(id, 10) : 6; 
-        
-        if (isNaN(blogId)) return;
+        const blogId = getBlogId();
 
         const { data, error } = await supabase
             .from('comments')
@@ -170,7 +173,7 @@ const BlogPostPage: React.FC = () => {
         if (!name || !email || !comment) return alert("Please fill required fields.");
         
         setSubmitting(true);
-        const blogId = id ? parseInt(id, 10) : 6;
+        const blogId = getBlogId();
 
         const { error } = await supabase.from('comments').insert([{
             blog_id: blogId,
@@ -183,7 +186,12 @@ const BlogPostPage: React.FC = () => {
 
         if (error) {
             console.error("Supabase Comment Error:", error);
-            alert(`Error posting comment: ${error.message || 'Unknown error'}`);
+            // More friendly error message
+            if (error.message?.includes('relation "public.comments" does not exist')) {
+                alert("Database Setup Required: Please run the 'supabase_setup.sql' script in your Supabase SQL Editor to create the tables.");
+            } else {
+                alert(`Error posting comment: ${error.message || 'Unknown error'}`);
+            }
         } else {
             alert('Comment submitted successfully!');
             setName('');
