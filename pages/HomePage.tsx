@@ -438,6 +438,20 @@ const HomePage: React.FC = () => {
     const containerWidth = useTransform(reviewsScrollProgress, [0, 0.3], ["85%", "100%"]);
     const containerRadius = useTransform(reviewsScrollProgress, [0, 0.3], ["40px", "0px"]);
 
+    // Review Slider Logic
+    const [reviewIndex, setReviewIndex] = useState(0);
+    const reviewsPerPage = 2;
+
+    const nextReview = () => {
+        setReviewIndex((prev) => (prev + reviewsPerPage) % reviewsData.length);
+    };
+
+    const prevReview = () => {
+        setReviewIndex((prev) => (prev - reviewsPerPage + reviewsData.length) % reviewsData.length);
+    };
+
+    const currentReviews = reviewsData.slice(reviewIndex, reviewIndex + reviewsPerPage);
+
 
     const { scrollYProgress } = useScroll({
         target: workContainerRef,
@@ -1021,11 +1035,11 @@ const HomePage: React.FC = () => {
                                         animate={{ opacity: 1, x: 0 }}
                                         exit={{ opacity: 0, x: -50 }}
                                         transition={{ duration: 0.5, ease: "easeOut" }}
-                                        className="w-full h-full"
+                                        className="w-full h-full flex flex-col justify-center"
                                      >
-                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 h-full content-center">
-                                             {/* Display ALL 4 Reviews */}
-                                             {reviewsData.map((review, i) => (
+                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                                             {/* Display Reviews with Pagination (2 items per page) */}
+                                             {currentReviews.map((review, i) => (
                                                  <motion.div 
                                                     key={review.name} 
                                                     initial={{ opacity: 0, y: 20 }}
@@ -1052,6 +1066,22 @@ const HomePage: React.FC = () => {
                                                      </div>
                                                  </motion.div>
                                              ))}
+                                         </div>
+
+                                         {/* Navigation Buttons */}
+                                         <div className="flex justify-center gap-4">
+                                             <button 
+                                                onClick={prevReview}
+                                                className="w-12 h-12 rounded-full border border-slate-700 bg-slate-900 text-white flex items-center justify-center hover:bg-cyan-500 hover:border-cyan-500 transition-all group"
+                                             >
+                                                 <ArrowRightIcon className="w-5 h-5 rotate-180 group-hover:text-black transition-colors" />
+                                             </button>
+                                             <button 
+                                                onClick={nextReview}
+                                                className="w-12 h-12 rounded-full border border-slate-700 bg-slate-900 text-white flex items-center justify-center hover:bg-cyan-500 hover:border-cyan-500 transition-all group"
+                                             >
+                                                 <ArrowRightIcon className="w-5 h-5 group-hover:text-black transition-colors" />
+                                             </button>
                                          </div>
                                      </motion.div>
                                  ) : (
