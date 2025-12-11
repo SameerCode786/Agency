@@ -7,7 +7,7 @@ import { EmailIcon, LinkedinIcon, TwitterIcon, CheckIcon, StarIcon, ArrowRightIc
 import PremiumButton from '../components/PremiumButton';
 import { supabase } from '../services/supabaseClient';
 
-// Updated Mock Data with Agency-Focused Content and IDs for TOC
+// Mock Data - Content removed hardcoded IDs to demonstrate dynamic generation
 const blogData = {
     title: "Why 'Cheap' Websites Cost You More: The Hidden Price of Template Solutions",
     date: "November 26, 2025",
@@ -15,25 +15,24 @@ const blogData = {
     role: "Administrator",
     category: "Business",
     image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop",
-    // Note: Added IDs to h2 tags for the Table of Contents scrollspy to work
     content: `
         <p class="lead">If you’ve spent any serious time trying to grow your business online, you know the cycle: you find a service promising a stunning website for $500, see the banner that says “Launch in 24 Hours!” and you click. That initial click, a moment of hopeful excitement, is often the moment you step into the <strong>Template Trap</strong>.</p>
         
         <p>The truth is, most "budget" websites are simply generic placeholders. It’s the first quarter of a novel, designed to hook you before the inevitable limitations appear. You aren't investing in a digital asset; you're renting a generic layout that thousands of others already use.</p>
         
-        <h2 id="section-1">The True Cost of a Generic Template</h2>
+        <h2>The True Cost of a Generic Template</h2>
         <p>This practice extracts an immense and invisible toll on businesses. A cost that goes far beyond the initial setup fee. This is the core reason Sameer Digital Lab was founded, built on one single, non-negotiable principle: <strong>100% Custom. 100% Performance. No Exceptions.</strong></p>
         
-        <h2 id="section-2">Three Invisible Barriers to Growth</h2>
+        <h2>Three Invisible Barriers to Growth</h2>
         <p>The "cheap template" model doesn't just look generic; it strategically breaks down your brand authority and destroys conversion rates. Sameer Digital Lab directly addresses and eliminates these three destructive barriers:</p>
         
-        <h3 id="subsection-2-1">1. The Speed & SEO Barrier</h3>
+        <h3>1. The Speed & SEO Barrier</h3>
         <p>You launch. It looks okay. But Google hates it. Bloated code, unoptimized images, and slow server response times kill your rankings before you even start. You wonder why you have no traffic.</p>
         <ul>
             <li><strong>The Cost:</strong> This isn’t just a loss of traffic. It’s the loss of <em>trust</em>. Users bounce within 3 seconds if a site doesn't load, forcing you into a cold, hard calculation of <em>lost revenue vs. saved development costs</em>.</li>
         </ul>
 
-        <h3 id="subsection-2-2">2. The Scalability Gap</h3>
+        <h3>2. The Scalability Gap</h3>
         <p>This is perhaps the most insidious trap. You grow, you need custom features—a booking system, a client portal, a custom e-commerce flow. But your template is rigid. To add one feature, you have to rebuild the whole site.</p>
         <ul>
             <li><em>How do I integrate a custom CRM?</em></li>
@@ -41,11 +40,11 @@ const blogData = {
             <li><em>How do I handle international traffic?</em></li>
         </ul>
 
-        <h2 id="section-3">Mission Over Margin: The Sameer Digital Approach</h2>
+        <h2>Mission Over Margin: The Sameer Digital Approach</h2>
         <p>Our commitment to truly <strong>custom digital solutions</strong> is not a marketing gimmick—it is a foundational principle driven by a clear mission: <strong>to eliminate the technical barriers between your business and your success.</strong></p>
         <p>We are able to maintain this world-class quality while remaining competitive because our model shifts the focus from mass-production to high-impact engineering.</p>
         
-        <h2 id="section-4">Join the Digital Revolution</h2>
+        <h2>Join the Digital Revolution</h2>
         <p>The current web design industry is designed to keep you dependent and spending on fixes. Sameer Digital Lab is designed to launch you into independence.</p>
         <p>Are you ready to stop paying for repairs, and start investing in growth?</p>
     `
@@ -57,6 +56,12 @@ const relatedBlogs = [
     { id: 3, title: 'Why Your Business Needs a Mobile App', category: 'Business', image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=2070&auto=format&fit=crop' },
 ];
 
+interface TocItem {
+    id: string;
+    text: string;
+    level: string; // 'h2' or 'h3'
+}
+
 const BlogPostPage: React.FC = () => {
     const { id } = useParams();
     const { scrollYProgress } = useScroll();
@@ -66,11 +71,51 @@ const BlogPostPage: React.FC = () => {
         restDelta: 0.001
     });
 
-    // TOC Active State Logic
+    // TOC State
+    const [processedContent, setProcessedContent] = useState('');
+    const [tocItems, setTocItems] = useState<TocItem[]>([]);
     const [activeId, setActiveId] = useState<string>('');
+    
+    // Observer Refs
     const observer = useRef<IntersectionObserver | null>(null);
+    const contentRef = useRef<HTMLDivElement>(null);
 
+    // 1. Process Content on Load (Generate IDs and TOC)
     useEffect(() => {
+        const processHtml = () => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(blogData.content, 'text/html');
+            const headings = doc.querySelectorAll('h2, h3');
+            const newToc: TocItem[] = [];
+
+            headings.forEach((heading, index) => {
+                const text = heading.textContent || '';
+                // Create a slug ID: "My Title" -> "my-title"
+                const slug = text.toLowerCase()
+                    .replace(/[^a-z0-9]+/g, '-')
+                    .replace(/(^-|-$)+/g, '');
+                
+                const uniqueId = `${slug}-${index}`; // Ensure uniqueness with index
+                heading.id = uniqueId;
+
+                newToc.push({
+                    id: uniqueId,
+                    text: text,
+                    level: heading.tagName.toLowerCase()
+                });
+            });
+
+            setProcessedContent(doc.body.innerHTML);
+            setTocItems(newToc);
+        };
+
+        processHtml();
+    }, [blogData.content]);
+
+    // 2. Set up Intersection Observer for Active State
+    useEffect(() => {
+        if (!processedContent) return;
+
         const handleObserver = (entries: IntersectionObserverEntry[]) => {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
@@ -80,14 +125,18 @@ const BlogPostPage: React.FC = () => {
         };
 
         observer.current = new IntersectionObserver(handleObserver, {
-            rootMargin: "-20% 0px -35% 0px"
+            rootMargin: "-20% 0px -50% 0px", // Trigger when element is near top/center
+            threshold: 0.1
         });
 
-        const headings = document.querySelectorAll('h2[id], h3[id]');
-        headings.forEach((heading) => observer.current?.observe(heading));
+        // Small timeout to wait for React to render the dangerouslySetInnerHTML
+        setTimeout(() => {
+            const headings = contentRef.current?.querySelectorAll('h2, h3');
+            headings?.forEach((heading) => observer.current?.observe(heading));
+        }, 100);
 
         return () => observer.current?.disconnect();
-    }, [blogData.content]); // Re-run if content changes
+    }, [processedContent]);
 
     // Comment State
     const [name, setName] = useState('');
@@ -121,7 +170,6 @@ const BlogPostPage: React.FC = () => {
         if (!name || !email || !comment) return alert("Please fill required fields.");
         
         setSubmitting(true);
-        // Important: Convert ID to number to match Supabase type expected (int8/int4)
         const blogId = id ? parseInt(id, 10) : 6;
 
         const { error } = await supabase.from('comments').insert([{
@@ -134,7 +182,7 @@ const BlogPostPage: React.FC = () => {
         }]);
 
         if (error) {
-            console.error("Supabase Comment Error:", error); // Log actual error for debugging
+            console.error("Supabase Comment Error:", error);
             alert(`Error posting comment: ${error.message || 'Unknown error'}`);
         } else {
             alert('Comment submitted successfully!');
@@ -165,6 +213,18 @@ const BlogPostPage: React.FC = () => {
                 navigator.clipboard.writeText(url);
                 alert('Link copied to clipboard!');
                 break;
+        }
+    };
+
+    // Smooth Scroll Helper
+    const scrollToSection = (e: React.MouseEvent, id: string) => {
+        e.preventDefault();
+        const element = document.getElementById(id);
+        if (element) {
+            // Offset for fixed header (approx 100px)
+            const y = element.getBoundingClientRect().top + window.scrollY - 120;
+            window.scrollTo({ top: y, behavior: 'smooth' });
+            setActiveId(id); // Instant feedback
         }
     };
 
@@ -231,8 +291,9 @@ const BlogPostPage: React.FC = () => {
                                 `}</style>
                                 
                                 <div 
+                                    ref={contentRef}
                                     className="blog-content"
-                                    dangerouslySetInnerHTML={{ __html: blogData.content }}
+                                    dangerouslySetInnerHTML={{ __html: processedContent }}
                                 />
 
                                 {/* CTA Inside Blog */}
@@ -350,7 +411,7 @@ const BlogPostPage: React.FC = () => {
                             </div>
                         </article>
 
-                        {/* RIGHT SIDEBAR: Table of Contents (Sticky) */}
+                        {/* RIGHT SIDEBAR: Dynamic Table of Contents (Sticky) */}
                         <aside className="hidden lg:block lg:col-span-3">
                             <div className="sticky top-32 space-y-8">
                                 <div className="p-6 rounded-2xl bg-slate-900/50 border border-slate-800 backdrop-blur-sm">
@@ -358,30 +419,34 @@ const BlogPostPage: React.FC = () => {
                                         <div className="w-1 h-4 bg-cyan-500 rounded-full"></div>
                                         Table of Contents
                                     </h4>
+                                    
+                                    {/* Dynamic Navigation */}
                                     <nav className="space-y-3 relative">
                                         {/* Vertical line track */}
                                         <div className="absolute left-0 top-0 bottom-0 w-px bg-slate-800 ml-1.5"></div>
                                         
-                                        <div className="relative pl-6">
-                                            {activeId === 'section-1' && <div className="absolute left-0 top-1.5 w-3 h-3 bg-slate-900 border-2 border-cyan-500 rounded-full z-10 transition-all"></div>}
-                                            <a href="#section-1" className={`block text-sm font-medium transition-colors ${activeId === 'section-1' ? 'text-cyan-400' : 'text-slate-300 hover:text-cyan-400'}`}>The Hidden Price</a>
-                                        </div>
-                                        <div className="relative pl-6">
-                                            {activeId === 'section-2' && <div className="absolute left-0 top-1.5 w-3 h-3 bg-slate-900 border-2 border-cyan-500 rounded-full z-10 transition-all"></div>}
-                                            <a href="#section-2" className={`block text-sm font-medium transition-colors ${activeId === 'section-2' ? 'text-cyan-400' : 'text-slate-400 hover:text-cyan-400'}`}>Barriers to Growth</a>
-                                        </div>
-                                        <div className="relative pl-10 space-y-2">
-                                            <a href="#subsection-2-1" className={`block text-xs transition-colors border-l pl-3 hover:border-cyan-500/50 ${activeId === 'subsection-2-1' ? 'text-cyan-400 border-cyan-500' : 'text-slate-500 border-slate-800'}`}>Speed & SEO</a>
-                                            <a href="#subsection-2-2" className={`block text-xs transition-colors border-l pl-3 hover:border-cyan-500/50 ${activeId === 'subsection-2-2' ? 'text-cyan-400 border-cyan-500' : 'text-slate-500 border-slate-800'}`}>Scalability Gap</a>
-                                        </div>
-                                        <div className="relative pl-6">
-                                            {activeId === 'section-3' && <div className="absolute left-0 top-1.5 w-3 h-3 bg-slate-900 border-2 border-cyan-500 rounded-full z-10 transition-all"></div>}
-                                            <a href="#section-3" className={`block text-sm font-medium transition-colors ${activeId === 'section-3' ? 'text-cyan-400' : 'text-slate-400 hover:text-cyan-400'}`}>Sameer Digital Approach</a>
-                                        </div>
-                                        <div className="relative pl-6">
-                                            {activeId === 'section-4' && <div className="absolute left-0 top-1.5 w-3 h-3 bg-slate-900 border-2 border-cyan-500 rounded-full z-10 transition-all"></div>}
-                                            <a href="#section-4" className={`block text-sm font-medium transition-colors ${activeId === 'section-4' ? 'text-cyan-400' : 'text-slate-400 hover:text-cyan-400'}`}>Join the Revolution</a>
-                                        </div>
+                                        {tocItems.map((item) => (
+                                            <div key={item.id} className={`relative ${item.level === 'h3' ? 'pl-10 space-y-2' : 'pl-6'}`}>
+                                                {item.level === 'h2' && activeId === item.id && (
+                                                    <div className="absolute left-0 top-1.5 w-3 h-3 bg-slate-900 border-2 border-cyan-500 rounded-full z-10 transition-all"></div>
+                                                )}
+                                                
+                                                <a 
+                                                    href={`#${item.id}`}
+                                                    onClick={(e) => scrollToSection(e, item.id)}
+                                                    className={`
+                                                        block transition-colors duration-200
+                                                        ${item.level === 'h2' ? 'text-sm font-medium' : 'text-xs border-l pl-3'}
+                                                        ${activeId === item.id 
+                                                            ? (item.level === 'h2' ? 'text-cyan-400' : 'text-cyan-400 border-cyan-500') 
+                                                            : (item.level === 'h2' ? 'text-slate-300 hover:text-cyan-400' : 'text-slate-500 hover:text-cyan-400 border-slate-800 hover:border-cyan-500/50')
+                                                        }
+                                                    `}
+                                                >
+                                                    {item.text}
+                                                </a>
+                                            </div>
+                                        ))}
                                     </nav>
                                 </div>
                                 
@@ -419,7 +484,7 @@ const BlogPostPage: React.FC = () => {
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         {relatedBlogs
-                            .filter(b => b.category === blogData.category || b.category === 'Technology') // Simple filter logic
+                            .filter(b => b.category === blogData.category || b.category === 'Technology') 
                             .slice(0, 3)
                             .map((blog) => (
                             <Link to="/blog" key={blog.id} className="group cursor-pointer">
