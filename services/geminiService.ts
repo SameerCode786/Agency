@@ -73,7 +73,26 @@ export const generateBlogPost = async (topic?: string, category: string = "Techn
     const apiKey = process.env.API_KEY;
 
     if (!apiKey) {
-        throw new Error("API Key Missing");
+        console.warn("API Key Missing. Returning mock blog post.");
+        // Fallback mock data to prevent app crash when key is missing
+        return {
+            title: topic || "The Future of Digital Innovation",
+            excerpt: "Explore how innovative technologies are reshaping the digital landscape. (Mock Data)",
+            content: `
+                <p class="lead">In an era defined by rapid technological advancement, businesses must adapt to survive. This article explores the key trends shaping our digital future.</p>
+                <h2>Embracing Change</h2>
+                <p>From Artificial Intelligence to decentralized networks, the tools at our disposal are more powerful than ever. However, with great power comes the need for strategic implementation.</p>
+                <h3>Key Strategies</h3>
+                <ul>
+                    <li><strong>Data-Driven Decisions:</strong> leveraging analytics to guide growth.</li>
+                    <li><strong>User-Centric Design:</strong> creating experiences that resonate.</li>
+                    <li><strong>Scalable Architecture:</strong> building systems that grow with you.</li>
+                </ul>
+                <p><em>Note: This content is a placeholder generated because the Gemini API Key is missing. To generate real AI content, please ensure the API_KEY environment variable is set.</em></p>
+            `,
+            imagePrompt: "Futuristic digital abstract art with neon lights",
+            category: category
+        };
     }
 
     const ai = new GoogleGenAI({ apiKey });
