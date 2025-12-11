@@ -427,30 +427,16 @@ const HomePage: React.FC = () => {
         }
     }, [location]);
 
-    // Review Slider Logic
-    const [reviewIndex, setReviewIndex] = useState(0);
-    const reviewsPerPage = 2;
-
-    const nextReview = () => {
-        setReviewIndex((prev) => (prev + reviewsPerPage) % reviewsData.length);
-    };
-
-    const prevReview = () => {
-        setReviewIndex((prev) => (prev - reviewsPerPage + reviewsData.length) % reviewsData.length);
-    };
-
-    const currentReviews = reviewsData.slice(reviewIndex, reviewIndex + reviewsPerPage);
-
-
     const { scrollYProgress: reviewsScrollProgress } = useScroll({
         target: reviewsContainerRef,
-        offset: ["start end", "center center"]
+        offset: ["start start", "end end"]
     });
 
-    // Grow animation for the new section
-    const scale = useTransform(reviewsScrollProgress, [0, 1], [0.92, 1]);
-    const borderRadius = useTransform(reviewsScrollProgress, [0, 1], ["2rem", "0rem"]);
-    const opacity = useTransform(reviewsScrollProgress, [0, 0.3], [0.5, 1]);
+    // Pinning and Width Expansion Animation
+    // As the user scrolls down the container, the content sticks (pins).
+    // The width expands from 85% to 100% during the first 30% of the scroll.
+    const containerWidth = useTransform(reviewsScrollProgress, [0, 0.3], ["85%", "100%"]);
+    const containerRadius = useTransform(reviewsScrollProgress, [0, 0.3], ["40px", "0px"]);
 
 
     const { scrollYProgress } = useScroll({
@@ -966,207 +952,201 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* NEW: REVIEWS & FAQs SECTION */}
-      <section ref={reviewsContainerRef} id="reviews" className="py-24 bg-slate-950 relative overflow-hidden">
-        <motion.div 
-            style={{ 
-                scale, 
-                borderRadius, 
-                opacity 
-            }} 
-            className="w-full max-w-[100%] mx-auto bg-slate-900 shadow-2xl overflow-hidden relative"
-        >
-             {/* Background Effects */}
-             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[100px] pointer-events-none"></div>
-             <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-cyan-600/10 rounded-full blur-[100px] pointer-events-none"></div>
+      {/* 
+          SCROLL BEHAVIOR:
+          - The container is tall (130vh) to allow for scrolling "time".
+          - The inner wrapper is sticky at top:0 and 100vh tall.
+          - As you scroll down the 130vh parent, the child stays sticky.
+          - The transform hooks (scrollYProgress) map that 30vh of scroll distance to the width expansion animation.
+          - Once scroll > 30% (fully expanded), the stickiness holds for a moment, then releases as the parent scroll ends.
+          - Result: The user scrolls -> Section grows -> Section locks -> User scrolls past.
+      */}
+      <section ref={reviewsContainerRef} id="reviews" className="relative h-[130vh] bg-slate-950">
+        <div className="sticky top-0 h-screen flex flex-col justify-center items-center overflow-hidden">
+            <motion.div 
+                style={{ 
+                    width: containerWidth,
+                    borderRadius: containerRadius,
+                }} 
+                className="bg-slate-900 border-y border-slate-800/50 shadow-2xl overflow-hidden relative z-10 w-[85%] rounded-[40px] max-w-[1920px]"
+            >
+                 <div className="container mx-auto px-6 py-12 md:p-16 lg:p-20 relative z-10">
+                     
+                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+                         {/* Left Column: Context & Controls */}
+                         <div className="lg:col-span-4 flex flex-col justify-center">
+                             <span className="inline-block px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-bold tracking-[0.2em] uppercase mb-4 w-fit">
+                                Client Success & Insights
+                             </span>
+                             <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
+                                What People <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500">Say & Ask</span>
+                             </h2>
+                             <p className="text-slate-400 text-lg leading-relaxed mb-10 max-w-md">
+                                 We pride ourselves on transparent communication and exceptional results. Explore our client feedback and answers to common queries.
+                             </p>
+                             
+                             {/* Modern Toggle Switch (Solid Style) */}
+                             <div className="inline-flex bg-black p-1.5 rounded-full border border-slate-800 relative w-full sm:w-auto">
+                                 <motion.div 
+                                    className="absolute top-1.5 bottom-1.5 bg-cyan-500 rounded-full"
+                                    initial={false}
+                                    animate={{ 
+                                        left: activeTab === 'reviews' ? '6px' : '50%', 
+                                        width: 'calc(50% - 6px)' 
+                                    }}
+                                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                                 />
+                                 <button 
+                                    onClick={() => setActiveTab('reviews')}
+                                    className={`relative z-10 px-8 py-4 rounded-full text-sm font-bold transition-colors duration-300 flex-1 sm:w-48 text-center uppercase tracking-wider ${activeTab === 'reviews' ? 'text-black' : 'text-slate-400 hover:text-white'}`}
+                                 >
+                                     Client Reviews
+                                 </button>
+                                 <button 
+                                    onClick={() => setActiveTab('faqs')}
+                                    className={`relative z-10 px-8 py-4 rounded-full text-sm font-bold transition-colors duration-300 flex-1 sm:w-48 text-center uppercase tracking-wider ${activeTab === 'faqs' ? 'text-black' : 'text-slate-400 hover:text-white'}`}
+                                 >
+                                     Common Questions
+                                 </button>
+                             </div>
+                         </div>
 
-             <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10">
-                 
-                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
-                     {/* Left Column: Context & Controls */}
-                     <div className="lg:col-span-5 flex flex-col items-start justify-center">
-                         <span className="inline-block px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-sm font-bold tracking-[0.2em] uppercase mb-4">
-                            Client Success & Insights
-                         </span>
-                         <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
-                            What People Say & Ask
-                         </h2>
-                         <p className="text-slate-400 text-lg leading-relaxed mb-10 max-w-md">
-                             We pride ourselves on transparent communication and exceptional results. Here's what our partners say and answers to common questions.
-                         </p>
-                         
-                         {/* Custom Toggle Switch */}
-                         <div className="inline-flex bg-slate-950 p-1.5 rounded-full border border-slate-800 relative w-full sm:w-auto">
-                             <motion.div 
-                                className="absolute top-1.5 bottom-1.5 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full shadow-lg"
-                                initial={false}
-                                animate={{ 
-                                    left: activeTab === 'reviews' ? '6px' : '50%', 
-                                    width: 'calc(50% - 6px)' 
-                                }}
-                                transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                             />
-                             <button 
-                                onClick={() => setActiveTab('reviews')}
-                                className={`relative z-10 px-6 py-3 rounded-full text-sm font-bold transition-colors duration-300 flex-1 sm:w-40 text-center ${activeTab === 'reviews' ? 'text-white' : 'text-slate-400 hover:text-white'}`}
-                             >
-                                 Client Reviews
-                             </button>
-                             <button 
-                                onClick={() => setActiveTab('faqs')}
-                                className={`relative z-10 px-6 py-3 rounded-full text-sm font-bold transition-colors duration-300 flex-1 sm:w-40 text-center ${activeTab === 'faqs' ? 'text-white' : 'text-slate-400 hover:text-white'}`}
-                             >
-                                 Common Questions
-                             </button>
+                         {/* Right Column: Dynamic Content */}
+                         <div className="lg:col-span-8 min-h-[500px] flex items-center">
+                             <AnimatePresence mode="wait">
+                                 {activeTab === 'reviews' ? (
+                                     <motion.div
+                                        key="reviews"
+                                        initial={{ opacity: 0, x: 50 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        exit={{ opacity: 0, x: -50 }}
+                                        transition={{ duration: 0.5, ease: "easeOut" }}
+                                        className="w-full h-full"
+                                     >
+                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 h-full content-center">
+                                             {/* Display ALL 4 Reviews */}
+                                             {reviewsData.map((review, i) => (
+                                                 <motion.div 
+                                                    key={review.name} 
+                                                    initial={{ opacity: 0, y: 20 }}
+                                                    animate={{ opacity: 1, y: 0 }}
+                                                    transition={{ duration: 0.4, delay: i * 0.1 }}
+                                                    className="bg-slate-800 p-8 rounded-2xl border border-slate-700/50 hover:border-cyan-500/30 transition-all duration-500 relative flex flex-col h-full"
+                                                 >
+                                                     <div className="flex items-center gap-4 mb-6">
+                                                         <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-slate-700">
+                                                            <img src={review.image} alt={review.name} className="w-full h-full object-cover" />
+                                                         </div>
+                                                         <div>
+                                                             <h4 className="font-bold text-white text-base">{review.name}</h4>
+                                                             <p className="text-cyan-400 text-xs uppercase tracking-wider font-bold">{review.role}</p>
+                                                         </div>
+                                                     </div>
+                                                     
+                                                     <p className="text-slate-300 text-sm leading-relaxed mb-6 flex-grow">
+                                                         "{review.quote}"
+                                                     </p>
+
+                                                     <div className="flex gap-1 text-yellow-400">
+                                                         {[...Array(review.stars)].map((_, idx) => <StarIcon key={idx} className="w-4 h-4 fill-current" />)}
+                                                     </div>
+                                                 </motion.div>
+                                             ))}
+                                         </div>
+                                     </motion.div>
+                                 ) : (
+                                     <motion.div
+                                        key="faqs"
+                                        initial={{ opacity: 0, x: 50 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        exit={{ opacity: 0, x: -50 }}
+                                        transition={{ duration: 0.5, ease: "easeOut" }}
+                                        className="w-full flex flex-col h-full justify-center"
+                                     >
+                                         {/* Nested FAQ Tabs */}
+                                         <div className="flex border-b border-slate-800 mb-8 overflow-x-auto no-scrollbar gap-8">
+                                             {faqCategories.map((cat) => (
+                                                 <button
+                                                     key={cat}
+                                                     onClick={() => {
+                                                         setActiveFaqCategory(cat);
+                                                         setActiveFaq(null); // Reset open accordion
+                                                     }}
+                                                     className={`pb-4 text-sm font-bold whitespace-nowrap transition-all relative uppercase tracking-wider ${
+                                                         activeFaqCategory === cat 
+                                                         ? 'text-cyan-400' 
+                                                         : 'text-slate-500 hover:text-slate-300'
+                                                     }`}
+                                                 >
+                                                     {cat === 'Process' ? 'Process' : cat}
+                                                     {activeFaqCategory === cat && (
+                                                         <motion.div 
+                                                             layoutId="faqTabIndicator"
+                                                             className="absolute bottom-0 left-0 right-0 h-0.5 bg-cyan-400"
+                                                         />
+                                                     )}
+                                                 </button>
+                                             ))}
+                                         </div>
+
+                                         {/* FAQ Accordion List */}
+                                         <div className="space-y-2">
+                                             <AnimatePresence mode="wait">
+                                                <motion.div
+                                                    key={activeFaqCategory}
+                                                    initial={{ opacity: 0, y: 10 }}
+                                                    animate={{ opacity: 1, y: 0 }}
+                                                    exit={{ opacity: 0, y: -10 }}
+                                                    transition={{ duration: 0.3 }}
+                                                    className="space-y-3"
+                                                >
+                                                    {faqData[activeFaqCategory].map((faq, i) => (
+                                                        <motion.div 
+                                                            key={i}
+                                                            className={`bg-slate-800/50 border border-slate-800 rounded-xl overflow-hidden transition-all duration-300 ${activeFaq === i ? 'bg-slate-800 border-slate-700' : ''}`}
+                                                        >
+                                                            <button 
+                                                                onClick={() => setActiveFaq(activeFaq === i ? null : i)}
+                                                                className="w-full text-left py-4 px-6 flex justify-between items-center hover:text-cyan-400 transition-colors group"
+                                                            >
+                                                                <span className={`text-base font-bold transition-colors duration-300 pr-4 ${activeFaq === i ? 'text-cyan-400' : 'text-slate-200'}`}>
+                                                                    {faq.q}
+                                                                </span>
+                                                                <span className={`transform transition-transform duration-300 flex-shrink-0 ${activeFaq === i ? 'rotate-180 text-cyan-400' : 'text-slate-500 group-hover:text-cyan-400'}`}>
+                                                                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                                                    </svg>
+                                                                </span>
+                                                            </button>
+                                                            <AnimatePresence>
+                                                                {activeFaq === i && (
+                                                                    <motion.div
+                                                                        initial={{ height: 0, opacity: 0 }}
+                                                                        animate={{ height: "auto", opacity: 1 }}
+                                                                        exit={{ height: 0, opacity: 0 }}
+                                                                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                                                                        className="overflow-hidden"
+                                                                    >
+                                                                        <div className="pt-0 pb-6 px-6 text-slate-400 text-sm leading-relaxed">
+                                                                            {faq.a}
+                                                                        </div>
+                                                                    </motion.div>
+                                                                )}
+                                                            </AnimatePresence>
+                                                        </motion.div>
+                                                    ))}
+                                                </motion.div>
+                                             </AnimatePresence>
+                                         </div>
+                                     </motion.div>
+                                 )}
+                             </AnimatePresence>
                          </div>
                      </div>
 
-                     {/* Right Column: Dynamic Content */}
-                     <div className="lg:col-span-7 min-h-[400px]">
-                         <AnimatePresence mode="wait">
-                             {activeTab === 'reviews' ? (
-                                 <motion.div
-                                    key="reviews"
-                                    initial={{ opacity: 0, x: 20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    exit={{ opacity: 0, x: -20 }}
-                                    transition={{ duration: 0.5 }}
-                                    className="flex flex-col h-full"
-                                 >
-                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                                         {currentReviews.map((review, i) => (
-                                             <motion.div 
-                                                key={review.name} // Key based on content to trigger animation
-                                                initial={{ opacity: 0, y: 20 }}
-                                                animate={{ opacity: 1, y: 0 }}
-                                                exit={{ opacity: 0, y: -20 }}
-                                                transition={{ duration: 0.4, delay: i * 0.1 }}
-                                                className="bg-slate-950/50 backdrop-blur-md p-6 rounded-2xl border border-slate-800/60 hover:border-cyan-500/30 transition-all duration-300 shadow-xl group hover:shadow-cyan-500/10 flex flex-col items-start h-full"
-                                             >
-                                                 <div className="flex items-center gap-4 mb-4">
-                                                     <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-slate-800 relative flex-shrink-0">
-                                                        <img src={review.image} alt={review.name} className="w-full h-full object-cover" />
-                                                        <div className="absolute inset-0 bg-black/40"></div>
-                                                     </div>
-                                                     <div>
-                                                         <h4 className="font-bold text-white text-base">{review.name}</h4>
-                                                         <p className="text-cyan-400 text-xs">{review.role}</p>
-                                                     </div>
-                                                 </div>
-                                                 <div className="flex gap-1 text-yellow-400 mb-3">
-                                                     {[...Array(review.stars)].map((_, idx) => <StarIcon key={idx} className="w-4 h-4 fill-current" />)}
-                                                 </div>
-                                                 <p className="text-slate-300 text-sm leading-relaxed italic">"{review.quote}"</p>
-                                             </motion.div>
-                                         ))}
-                                     </div>
-
-                                     {/* Slider Controls */}
-                                     <div className="flex justify-center gap-4 mt-auto">
-                                         <button 
-                                            onClick={prevReview}
-                                            className="p-3 rounded-full bg-slate-950 border border-slate-800 hover:border-cyan-500 text-white transition-all hover:bg-slate-900"
-                                         >
-                                             <ArrowRightIcon className="w-5 h-5 rotate-180" />
-                                         </button>
-                                         <button 
-                                            onClick={nextReview}
-                                            className="p-3 rounded-full bg-slate-950 border border-slate-800 hover:border-cyan-500 text-white transition-all hover:bg-slate-900"
-                                         >
-                                              <ArrowRightIcon className="w-5 h-5" />
-                                         </button>
-                                     </div>
-                                 </motion.div>
-                             ) : (
-                                 <motion.div
-                                    key="faqs"
-                                    initial={{ opacity: 0, x: 20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    exit={{ opacity: 0, x: -20 }}
-                                    transition={{ duration: 0.5 }}
-                                    className="flex flex-col h-full"
-                                 >
-                                     {/* Nested FAQ Tabs */}
-                                     <div className="flex border-b border-slate-800 mb-6 overflow-x-auto no-scrollbar">
-                                         {faqCategories.map((cat) => (
-                                             <button
-                                                 key={cat}
-                                                 onClick={() => {
-                                                     setActiveFaqCategory(cat);
-                                                     setActiveFaq(null); // Reset open accordion
-                                                 }}
-                                                 className={`px-6 py-3 text-sm font-bold whitespace-nowrap transition-all relative ${
-                                                     activeFaqCategory === cat 
-                                                     ? 'text-cyan-400' 
-                                                     : 'text-slate-500 hover:text-slate-300'
-                                                 }`}
-                                             >
-                                                 {cat === 'Process' ? 'Working with Shape' : cat}
-                                                 {activeFaqCategory === cat && (
-                                                     <motion.div 
-                                                         layoutId="faqTabIndicator"
-                                                         className="absolute bottom-0 left-0 right-0 h-0.5 bg-cyan-400"
-                                                     />
-                                                 )}
-                                             </button>
-                                         ))}
-                                     </div>
-
-                                     {/* FAQ Accordion List */}
-                                     <div className="space-y-3">
-                                         <AnimatePresence mode="wait">
-                                            <motion.div
-                                                key={activeFaqCategory}
-                                                initial={{ opacity: 0, y: 10 }}
-                                                animate={{ opacity: 1, y: 0 }}
-                                                exit={{ opacity: 0, y: -10 }}
-                                                transition={{ duration: 0.2 }}
-                                                className="space-y-3"
-                                            >
-                                                {faqData[activeFaqCategory].map((faq, i) => (
-                                                    <motion.div 
-                                                        key={i}
-                                                        className="border border-slate-800 rounded-xl bg-slate-950/50 overflow-hidden"
-                                                    >
-                                                        <button 
-                                                            onClick={() => setActiveFaq(activeFaq === i ? null : i)}
-                                                            className="w-full text-left p-5 flex justify-between items-start hover:bg-slate-800/30 transition-colors gap-4"
-                                                        >
-                                                            <span className={`text-base font-bold transition-colors duration-300 leading-snug ${activeFaq === i ? 'text-cyan-400' : 'text-slate-200'}`}>
-                                                                {faq.q}
-                                                            </span>
-                                                            <span className={`transform transition-transform duration-300 mt-1 ${activeFaq === i ? 'rotate-180 text-cyan-400' : 'text-slate-500'}`}>
-                                                                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                                                                </svg>
-                                                            </span>
-                                                        </button>
-                                                        <AnimatePresence>
-                                                            {activeFaq === i && (
-                                                                <motion.div
-                                                                    initial={{ height: 0, opacity: 0 }}
-                                                                    animate={{ height: "auto", opacity: 1 }}
-                                                                    exit={{ height: 0, opacity: 0 }}
-                                                                    transition={{ duration: 0.3 }}
-                                                                >
-                                                                    <div className="p-5 pt-0 text-slate-400 text-sm leading-relaxed border-t border-slate-800/50">
-                                                                        {faq.a}
-                                                                    </div>
-                                                                </motion.div>
-                                                            )}
-                                                        </AnimatePresence>
-                                                    </motion.div>
-                                                ))}
-                                            </motion.div>
-                                         </AnimatePresence>
-                                     </div>
-                                 </motion.div>
-                             )}
-                         </AnimatePresence>
-                     </div>
                  </div>
-
-             </div>
-        </motion.div>
+            </motion.div>
+        </div>
       </section>
 
       {/* NEW BLOG SECTION */}
