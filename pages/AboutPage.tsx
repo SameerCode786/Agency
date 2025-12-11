@@ -5,15 +5,23 @@ import { motion, useScroll, useTransform, useMotionValueEvent } from 'framer-mot
 import { useSeoContent } from '../hooks/useSeoContent';
 import PremiumButton from '../components/PremiumButton';
 import { Link } from 'react-router-dom';
-import { StarIcon, ArrowRightIcon, RocketIcon, CodeIcon, StrategyIcon } from '../components/Icons';
+import { StarIcon, ArrowRightIcon, RocketIcon, CodeIcon, StrategyIcon, LaurelWreathIcon } from '../components/Icons';
 
 // --- DATA ---
 
-const stats = [
-    { label: "Site of the Day", value: "5.0", sub: "Google Reviews", icon: <StarIcon className="w-6 h-6 text-yellow-400" /> },
-    { label: "Awwwards", value: "38", sub: "Honorable Mentions", icon: <RocketIcon className="w-6 h-6 text-cyan-400" /> },
-    { label: "Projects", value: "250+", sub: "Successfully Delivered", icon: <CodeIcon className="w-6 h-6 text-purple-400" /> },
-    { label: "Years", value: "10+", sub: "Of Digital Excellence", icon: <StrategyIcon className="w-6 h-6 text-blue-400" /> },
+const cultureImages = [
+    "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=2070&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=2070&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=2070&auto=format&fit=crop"
+];
+
+// --- NEW STATS DATA ---
+const statsData = [
+    { value: "5.0", label: "Site of the Day", sub: "Google Reviews" },
+    { value: "38", label: "Awwwards", sub: "Honorable Mentions" },
+    { value: "250+", label: "Projects", sub: "Successfully Delivered" },
+    { value: "10+", label: "Years", sub: "Of Digital Excellence" },
 ];
 
 const teamMembers = [
@@ -23,13 +31,6 @@ const teamMembers = [
     { name: "Ruby", role: "Design Intern", image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=1887&auto=format&fit=crop" },
     { name: "Joe", role: "Web Developer", image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1887&auto=format&fit=crop" },
     { name: "Sarah", role: "UI/UX Designer", image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1964&auto=format&fit=crop" },
-];
-
-const cultureImages = [
-    "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=2070&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=2070&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=2070&auto=format&fit=crop"
 ];
 
 // --- NEW PROCESS SECTION DATA ---
@@ -150,57 +151,112 @@ const AboutPage: React.FC = () => {
         </div>
       </section>
 
-      {/* 2. STATS SECTION */}
-      <section className="py-32 bg-slate-950 border-t border-slate-900 relative">
+      {/* 2. IDENTITY & STATS SECTION (REDESIGNED) */}
+      <section className="py-24 md:py-32 bg-slate-950 border-t border-slate-900 relative">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-              <div className="text-center max-w-4xl mx-auto mb-20">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
+              
+              {/* Top Text Content */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 mb-24">
+                  {/* Left Column */}
+                  <motion.div
+                        initial={{ opacity: 0, x: -30 }}
+                        whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
-                    >
-                        <span className="inline-block px-4 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-cyan-400 font-bold tracking-[0.2em] uppercase text-xs mb-8 shadow-lg shadow-cyan-500/10">
-                            Our Identity
-                        </span>
-                        <h2 className="text-4xl md:text-6xl font-bold text-white leading-tight mb-8">
-                            We are expert <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500">web creators</span> dedicated to bespoke, professional service.
+                  >
+                        <div className="flex items-center gap-3 mb-6">
+                            <div className="w-2 h-2 rounded-full bg-white"></div>
+                            <span className="text-white text-sm font-bold uppercase tracking-widest">Our Identity</span>
+                        </div>
+                        <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
+                            We are expert web creators dedicated to bespoke, professional service.
                         </h2>
-                        <p className="text-xl text-slate-400 leading-relaxed font-light">
-                            With over a decade of experience, Sameer Digital Lab is an energetic, fresh, and vibrant team offering creative talent, industry knowledge, and extremely high standards. We transform ambitious start-ups and global brands like Blackberry and NHS into digital leaders.
-                        </p>
-                    </motion.div>
+                  </motion.div>
+
+                  {/* Right Column */}
+                  <motion.div
+                        initial={{ opacity: 0, x: 30 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.2 }}
+                        className="flex flex-col justify-center"
+                  >
+                        <div className="text-slate-400 text-lg md:text-xl leading-relaxed space-y-6 font-light">
+                            <p>
+                                With over a decade of experience, Sameer Digital Lab is an energetic, fresh, and vibrant team offering creative talent, industry knowledge, and extremely high standards.
+                            </p>
+                            <p>
+                                We transform ambitious start-ups and global brands like Blackberry and NHS into digital leaders.
+                            </p>
+                        </div>
+                  </motion.div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-24">
-                  {stats.map((stat, i) => (
+              {/* Bottom Stats Row with Laurels */}
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
+                  {statsData.map((stat, i) => (
                       <motion.div 
                         key={i}
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: i * 0.1 }}
-                        className="group relative bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-3xl p-8 hover:bg-slate-900 transition-colors duration-500 overflow-hidden"
+                        className="flex flex-col items-center text-center"
                       >
-                          <div className="absolute inset-0 border-2 border-transparent group-hover:border-cyan-500/30 rounded-3xl transition-colors duration-500 pointer-events-none"></div>
-                          <div className="absolute -right-4 -top-4 w-24 h-24 bg-gradient-to-br from-cyan-500/20 to-purple-500/20 blur-2xl rounded-full group-hover:opacity-100 opacity-0 transition-opacity duration-500"></div>
-
-                          <div className="flex items-center justify-between mb-4">
-                                <div className="p-3 bg-slate-950 border border-slate-800 rounded-2xl group-hover:scale-110 transition-transform duration-300 shadow-lg group-hover:shadow-cyan-500/20">
-                                    {stat.icon}
-                                </div>
+                          <div className="relative w-32 h-32 md:w-40 md:h-40 flex items-center justify-center mb-4">
+                                <LaurelWreathIcon className="absolute w-full h-full text-white opacity-20" />
+                                <span className="text-3xl md:text-4xl font-bold text-white relative z-10">{stat.value}</span>
                           </div>
-                          <div className="text-4xl md:text-5xl font-bold text-white mb-2 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-slate-400 transition-all">
-                              {stat.value}
+                          <div className="space-y-1">
+                              <h4 className="text-sm md:text-base font-bold text-white uppercase tracking-wider">{stat.label}</h4>
+                              <p className="text-xs md:text-sm text-slate-500">{stat.sub}</p>
                           </div>
-                          <div className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-1">{stat.label}</div>
-                          <div className="text-xs text-slate-600 font-medium">{stat.sub}</div>
                       </motion.div>
                   ))}
               </div>
+
           </div>
       </section>
 
-      {/* 3. NEW PROCESS & EXPERTISE SECTION (Sticky Interactive) */}
+      {/* 3. EXPANDING VIDEO SECTION (Moved Here) */}
+      <section ref={videoSectionRef} className="pb-32 bg-slate-950 relative overflow-hidden">
+          <motion.div 
+            style={{ 
+                scale: videoScale, 
+                borderRadius: videoRadius,
+                opacity: videoOpacity
+            }}
+            className="w-full h-[60vh] md:h-[90vh] relative mx-auto overflow-hidden shadow-2xl shadow-cyan-500/10"
+          >
+              <video 
+                  autoPlay 
+                  loop 
+                  muted 
+                  playsInline 
+                  className="w-full h-full object-cover"
+              >
+                  <source src="https://res.cloudinary.com/dow2sbjsp/video/upload/v1765300961/shape-showreel-2024_looping-v3_czfqgh.mp4" type="video/mp4" />
+              </video>
+              
+              {/* Gradient Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-slate-950/20 opacity-60"></div>
+              
+              {/* Content Overlay */}
+              <div className="absolute bottom-10 left-0 right-0 text-center z-10 p-4">
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5 }}
+                    className="inline-block"
+                  >
+                      <div className="px-6 py-3 bg-black/40 backdrop-blur-md border border-white/10 rounded-full text-white text-sm font-bold uppercase tracking-widest hover:bg-black/60 transition-colors cursor-pointer">
+                          Watch Showreel 2024
+                      </div>
+                  </motion.div>
+              </div>
+          </motion.div>
+      </section>
+
+      {/* 4. NEW PROCESS & EXPERTISE SECTION (Sticky Interactive) */}
       <section ref={processRef} className="relative h-[250vh] bg-slate-950 border-t border-slate-900">
           <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
               <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -271,45 +327,6 @@ const AboutPage: React.FC = () => {
                   ${activeProcessIndex === 0 ? 'bg-purple-600' : activeProcessIndex === 1 ? 'bg-cyan-600' : 'bg-blue-600'}
               `}></div>
           </div>
-      </section>
-
-      {/* 4. EXPANDING VIDEO SECTION */}
-      <section ref={videoSectionRef} className="pb-32 bg-slate-950 relative overflow-hidden">
-          <motion.div 
-            style={{ 
-                scale: videoScale, 
-                borderRadius: videoRadius,
-                opacity: videoOpacity
-            }}
-            className="w-full h-[60vh] md:h-[90vh] relative mx-auto overflow-hidden shadow-2xl shadow-cyan-500/10"
-          >
-              <video 
-                  autoPlay 
-                  loop 
-                  muted 
-                  playsInline 
-                  className="w-full h-full object-cover"
-              >
-                  <source src="https://res.cloudinary.com/dow2sbjsp/video/upload/v1765300961/shape-showreel-2024_looping-v3_czfqgh.mp4" type="video/mp4" />
-              </video>
-              
-              {/* Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-slate-950/20 opacity-60"></div>
-              
-              {/* Content Overlay */}
-              <div className="absolute bottom-10 left-0 right-0 text-center z-10 p-4">
-                  <motion.div 
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.5 }}
-                    className="inline-block"
-                  >
-                      <div className="px-6 py-3 bg-black/40 backdrop-blur-md border border-white/10 rounded-full text-white text-sm font-bold uppercase tracking-widest hover:bg-black/60 transition-colors cursor-pointer">
-                          Watch Showreel 2024
-                      </div>
-                  </motion.div>
-              </div>
-          </motion.div>
       </section>
 
       {/* 5. TEAM SECTION */}
