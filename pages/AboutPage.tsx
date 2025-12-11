@@ -1,7 +1,7 @@
 
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import PageWrapper from '../components/PageWrapper';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, useMotionValueEvent } from 'framer-motion';
 import { useSeoContent } from '../hooks/useSeoContent';
 import PremiumButton from '../components/PremiumButton';
 import { Link } from 'react-router-dom';
@@ -32,6 +32,41 @@ const cultureImages = [
     "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=2070&auto=format&fit=crop"
 ];
 
+// --- NEW PROCESS SECTION DATA ---
+const processCategories = [
+    { id: 0, title: "Design", color: "text-purple-400" },
+    { id: 1, title: "Development", color: "text-cyan-400" },
+    { id: 2, title: "Marketing", color: "text-blue-500" }
+];
+
+const expertiseTags = [
+    // Design (0)
+    { label: "User Interface Design", cat: 0 },
+    { label: "User Experience Optimization", cat: 0 },
+    { label: "Wireframes & Prototyping", cat: 0 },
+    { label: "Branding", cat: 0 },
+    { label: "Logo Design", cat: 0 },
+    { label: "Mobile Design", cat: 0 },
+    
+    // Development (1)
+    { label: "CMS Integration", cat: 1 },
+    { label: "Website Development", cat: 1 },
+    { label: "Web Apps", cat: 1 },
+    { label: "iOS/Android", cat: 1 },
+    { label: "Software Development", cat: 1 },
+    { label: "React Native", cat: 1 },
+    { label: "Shopify Liquid", cat: 1 },
+    { label: "Supabase", cat: 1 },
+
+    // Marketing (2)
+    { label: "SEO", cat: 2 },
+    { label: "Performance Reporting", cat: 2 },
+    { label: "Digital Ad Campaigns", cat: 2 },
+    { label: "Content Creation", cat: 2 },
+    { label: "Analytics", cat: 2 },
+    { label: "Conversion Rate Opt", cat: 2 },
+];
+
 const AboutPage: React.FC = () => {
     const { title, description } = useSeoContent('About');
     
@@ -40,6 +75,20 @@ const AboutPage: React.FC = () => {
     const { scrollYProgress } = useScroll({ target: containerRef });
     const y1 = useTransform(scrollYProgress, [0, 1], [0, -100]);
     const y2 = useTransform(scrollYProgress, [0, 1], [0, 100]);
+
+    // Process Section Scroll Logic
+    const processRef = useRef<HTMLDivElement>(null);
+    const { scrollYProgress: processProgress } = useScroll({
+        target: processRef,
+        offset: ["start start", "end end"]
+    });
+    const [activeProcessIndex, setActiveProcessIndex] = useState(0);
+
+    useMotionValueEvent(processProgress, "change", (latest) => {
+        if (latest < 0.3) setActiveProcessIndex(0);
+        else if (latest < 0.7) setActiveProcessIndex(1);
+        else setActiveProcessIndex(2);
+    });
 
     // Video Scroll Logic (Expansion Effect)
     const videoSectionRef = useRef<HTMLDivElement>(null);
@@ -58,7 +107,7 @@ const AboutPage: React.FC = () => {
       <title>{title}</title>
       <meta name="description" content={description} />
       
-      {/* 1. HERO SECTION: "Good design makes life better." */}
+      {/* 1. HERO SECTION */}
       <section ref={containerRef} className="relative pt-32 pb-24 lg:pt-48 lg:pb-32 bg-slate-950 overflow-hidden">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="text-center mb-20">
@@ -101,10 +150,9 @@ const AboutPage: React.FC = () => {
         </div>
       </section>
 
-      {/* 2. RE-DESIGNED INTRO & STATS SECTION */}
+      {/* 2. STATS SECTION */}
       <section className="py-32 bg-slate-950 border-t border-slate-900 relative">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-              {/* Centered Intro Text */}
               <div className="text-center max-w-4xl mx-auto mb-20">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -123,7 +171,6 @@ const AboutPage: React.FC = () => {
                     </motion.div>
               </div>
 
-              {/* Stats Grid - Modern Cards */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-24">
                   {stats.map((stat, i) => (
                       <motion.div 
@@ -134,7 +181,6 @@ const AboutPage: React.FC = () => {
                         transition={{ delay: i * 0.1 }}
                         className="group relative bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-3xl p-8 hover:bg-slate-900 transition-colors duration-500 overflow-hidden"
                       >
-                          {/* Gradient Border on Hover */}
                           <div className="absolute inset-0 border-2 border-transparent group-hover:border-cyan-500/30 rounded-3xl transition-colors duration-500 pointer-events-none"></div>
                           <div className="absolute -right-4 -top-4 w-24 h-24 bg-gradient-to-br from-cyan-500/20 to-purple-500/20 blur-2xl rounded-full group-hover:opacity-100 opacity-0 transition-opacity duration-500"></div>
 
@@ -154,7 +200,80 @@ const AboutPage: React.FC = () => {
           </div>
       </section>
 
-      {/* 3. EXPANDING VIDEO SECTION (Ander sa Baher Animation) */}
+      {/* 3. NEW PROCESS & EXPERTISE SECTION (Sticky Interactive) */}
+      <section ref={processRef} className="relative h-[250vh] bg-slate-950 border-t border-slate-900">
+          <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
+              <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                  
+                  {/* Section Title */}
+                  <div className="absolute top-24 left-4 lg:left-8 z-10">
+                      <span className="text-white text-sm font-bold tracking-[0.2em] uppercase">OUR PROCESS AND EXPERTISE</span>
+                  </div>
+
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center h-full pt-20">
+                      
+                      {/* Left: Animated Headings */}
+                      <div className="flex flex-col gap-8 lg:gap-16">
+                          {processCategories.map((cat, index) => (
+                              <motion.h2 
+                                key={cat.id}
+                                className={`text-5xl md:text-7xl lg:text-8xl font-serif italic font-medium transition-all duration-500 ease-out cursor-pointer ${
+                                    activeProcessIndex === index 
+                                    ? `text-white scale-105 opacity-100 translate-x-4` 
+                                    : 'text-slate-700 opacity-40 scale-100 hover:opacity-60'
+                                }`}
+                                onClick={() => {
+                                    // Optional: Click to scroll functionality could be added here
+                                }}
+                              >
+                                  {cat.title}
+                              </motion.h2>
+                          ))}
+                      </div>
+
+                      {/* Right: Interactive Tags */}
+                      <div className="flex flex-wrap content-center gap-3 lg:gap-4 lg:justify-end max-w-xl ml-auto">
+                          {expertiseTags.map((tag, i) => {
+                              const isActive = tag.cat === activeProcessIndex;
+                              const activeColorClass = processCategories[tag.cat].color;
+                              
+                              return (
+                                  <motion.div
+                                    key={i}
+                                    layout
+                                    initial={{ opacity: 0, scale: 0.8 }}
+                                    animate={{ 
+                                        opacity: isActive ? 1 : 0.2,
+                                        scale: isActive ? 1 : 0.95,
+                                        borderColor: isActive ? 'rgba(255,255,255,0.2)' : 'transparent',
+                                    }}
+                                    transition={{ duration: 0.4 }}
+                                    className={`px-5 py-3 rounded-full border transition-all duration-300 backdrop-blur-sm cursor-default
+                                        ${isActive 
+                                            ? `bg-slate-900 border-slate-600 shadow-lg shadow-${activeColorClass.split('-')[1]}-500/20` 
+                                            : 'bg-transparent border-transparent'
+                                        }
+                                    `}
+                                  >
+                                      <span className={`text-sm md:text-base font-medium transition-colors duration-300 ${isActive ? 'text-white' : 'text-slate-600'}`}>
+                                          {tag.label}
+                                      </span>
+                                  </motion.div>
+                              );
+                          })}
+                      </div>
+
+                  </div>
+              </div>
+              
+              {/* Background Glow based on active index */}
+              <div className={`absolute top-1/2 right-0 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-[150px] transition-colors duration-1000 -z-10 opacity-20
+                  ${activeProcessIndex === 0 ? 'bg-purple-600' : activeProcessIndex === 1 ? 'bg-cyan-600' : 'bg-blue-600'}
+              `}></div>
+          </div>
+      </section>
+
+      {/* 4. EXPANDING VIDEO SECTION */}
       <section ref={videoSectionRef} className="pb-32 bg-slate-950 relative overflow-hidden">
           <motion.div 
             style={{ 
@@ -193,7 +312,7 @@ const AboutPage: React.FC = () => {
           </motion.div>
       </section>
 
-      {/* 4. TEAM SECTION: "Multiple personalities, No egos." */}
+      {/* 5. TEAM SECTION */}
       <section className="py-32 bg-slate-950 border-t border-slate-900">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center mb-20">
@@ -245,7 +364,7 @@ const AboutPage: React.FC = () => {
           </div>
       </section>
 
-      {/* 5. CULTURE SECTION */}
+      {/* 6. CULTURE SECTION */}
       <section className="py-24 bg-slate-900 border-t border-slate-800 relative overflow-hidden">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
