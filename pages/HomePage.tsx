@@ -16,7 +16,8 @@ import {
     ExpoIcon,
     SupabaseIcon,
     ArrowRightIcon,
-    FigmaIcon
+    FigmaIcon,
+    CodeIcon
 } from '../components/Icons';
 import { useSeoContent } from '../hooks/useSeoContent';
 
@@ -31,6 +32,7 @@ interface ProjectData {
     role: string;
     timeline: string;
     fullImage: string;
+    goals?: string[]; // Added goals for Weversity
 }
 
 // --- REVIEWS & FAQ DATA ---
@@ -189,7 +191,7 @@ const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                 animate={{ scale: 1, opacity: 1, y: 0 }}
                 exit={{ scale: 0.9, opacity: 0, y: 50 }}
                 transition={{ type: "spring", duration: 0.6 }}
-                className="bg-slate-900 border border-slate-700 w-full max-w-6xl h-[90vh] md:h-[85vh] rounded-2xl overflow-hidden flex flex-col md:flex-row shadow-2xl shadow-cyan-500/20 relative"
+                className="bg-slate-900 border border-slate-700 w-full max-w-7xl h-[90vh] md:h-[85vh] rounded-2xl overflow-hidden flex flex-col md:flex-row shadow-2xl shadow-cyan-500/20 relative"
                 onClick={(e) => e.stopPropagation()}
             >
                 {/* Close Button */}
@@ -202,8 +204,8 @@ const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                     </svg>
                 </button>
 
-                {/* LEFT SIDE: DETAILS */}
-                <div className="w-full md:w-5/12 p-8 md:p-10 overflow-y-auto custom-scrollbar border-r border-slate-800 flex flex-col">
+                {/* LEFT SIDE: DETAILS (50% Width) */}
+                <div className="w-full md:w-1/2 p-8 md:p-10 overflow-y-auto custom-scrollbar border-r border-slate-800 flex flex-col">
                     <div className="mb-6">
                          <span className="inline-block px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-bold uppercase tracking-wider mb-3">
                             {project.category}
@@ -227,10 +229,22 @@ const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                         <p className="text-slate-400 leading-relaxed text-sm md:text-base">
                             {project.description}
                         </p>
-                        <p className="text-slate-400 leading-relaxed text-sm md:text-base mt-4">
-                            We focused on creating a seamless user experience that balances aesthetic appeal with high-performance functionality. The goal was to drive conversions while telling a compelling brand story.
-                        </p>
                     </div>
+
+                    {/* Project Goals Section - Only shows if goals exist */}
+                    {project.goals && (
+                        <div className="mb-8">
+                            <h3 className="text-lg font-bold text-white mb-3">Project Goals</h3>
+                            <ul className="space-y-2">
+                                {project.goals.map((goal, index) => (
+                                    <li key={index} className="flex items-start gap-3 text-slate-400 text-sm md:text-base">
+                                        <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-cyan-400 flex-shrink-0"></div>
+                                        <span>{goal}</span>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
 
                     <div className="mb-8">
                         <h3 className="text-lg font-bold text-white mb-3">Tech Stack</h3>
@@ -250,8 +264,8 @@ const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                     </div>
                 </div>
 
-                {/* RIGHT SIDE: SCROLLING IMAGE */}
-                <div className="w-full md:w-7/12 h-full bg-slate-950 relative overflow-hidden group">
+                {/* RIGHT SIDE: SCROLLING IMAGE (50% Width) */}
+                <div className="w-full md:w-1/2 h-full bg-slate-950 relative overflow-hidden group">
                     <div className="absolute inset-0 w-full h-full">
                          {/* CSS Animation for Auto Scrolling */}
                          <style>{`
@@ -332,6 +346,23 @@ const coreServicesData = [
 // Mock Projects Data
 const selectedProjects: ProjectData[] = [
     {
+        title: "Weversity.org",
+        category: "Free Education / EdTech",
+        description: "Weversity is a transformative free learning platform built to democratize education. Developed within a rigorous 4-week challenge, this project leverages the power of WordPress and Elementor to deliver a seamless, accessible, and high-quality learning experience for everyone.",
+        image1: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1765470774/weversity_portfolio_gmnt44.jpg",
+        image2: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1765470774/weversity_portfolio_gmnt44.jpg",
+        tools: [<WordPressIcon className="w-5 h-5 text-blue-400" />, <span className="text-pink-400 font-bold text-xs flex items-center gap-1"><CodeIcon className="w-4 h-4"/>Elementor</span>, <JsIcon className="w-5 h-5 text-yellow-400" />],
+        role: "WordPress Developer",
+        timeline: "4 Weeks Challenge",
+        fullImage: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1765470870/screencapture-weversity-org-2025-11-30-22_34_09_xfle0e.png",
+        goals: [
+            "Provide 100% free, high-quality education to underprivileged students worldwide.",
+            "Create a lightweight, accessible interface that works seamlessly on low-bandwidth devices.",
+            "Empower the youth with practical digital skills to achieve financial independence.",
+            "Bridge the gap between traditional academic learning and modern industry demands."
+        ]
+    },
+    {
         title: "Elegantnast",
         category: "Luxury Beauty Brand",
         description: "Created a multilingual luxury website for Elegantnast, focusing on elegance and premium brand aesthetics.",
@@ -384,17 +415,6 @@ const selectedProjects: ProjectData[] = [
         tools: [<ReactIcon className="w-5 h-5 text-blue-400" />, <JsIcon className="w-5 h-5 text-yellow-400" />, <FigmaIcon className="w-5 h-5 text-purple-400" />],
         role: "Shopify Developer",
         timeline: "4 Weeks",
-        fullImage: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1764387541/ittefaq_xlwtfu.jpg"
-    },
-    {
-        title: "Zenith Health App",
-        category: "Mobile Application",
-        description: "Cross-platform mobile app for tracking mindfulness and meditation stats, integrated with Apple Health and Google Fit.",
-        image1: "https://images.unsplash.com/photo-1555774698-0b77e0d5fac6?q=80&w=2070&auto=format&fit=crop",
-        image2: "https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?q=80&w=2074&auto=format&fit=crop",
-        tools: [<ReactIcon className="w-5 h-5 text-cyan-400" />, <ExpoIcon className="w-5 h-5 text-white" />, <SupabaseIcon className="w-5 h-5 text-green-400" />],
-        role: "Mobile App Developer",
-        timeline: "10 Weeks",
         fullImage: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1764387541/ittefaq_xlwtfu.jpg"
     }
 ];
@@ -911,13 +931,13 @@ const HomePage: React.FC = () => {
                                 <img 
                                     src={project.image1} 
                                     alt={project.title} 
-                                    className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-100 group-hover:opacity-0"
+                                    className="absolute inset-0 w-full h-full object-cover transition-all duration-500 opacity-100 group-hover:opacity-0"
                                 />
-                                {/* Hover Image */}
+                                {/* Hover Image (Zoom out/pop effect & Color) */}
                                 <img 
                                     src={project.image2} 
                                     alt={`${project.title} hover`} 
-                                    className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0 group-hover:opacity-100 scale-105"
+                                    className="absolute inset-0 w-full h-full object-cover transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:scale-110 grayscale group-hover:grayscale-0"
                                 />
                                 
                                 {/* Overlay Gradient */}
