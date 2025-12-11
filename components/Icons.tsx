@@ -22,7 +22,7 @@ export const LayersIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
 );
 
 export const LaunchIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
-    <svg {...props} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4.5 16.5c-1.5 1.5-3 1.5-4.5 0s-1.5-3 0-4.5 3-1.5 4.5 0l1.5 1.5-1.5 1.5-1.5-1.5-1.5 1.5 3 3 1.5-1.5 1.5 1.5-1.5 1.5zm15-15c1.5-1.5 3-1.5 4.5 0s1.5 3 0 4.5-3 1.5-4.5 0l-1.5-1.5 1.5-1.5 1.5 1.5 1.5-1.5-3-3-1.5 1.5-1.5-1.5 1.5-1.5zM9 15l-1.5-1.5-6-6L6 3l6 6L10.5 15z"></path></svg>
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4.5 16.5c-1.5 1.5-3 1.5-4.5 0s-1.5-3 0-4.5 3-1.5 4.5 0l1.5 1.5-1.5 1.5-1.5-1.5-1.5 1.5 3 3 1.5-1.5 1.5 1.5-1.5 1.5zm15-15c1.5-1.5 3-1.5 4.5 0s1.5 3 0 4.5-3 1.5-4.5 0l-1.5-1.5 1.5-1.5 1.5 1.5 1.5-1.5-3-3-1.5 1.5-1.5-1.5-1.5-1.5zM9 15l-1.5-1.5-6-6L6 3l6 6L10.5 15z"></path></svg>
 );
 
 
@@ -51,6 +51,12 @@ export const GithubIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
 );
 export const LinkedinIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
   <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+);
+export const FacebookIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+);
+export const LinkIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
 );
 export const WhatsappIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
   <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21.01 3.011a11.33 11.33 0 0 0-16.98 16.98L3 21l1.01-1.01a11.33 11.33 0 0 0 16.99-16.98zM9.5 16c-.22 0-.44-.04-.65-.12a6.38 6.38 0 0 1-3.23-3.23c-.17-.43-.17-1.31 0-1.74a6.38 6.38 0 0 1 3.23-3.23c.43-.17 1.31-.17 1.74 0l.13.05c1.4.56 2.37 1.8 2.37 3.31 0 .22-.04.44-.12.65a4.38 4.38 0 0 1-3.5 3.5c-.21.08-.43.12-.65.12z"></path></svg>
@@ -118,7 +124,7 @@ export const TailwindIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => 
 );
 
 export const RocketIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
-    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4.5 16.5c-1.5 1.5-3 1.5-4.5 0s-1.5-3 0-4.5 3-1.5 4.5 0l1.5 1.5-1.5 1.5-1.5-1.5-1.5 1.5 3 3 1.5-1.5 1.5 1.5-1.5 1.5zm15-15c1.5-1.5 3-1.5 4.5 0s1.5 3 0 4.5-3 1.5-4.5 0l-1.5-1.5 1.5-1.5 1.5 1.5 1.5-1.5-3-3-1.5 1.5-1.5-1.5 1.5-1.5zM9 15l-1.5-1.5-6-6L6 3l6 6L10.5 15z"></path></svg>
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4.5 16.5c-1.5 1.5-3 1.5-4.5 0s-1.5-3 0-4.5 3-1.5 4.5 0l1.5 1.5-1.5 1.5-1.5-1.5-1.5 1.5 3 3 1.5-1.5 1.5 1.5-1.5 1.5zm15-15c1.5-1.5 3-1.5 4.5 0s1.5 3 0 4.5-3 1.5-4.5 0l-1.5-1.5 1.5-1.5 1.5 1.5 1.5-1.5-3-3-1.5 1.5-1.5-1.5-1.5-1.5zM9 15l-1.5-1.5-6-6L6 3l6 6L10.5 15z"></path></svg>
 );
 
 export const TargetIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (

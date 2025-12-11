@@ -3,50 +3,51 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import PageWrapper from '../components/PageWrapper';
 import { motion, useScroll, useSpring } from 'framer-motion';
-import { EmailIcon, LinkedinIcon, TwitterIcon, CheckIcon, StarIcon, ArrowRightIcon } from '../components/Icons';
+import { EmailIcon, LinkedinIcon, TwitterIcon, CheckIcon, StarIcon, ArrowRightIcon, FacebookIcon, LinkIcon } from '../components/Icons';
 import PremiumButton from '../components/PremiumButton';
 import { supabase } from '../services/supabaseClient';
 
-// Mock Data for the specific blog post requested
+// Updated Mock Data with Agency-Focused Content and IDs for TOC
 const blogData = {
-    title: "The Hidden Cost of 'Free Trials': Why Sameer Digital Lab Made the 100% Free Commitment",
+    title: "Why 'Cheap' Websites Cost You More: The Hidden Price of Template Solutions",
     date: "November 26, 2025",
     author: "Sameer Digital Lab",
     role: "Administrator",
     category: "Business",
     image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop",
+    // Note: Added IDs to h2 tags for the Table of Contents scrollspy to work
     content: `
-        <p class="lead">If you’ve spent any serious time trying to upskill online, you know the cycle: you find a course promising a life-changing skill, see the banner that says “Enroll for Free!” and you click. That initial click, a moment of hopeful excitement, is, for most people, the moment they step into a meticulously crafted <strong>Enrollment Trap</strong>.</p>
+        <p class="lead">If you’ve spent any serious time trying to grow your business online, you know the cycle: you find a service promising a stunning website for $500, see the banner that says “Launch in 24 Hours!” and you click. That initial click, a moment of hopeful excitement, is often the moment you step into the <strong>Template Trap</strong>.</p>
         
-        <p>The truth is, most “free” learning is simply the bait. It’s the first quarter of a novel, designed to hook you before the inevitable, crippling paywall appears. You’re not signing up for education; you’re signing up for an elaborate sales funnel.</p>
+        <p>The truth is, most "budget" websites are simply generic placeholders. It’s the first quarter of a novel, designed to hook you before the inevitable limitations appear. You aren't investing in a digital asset; you're renting a generic layout that thousands of others already use.</p>
         
-        <h2 id="section-1">The Enrollment Trap: The True Cost of a Zero-Dollar Click</h2>
-        <p>This practice extracts an immense and invisible toll on learners. A cost that goes far beyond the eventual subscription fee. This is the core reason Sameer Digital Lab was founded, built on one single, non-negotiable principle: <strong>100% Free. 100% Complete. No Exceptions.</strong></p>
+        <h2 id="section-1">The True Cost of a Generic Template</h2>
+        <p>This practice extracts an immense and invisible toll on businesses. A cost that goes far beyond the initial setup fee. This is the core reason Sameer Digital Lab was founded, built on one single, non-negotiable principle: <strong>100% Custom. 100% Performance. No Exceptions.</strong></p>
         
-        <h2 id="section-2">The Three Invisible Paywalls That Sabotage Success</h2>
-        <p>The "freemium" model doesn't just block access; it strategically breaks down your momentum and destroys your confidence. Sameer Digital Lab directly addresses and eliminates these three destructive barriers:</p>
+        <h2 id="section-2">Three Invisible Barriers to Growth</h2>
+        <p>The "cheap template" model doesn't just look generic; it strategically breaks down your brand authority and destroys conversion rates. Sameer Digital Lab directly addresses and eliminates these three destructive barriers:</p>
         
-        <h3 id="subsection-2-1">1. The Psychological Momentum Paywall</h3>
-        <p>You’re a week in. You’ve successfully navigated the basics of <strong>Web Development</strong> or <strong>Social Media Marketing</strong>. You feel the dopamine rush of accomplishment. Suddenly, you hit a wall—the “Upgrade to Premium to Unlock the Advanced Modules” screen.</p>
+        <h3 id="subsection-2-1">1. The Speed & SEO Barrier</h3>
+        <p>You launch. It looks okay. But Google hates it. Bloated code, unoptimized images, and slow server response times kill your rankings before you even start. You wonder why you have no traffic.</p>
         <ul>
-            <li><strong>The Cost:</strong> This isn’t just a $49 payment. It’s the sudden, jarring <em>loss of momentum</em>. Your brain, which was busy building new neural pathways, is now forced into a cold, hard calculation of <em>value vs. cost</em>.</li>
+            <li><strong>The Cost:</strong> This isn’t just a loss of traffic. It’s the loss of <em>trust</em>. Users bounce within 3 seconds if a site doesn't load, forcing you into a cold, hard calculation of <em>lost revenue vs. saved development costs</em>.</li>
         </ul>
 
-        <h3 id="subsection-2-2">2. The Critical Information Gap Paywall</h3>
-        <p>This is perhaps the most insidious trap. You finish a "complete" course, you have your certificate, and you know the <em>skill</em>. But when you try to land your first client, you are paralyzed by questions the course never answered:</p>
+        <h3 id="subsection-2-2">2. The Scalability Gap</h3>
+        <p>This is perhaps the most insidious trap. You grow, you need custom features—a booking system, a client portal, a custom e-commerce flow. But your template is rigid. To add one feature, you have to rebuild the whole site.</p>
         <ul>
-            <li><em>How do I write a legally sound freelance contract?</em></li>
-            <li><em>What are the industry standard rates for this specific service?</em></li>
-            <li><em>How do I handle international payments and tax forms?</em></li>
+            <li><em>How do I integrate a custom CRM?</em></li>
+            <li><em>Why does my site break when I update a plugin?</em></li>
+            <li><em>How do I handle international traffic?</em></li>
         </ul>
 
-        <h2 id="section-3">Mission Over Margin: Why the Sameer Digital Lab Model Works</h2>
-        <p>Our commitment to truly <strong>100% free online courses</strong> is not a marketing gimmick—it is a foundational principle driven by a clear mission: <strong>to eliminate the financial barrier to competence and financial independence.</strong></p>
-        <p>We are able to maintain this world-class quality while remaining free because our model shifts the focus.</p>
+        <h2 id="section-3">Mission Over Margin: The Sameer Digital Approach</h2>
+        <p>Our commitment to truly <strong>custom digital solutions</strong> is not a marketing gimmick—it is a foundational principle driven by a clear mission: <strong>to eliminate the technical barriers between your business and your success.</strong></p>
+        <p>We are able to maintain this world-class quality while remaining competitive because our model shifts the focus from mass-production to high-impact engineering.</p>
         
-        <h2 id="section-4">Join the Discussion</h2>
-        <p>The current online learning industry is designed to keep you searching and spending. Sameer Digital Lab is designed to launch you into independence.</p>
-        <p>Are you ready to stop paying to learn, and start learning to earn?</p>
+        <h2 id="section-4">Join the Digital Revolution</h2>
+        <p>The current web design industry is designed to keep you dependent and spending on fixes. Sameer Digital Lab is designed to launch you into independence.</p>
+        <p>Are you ready to stop paying for repairs, and start investing in growth?</p>
     `
 };
 
@@ -65,6 +66,29 @@ const BlogPostPage: React.FC = () => {
         restDelta: 0.001
     });
 
+    // TOC Active State Logic
+    const [activeId, setActiveId] = useState<string>('');
+    const observer = useRef<IntersectionObserver | null>(null);
+
+    useEffect(() => {
+        const handleObserver = (entries: IntersectionObserverEntry[]) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    setActiveId(entry.target.id);
+                }
+            });
+        };
+
+        observer.current = new IntersectionObserver(handleObserver, {
+            rootMargin: "-20% 0px -35% 0px"
+        });
+
+        const headings = document.querySelectorAll('h2[id], h3[id]');
+        headings.forEach((heading) => observer.current?.observe(heading));
+
+        return () => observer.current?.disconnect();
+    }, [blogData.content]); // Re-run if content changes
+
     // Comment State
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -78,8 +102,11 @@ const BlogPostPage: React.FC = () => {
     }, [id]);
 
     const fetchComments = async () => {
-        // Use the ID from URL, default to 6 for this demo page if ID isn't present in URL logic
-        const blogId = id || 6; 
+        // Safe Parse ID
+        const blogId = id ? parseInt(id, 10) : 6; 
+        
+        if (isNaN(blogId)) return;
+
         const { data, error } = await supabase
             .from('comments')
             .select('*')
@@ -94,7 +121,8 @@ const BlogPostPage: React.FC = () => {
         if (!name || !email || !comment) return alert("Please fill required fields.");
         
         setSubmitting(true);
-        const blogId = id || 6; // Default ID for this demo page
+        // Important: Convert ID to number to match Supabase type expected (int8/int4)
+        const blogId = id ? parseInt(id, 10) : 6;
 
         const { error } = await supabase.from('comments').insert([{
             blog_id: blogId,
@@ -106,8 +134,8 @@ const BlogPostPage: React.FC = () => {
         }]);
 
         if (error) {
-            alert('Error posting comment. Please try again.');
-            console.error(error);
+            console.error("Supabase Comment Error:", error); // Log actual error for debugging
+            alert(`Error posting comment: ${error.message || 'Unknown error'}`);
         } else {
             alert('Comment submitted successfully!');
             setName('');
@@ -117,6 +145,27 @@ const BlogPostPage: React.FC = () => {
             fetchComments();
         }
         setSubmitting(false);
+    };
+
+    const handleShare = (platform: string) => {
+        const url = window.location.href;
+        const text = `Check out this article by Sameer Digital Lab: ${blogData.title}`;
+        
+        switch(platform) {
+            case 'twitter':
+                window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
+                break;
+            case 'linkedin':
+                window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank');
+                break;
+            case 'facebook':
+                window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+                break;
+            case 'copy':
+                navigator.clipboard.writeText(url);
+                alert('Link copied to clipboard!');
+                break;
+        }
     };
 
     return (
@@ -189,8 +238,8 @@ const BlogPostPage: React.FC = () => {
                                 {/* CTA Inside Blog */}
                                 <div className="mt-16 p-8 bg-slate-900 border border-slate-800 rounded-2xl text-center text-white relative overflow-hidden group">
                                     <div className="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-cyan-500/20 group-hover:opacity-100 transition-opacity"></div>
-                                    <h3 className="text-2xl font-bold mb-4 relative z-10">Start Learning for Free Now</h3>
-                                    <PremiumButton onClick={() => window.location.href='/contact'} className="relative z-10">Join Sameer Digital Lab</PremiumButton>
+                                    <h3 className="text-2xl font-bold mb-4 relative z-10">Ready to Transform Your Digital Presence?</h3>
+                                    <PremiumButton onClick={() => window.location.href='/contact'} className="relative z-10">Start Your Project</PremiumButton>
                                 </div>
                             </div>
 
@@ -243,6 +292,9 @@ const BlogPostPage: React.FC = () => {
                                             )}
                                         </div>
                                     ))}
+                                    {existingComments.length === 0 && (
+                                        <p className="text-slate-500 text-sm italic">No comments yet. Be the first to start the conversation!</p>
+                                    )}
                                 </div>
 
                                 {/* Comment Form */}
@@ -311,24 +363,24 @@ const BlogPostPage: React.FC = () => {
                                         <div className="absolute left-0 top-0 bottom-0 w-px bg-slate-800 ml-1.5"></div>
                                         
                                         <div className="relative pl-6">
-                                            <div className="absolute left-0 top-2 w-3 h-3 bg-slate-900 border-2 border-cyan-500 rounded-full z-10"></div>
-                                            <a href="#section-1" className="block text-sm font-medium text-slate-300 hover:text-cyan-400 transition-colors">The Enrollment Trap</a>
+                                            {activeId === 'section-1' && <div className="absolute left-0 top-1.5 w-3 h-3 bg-slate-900 border-2 border-cyan-500 rounded-full z-10 transition-all"></div>}
+                                            <a href="#section-1" className={`block text-sm font-medium transition-colors ${activeId === 'section-1' ? 'text-cyan-400' : 'text-slate-300 hover:text-cyan-400'}`}>The Hidden Price</a>
                                         </div>
                                         <div className="relative pl-6">
-                                            <div className="absolute left-1 top-2 w-1.5 h-1.5 bg-slate-700 rounded-full"></div>
-                                            <a href="#section-2" className="block text-sm text-slate-400 hover:text-cyan-400 transition-colors">Three Invisible Paywalls</a>
+                                            {activeId === 'section-2' && <div className="absolute left-0 top-1.5 w-3 h-3 bg-slate-900 border-2 border-cyan-500 rounded-full z-10 transition-all"></div>}
+                                            <a href="#section-2" className={`block text-sm font-medium transition-colors ${activeId === 'section-2' ? 'text-cyan-400' : 'text-slate-400 hover:text-cyan-400'}`}>Barriers to Growth</a>
                                         </div>
                                         <div className="relative pl-10 space-y-2">
-                                            <a href="#subsection-2-1" className="block text-xs text-slate-500 hover:text-cyan-400 transition-colors border-l border-slate-800 pl-3 hover:border-cyan-500/50">Psychological Momentum</a>
-                                            <a href="#subsection-2-2" className="block text-xs text-slate-500 hover:text-cyan-400 transition-colors border-l border-slate-800 pl-3 hover:border-cyan-500/50">Critical Information Gap</a>
+                                            <a href="#subsection-2-1" className={`block text-xs transition-colors border-l pl-3 hover:border-cyan-500/50 ${activeId === 'subsection-2-1' ? 'text-cyan-400 border-cyan-500' : 'text-slate-500 border-slate-800'}`}>Speed & SEO</a>
+                                            <a href="#subsection-2-2" className={`block text-xs transition-colors border-l pl-3 hover:border-cyan-500/50 ${activeId === 'subsection-2-2' ? 'text-cyan-400 border-cyan-500' : 'text-slate-500 border-slate-800'}`}>Scalability Gap</a>
                                         </div>
                                         <div className="relative pl-6">
-                                            <div className="absolute left-1 top-2 w-1.5 h-1.5 bg-slate-700 rounded-full"></div>
-                                            <a href="#section-3" className="block text-sm text-slate-400 hover:text-cyan-400 transition-colors">Mission Over Margin</a>
+                                            {activeId === 'section-3' && <div className="absolute left-0 top-1.5 w-3 h-3 bg-slate-900 border-2 border-cyan-500 rounded-full z-10 transition-all"></div>}
+                                            <a href="#section-3" className={`block text-sm font-medium transition-colors ${activeId === 'section-3' ? 'text-cyan-400' : 'text-slate-400 hover:text-cyan-400'}`}>Sameer Digital Approach</a>
                                         </div>
                                         <div className="relative pl-6">
-                                            <div className="absolute left-1 top-2 w-1.5 h-1.5 bg-slate-700 rounded-full"></div>
-                                            <a href="#section-4" className="block text-sm text-slate-400 hover:text-cyan-400 transition-colors">Join the Discussion</a>
+                                            {activeId === 'section-4' && <div className="absolute left-0 top-1.5 w-3 h-3 bg-slate-900 border-2 border-cyan-500 rounded-full z-10 transition-all"></div>}
+                                            <a href="#section-4" className={`block text-sm font-medium transition-colors ${activeId === 'section-4' ? 'text-cyan-400' : 'text-slate-400 hover:text-cyan-400'}`}>Join the Revolution</a>
                                         </div>
                                     </nav>
                                 </div>
@@ -337,14 +389,17 @@ const BlogPostPage: React.FC = () => {
                                 <div className="p-6 rounded-2xl bg-slate-900/30 border border-slate-800">
                                     <p className="text-xs font-bold text-slate-500 uppercase mb-4 text-center">Share this article</p>
                                     <div className="flex justify-center gap-4">
-                                        <button className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-cyan-500 hover:text-white transition-all">
+                                        <button onClick={() => handleShare('twitter')} className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-cyan-500 hover:text-white transition-all" title="Share on Twitter">
                                             <TwitterIcon className="w-4 h-4" />
                                         </button>
-                                        <button className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-blue-600 hover:text-white transition-all">
+                                        <button onClick={() => handleShare('linkedin')} className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-blue-600 hover:text-white transition-all" title="Share on LinkedIn">
                                             <LinkedinIcon className="w-4 h-4" />
                                         </button>
-                                        <button className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-purple-500 hover:text-white transition-all">
-                                            <EmailIcon className="w-4 h-4" />
+                                        <button onClick={() => handleShare('facebook')} className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-blue-700 hover:text-white transition-all" title="Share on Facebook">
+                                            <FacebookIcon className="w-4 h-4" />
+                                        </button>
+                                        <button onClick={() => handleShare('copy')} className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-purple-500 hover:text-white transition-all" title="Copy Link">
+                                            <LinkIcon className="w-4 h-4" />
                                         </button>
                                     </div>
                                 </div>
@@ -359,13 +414,16 @@ const BlogPostPage: React.FC = () => {
             <section className="bg-slate-900 py-20 border-t border-slate-800">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-12">
-                        <h3 className="text-3xl font-bold text-white mb-4">Read Next</h3>
+                        <h3 className="text-3xl font-bold text-white mb-4">Related Blogs</h3>
                         <div className="h-1 w-20 bg-gradient-to-r from-cyan-400 to-purple-500 mx-auto rounded-full"></div>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        {relatedBlogs.map((blog) => (
+                        {relatedBlogs
+                            .filter(b => b.category === blogData.category || b.category === 'Technology') // Simple filter logic
+                            .slice(0, 3)
+                            .map((blog) => (
                             <Link to="/blog" key={blog.id} className="group cursor-pointer">
-                                <div className="bg-slate-950 rounded-2xl overflow-hidden border border-slate-800 hover:border-cyan-500/30 transition-all duration-300">
+                                <div className="bg-slate-950 rounded-2xl overflow-hidden border border-slate-800 hover:border-cyan-500/30 transition-all duration-300 h-full flex flex-col">
                                     <div className="relative h-48 overflow-hidden">
                                         <img src={blog.image} alt={blog.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                                         <div className="absolute top-3 left-3">
@@ -374,11 +432,11 @@ const BlogPostPage: React.FC = () => {
                                             </span>
                                         </div>
                                     </div>
-                                    <div className="p-6">
+                                    <div className="p-6 flex flex-col flex-grow">
                                         <h4 className="text-lg font-bold text-white mb-2 leading-snug group-hover:text-cyan-400 transition-colors">
                                             {blog.title}
                                         </h4>
-                                        <div className="flex items-center text-slate-500 text-xs font-bold group-hover:text-white transition-colors gap-2 mt-4">
+                                        <div className="flex items-center text-slate-500 text-xs font-bold group-hover:text-white transition-colors gap-2 mt-auto pt-4">
                                             Read Article <ArrowRightIcon className="w-3 h-3" />
                                         </div>
                                     </div>
