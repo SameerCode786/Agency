@@ -13,12 +13,13 @@ type BlogStatus = 'Published' | 'Draft' | 'Review';
 interface Blog {
     id: number;
     title: string;
+    slug?: string; // Added to support database schema
     category: string;
     image: string;
     date: string;
     excerpt: string;
     content: string;
-    status: BlogStatus; // New field
+    status: BlogStatus; 
 }
 
 // Random topics per category for the "Daily Batch" feature
@@ -48,6 +49,7 @@ const ManageBlogs: React.FC = () => {
     // Form State
     const [currentBlog, setCurrentBlog] = useState<Partial<Blog>>({
         title: '',
+        slug: '',
         category: 'Technology',
         image: '',
         date: new Date().toISOString().split('T')[0], // Default to today YYYY-MM-DD
@@ -82,11 +84,34 @@ const ManageBlogs: React.FC = () => {
     };
 
     const handleSave = async () => {
-        // Use the date from the form directly (YYYY-MM-DD). 
-        // Supabase DATE type accepts this format perfectly.
+        // Robust Slug Generation Logic
+        const generateSlug = (text: string) => {
+            if (!text) return `post-${Date.now()}`;
+            const s = text.toString().toLowerCase().trim()
+                .replace(/\s+/g, '-')     // Replace spaces with -
+                .replace(/[^\w\-]+/g, '') // Remove all non-word chars
+                .replace(/\-\-+/g, '-');  // Replace multiple - with single -
+            
+            // If slug becomes empty (e.g. title was only special chars), fallback to timestamp
+            return s.length > 0 ? s : `post-${Date.now()}`;
+        };
+
+        // Determine final slug: Use existing input, or generate from title, or fallback
+        let finalSlug = currentBlog.slug;
+        if (!finalSlug || finalSlug.trim() === '') {
+            finalSlug = generateSlug(currentBlog.title || `blog-${Date.now()}`);
+        }
+
+        // Explicitly construct payload to prevent 'null' values
         const blogData = {
-            ...currentBlog,
-            date: currentBlog.date 
+            title: currentBlog.title || 'Untitled Post',
+            slug: finalSlug, // Guaranteed to be a string
+            category: currentBlog.category || 'Technology',
+            image: currentBlog.image || '',
+            date: currentBlog.date || new Date().toISOString().split('T')[0],
+            excerpt: currentBlog.excerpt || '',
+            content: currentBlog.content || '',
+            status: currentBlog.status || 'Draft'
         };
 
         try {
@@ -102,8 +127,8 @@ const ManageBlogs: React.FC = () => {
             fetchBlogs();
             resetForm();
         } catch (error: any) {
-            console.error("Save Error:", error);
-            alert(`Error saving blog: ${error.message || 'Unknown error'}`);
+            console.error("Save Error Details:", error);
+            alert(`Error saving blog: ${error.message || 'Unknown error'}. Check console for details.`);
         }
     };
 
@@ -135,8 +160,17 @@ const ManageBlogs: React.FC = () => {
         const encodedPrompt = encodeURIComponent(aiData.imagePrompt + " high quality, 4k, trending on artstation, futuristic, sleek, tech, minimal");
         const aiImageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1200&height=800&nologo=true&seed=${Math.floor(Math.random() * 1000)}`;
 
+        // Generate slug for AI posts
+        const slug = aiData.title
+            .toLowerCase()
+            .trim()
+            .replace(/\s+/g, '-')
+            .replace(/[^\w\-]+/g, '')
+            .replace(/\-\-+/g, '-');
+
         return {
             title: aiData.title,
+            slug: slug || `ai-post-${Date.now()}`,
             excerpt: aiData.excerpt,
             content: aiData.content,
             category: category,
@@ -199,6 +233,7 @@ const ManageBlogs: React.FC = () => {
         setCurrentBlog({ 
             category: 'Technology',
             status: 'Draft',
+            slug: '',
             date: new Date().toISOString().split('T')[0]
         });
         setAiTopic('');
@@ -217,6 +252,7 @@ const ManageBlogs: React.FC = () => {
 
         setCurrentBlog({
             ...blog,
+            slug: blog.slug || '', // Ensure slug is at least empty string if null in DB
             date: formattedDate
         });
         setIsEditing(true);
@@ -278,6 +314,16 @@ const ManageBlogs: React.FC = () => {
                                 onChange={e => setCurrentBlog({...currentBlog, title: e.target.value})} 
                                 className="w-full bg-slate-950 border border-slate-800 p-3 rounded-lg text-white focus:border-cyan-500 outline-none font-bold text-lg" 
                             />
+                            
+                            {/* Slug Field (Added for transparency and fixing errors) */}
+                            <label className="text-xs font-bold text-slate-500 uppercase block mt-2">Slug (URL)</label>
+                            <input 
+                                placeholder="my-blog-post-url" 
+                                value={currentBlog.slug || ''} 
+                                onChange={e => setCurrentBlog({...currentBlog, slug: e.target.value})} 
+                                className="w-full bg-slate-900 border border-slate-800 p-2 rounded-lg text-cyan-400 text-sm focus:border-cyan-500 outline-none font-mono" 
+                            />
+                            <p className="text-[10px] text-slate-600">This will be auto-generated from title if left blank.</p>
                         </div>
                         
                         {/* Status & Date */}
@@ -414,6 +460,7 @@ const ManageBlogs: React.FC = () => {
                 ))}
             </div>
 
+            {/* Content Grid */}
             {loading ? (
                 <div className="flex flex-col items-center justify-center py-20 text-slate-500 gap-4">
                     <LoaderIcon className="w-8 h-8 animate-spin text-cyan-500" />
