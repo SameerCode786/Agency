@@ -965,7 +965,7 @@ const HomePage: React.FC = () => {
                                         onClick={() => setSelectedProject(project)}
                                         className="bg-slate-900 hover:bg-slate-800 text-white border border-slate-700 hover:border-cyan-500/50 px-6 py-2 rounded-full text-sm font-bold transition-all shadow-lg shadow-cyan-500/5 flex items-center gap-2 group/btn"
                                     >
-                                        View Project
+                                        Visit Live
                                         <ArrowRightIcon className="w-4 h-4 transform group-hover/btn:translate-x-1 transition-transform" />
                                     </button>
 
