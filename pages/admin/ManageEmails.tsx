@@ -18,6 +18,7 @@ const ManageEmails: React.FC = () => {
     const [recipients, setRecipients] = useState('');
     const [subject, setSubject] = useState('');
     const [body, setBody] = useState('');
+    const [senderName, setSenderName] = useState('Sameer Digital Lab Admin');
     const [scheduleMode, setScheduleMode] = useState<'now' | 'later'>('now');
     const [scheduleDate, setScheduleDate] = useState('');
     
@@ -27,22 +28,14 @@ const ManageEmails: React.FC = () => {
     
     // Settings State
     const [showSettings, setShowSettings] = useState(false);
-    const [emailKeys, setEmailKeys] = useState({
-        serviceId: localStorage.getItem('emailjs_service_id') || '',
-        templateId: localStorage.getItem('emailjs_template_id') || '',
-        publicKey: localStorage.getItem('emailjs_public_key') || ''
-    });
+    const [accessKey, setAccessKey] = useState(localStorage.getItem('web3forms_access_key') || '');
 
     // Derived state for email count
     const validEmails = recipients.split(/[\n,]+/).map(e => e.trim()).filter(e => e.includes('@') && e.includes('.'));
 
     useEffect(() => {
         fetchHistory();
-        // Initialize EmailJS if key exists
-        if (emailKeys.publicKey && (window as any).emailjs) {
-            (window as any).emailjs.init(emailKeys.publicKey);
-        }
-    }, [emailKeys.publicKey]);
+    }, []);
 
     const fetchHistory = async () => {
         const { data, error } = await supabase.from('email_campaigns').select('*').order('created_at', { ascending: false });
@@ -50,13 +43,7 @@ const ManageEmails: React.FC = () => {
     };
 
     const saveSettings = () => {
-        localStorage.setItem('emailjs_service_id', emailKeys.serviceId);
-        localStorage.setItem('emailjs_template_id', emailKeys.templateId);
-        localStorage.setItem('emailjs_public_key', emailKeys.publicKey);
-        
-        if ((window as any).emailjs) {
-            (window as any).emailjs.init(emailKeys.publicKey);
-        }
+        localStorage.setItem('web3forms_access_key', accessKey);
         setShowSettings(false);
         alert("Settings saved successfully!");
     };
@@ -65,39 +52,44 @@ const ManageEmails: React.FC = () => {
         if (validEmails.length === 0) return alert("Please enter at least one valid email address.");
         if (!subject) return alert("Please enter a subject.");
         if (!body) return alert("Please enter email content.");
-        if (!emailKeys.serviceId || !emailKeys.templateId || !emailKeys.publicKey) {
-            return alert("⚠️ Email Configuration Missing.\n\nPlease click the 'Settings' (Gear) icon at the top right to enter your EmailJS credentials (Service ID, Template ID, Public Key) to send real emails.");
+        if (!accessKey) {
+            return alert("⚠️ Web3Forms Access Key Missing.\n\nPlease click the 'Settings' (Gear) icon at the top right to enter your Web3Forms Access Key.");
         }
 
         setIsSending(true);
         let successCount = 0;
 
-        // Loop through emails and send individually (Real Sending)
+        // Loop through emails and send individually using Web3Forms API
         for (let i = 0; i < validEmails.length; i++) {
             const email = validEmails[i];
             setSendingProgress(`Sending to ${email} (${i + 1}/${validEmails.length})...`);
             
             try {
-                // Prepare template params (ensure your EmailJS template uses {{to_email}}, {{subject}}, {{message}})
-                const templateParams = {
-                    to_email: email,
-                    subject: subject,
-                    message: body,
-                    reply_to: 'support@sameercodes.online'
-                };
+                const formData = new FormData();
+                formData.append("access_key", accessKey);
+                formData.append("name", senderName);
+                formData.append("email", email); // Recipient email
+                formData.append("subject", subject);
+                formData.append("message", body);
 
-                await (window as any).emailjs.send(
-                    emailKeys.serviceId,
-                    emailKeys.templateId,
-                    templateParams
-                );
-                successCount++;
+                const response = await fetch("https://api.web3forms.com/submit", {
+                    method: "POST",
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    successCount++;
+                } else {
+                    console.error(`Failed to send to ${email}:`, result.message);
+                }
             } catch (error: any) {
-                console.error(`Failed to send to ${email}:`, error);
+                console.error(`Error sending to ${email}:`, error);
             }
             
-            // Small delay to prevent rate limiting
-            await new Promise(r => setTimeout(r, 500));
+            // Delay to prevent rate limiting
+            await new Promise(r => setTimeout(r, 1000));
         }
 
         finishCampaign(successCount);
@@ -107,11 +99,11 @@ const ManageEmails: React.FC = () => {
         if (validEmails.length === 0) return alert("Please enter recipients.");
         // Create a mailto link (limitations apply to length)
         const bcc = validEmails.join(',');
-        const mailtoLink = `mailto:support@sameercodes.online?bcc=${encodeURIComponent(bcc)}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        const mailtoLink = `mailto:?bcc=${encodeURIComponent(bcc)}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
         
         // Check length
         if (mailtoLink.length > 2000) {
-            alert("⚠️ Too many recipients for 'Quick Send'. Please use the 'Real Send' button (requires configuration) or copy the list.");
+            alert("⚠️ Too many recipients for 'Quick Send'. Please use the 'Web3Forms' button or copy the list.");
         } else {
             window.location.href = mailtoLink;
             // Log as sent locally
@@ -128,6 +120,7 @@ const ManageEmails: React.FC = () => {
             created_at: new Date().toISOString(),
         };
 
+        // Log to supabase if table exists, otherwise just local state update
         const { error } = await supabase.from('email_campaigns').insert([newCampaign]);
         if (error) {
              setCampaigns(prev => [{ ...newCampaign, id: Math.random(), status: newCampaign.status as any }, ...prev]);
@@ -137,11 +130,14 @@ const ManageEmails: React.FC = () => {
 
         setIsSending(false);
         setSendingProgress('');
-        alert(count > 0 ? `Successfully sent to ${count} recipients!` : 'Failed to send. Check console.');
+        
         if (count > 0) {
+            alert("Email sent successfully!");
             setRecipients('');
             setSubject('');
             setBody('');
+        } else {
+            alert("Failed to send email!");
         }
     };
 
@@ -155,22 +151,19 @@ const ManageEmails: React.FC = () => {
                         className="absolute inset-0 z-50 bg-slate-950/90 backdrop-blur-sm flex items-center justify-center p-4"
                     >
                         <div className="bg-slate-900 border border-slate-700 p-6 rounded-2xl w-full max-w-md shadow-2xl">
-                            <h3 className="text-xl font-bold text-white mb-4">Email Server Configuration</h3>
+                            <h3 className="text-xl font-bold text-white mb-4">Web3Forms Configuration</h3>
                             <p className="text-xs text-slate-400 mb-4">
-                                To send real bulk emails from this dashboard without a backend, sign up for <a href="https://www.emailjs.com/" target="_blank" className="text-cyan-400 underline">EmailJS (Free)</a>.
+                                Get your Access Key from <a href="https://web3forms.com/" target="_blank" className="text-cyan-400 underline">Web3Forms</a>.
                             </p>
                             <div className="space-y-3">
                                 <div>
-                                    <label className="text-xs font-bold text-slate-500 uppercase">Service ID</label>
-                                    <input value={emailKeys.serviceId} onChange={e => setEmailKeys({...emailKeys, serviceId: e.target.value})} className="w-full bg-slate-950 border border-slate-700 p-2 rounded text-white text-sm" placeholder="service_xxxxx" />
-                                </div>
-                                <div>
-                                    <label className="text-xs font-bold text-slate-500 uppercase">Template ID</label>
-                                    <input value={emailKeys.templateId} onChange={e => setEmailKeys({...emailKeys, templateId: e.target.value})} className="w-full bg-slate-950 border border-slate-700 p-2 rounded text-white text-sm" placeholder="template_xxxxx" />
-                                </div>
-                                <div>
-                                    <label className="text-xs font-bold text-slate-500 uppercase">Public Key</label>
-                                    <input value={emailKeys.publicKey} onChange={e => setEmailKeys({...emailKeys, publicKey: e.target.value})} className="w-full bg-slate-950 border border-slate-700 p-2 rounded text-white text-sm" placeholder="user_xxxxx" />
+                                    <label className="text-xs font-bold text-slate-500 uppercase">Access Key</label>
+                                    <input 
+                                        value={accessKey} 
+                                        onChange={e => setAccessKey(e.target.value)} 
+                                        className="w-full bg-slate-950 border border-slate-700 p-2 rounded text-white text-sm" 
+                                        placeholder="Enter your Access Key" 
+                                    />
                                 </div>
                             </div>
                             <div className="flex justify-end gap-3 mt-6">
@@ -192,17 +185,21 @@ const ManageEmails: React.FC = () => {
                         <div>
                             <h3 className="text-xl font-bold text-white mb-2">Compose Campaign</h3>
                             <div className="flex items-center gap-2 text-sm text-slate-400">
-                                <span>From:</span>
+                                <span>Provider:</span>
                                 <span className="bg-slate-800 text-cyan-400 px-3 py-1 rounded-md border border-slate-700 font-mono text-xs">
-                                    support@sameercodes.online
+                                    Web3Forms
                                 </span>
-                                <span className="text-xs ml-2 flex items-center text-green-400 gap-1"><CheckIcon className="w-3 h-3"/> Verified</span>
+                                {accessKey ? (
+                                    <span className="text-xs ml-2 flex items-center text-green-400 gap-1"><CheckIcon className="w-3 h-3"/> Configured</span>
+                                ) : (
+                                    <span className="text-xs ml-2 flex items-center text-yellow-400 gap-1">⚠️ Missing Key</span>
+                                )}
                             </div>
                         </div>
                         <button 
                             onClick={() => setShowSettings(true)}
                             className="p-2 bg-slate-800 border border-slate-700 rounded-lg text-slate-400 hover:text-white hover:border-cyan-500 transition-all"
-                            title="Configure Email Server"
+                            title="Configure Web3Forms"
                         >
                             <MaintenanceIcon className="w-5 h-5" />
                         </button>
@@ -220,11 +217,22 @@ const ManageEmails: React.FC = () => {
                                 </span>
                             </div>
                             <textarea 
-                                placeholder="Paste emails here (separated by commas or new lines)...&#10;user1@example.com&#10;user2@example.com" 
+                                placeholder="Paste emails here (separated by commas or new lines)...&#10;client1@example.com&#10;client2@example.com" 
                                 rows={4} 
                                 value={recipients} 
                                 onChange={e => setRecipients(e.target.value)} 
                                 className="w-full bg-slate-950 border border-slate-800 p-3 rounded-lg text-white focus:border-cyan-500 outline-none font-mono text-sm" 
+                            />
+                        </div>
+
+                        {/* Sender Name */}
+                        <div>
+                            <label className="block text-xs font-bold text-slate-500 uppercase mb-2">Sender Name</label>
+                            <input 
+                                placeholder="e.g. Sameer Digital Lab Admin" 
+                                value={senderName} 
+                                onChange={e => setSenderName(e.target.value)} 
+                                className="w-full bg-slate-950 border border-slate-800 p-3 rounded-lg text-white focus:border-cyan-500 outline-none font-bold" 
                             />
                         </div>
 
@@ -241,7 +249,7 @@ const ManageEmails: React.FC = () => {
 
                         {/* Body */}
                         <div>
-                            <label className="block text-xs font-bold text-slate-500 uppercase mb-2">Email Body (Text/HTML)</label>
+                            <label className="block text-xs font-bold text-slate-500 uppercase mb-2">Email Body (Message)</label>
                             <textarea 
                                 placeholder="Write your message here..." 
                                 rows={8} 
@@ -251,28 +259,6 @@ const ManageEmails: React.FC = () => {
                             />
                         </div>
 
-                        {/* Scheduling Options */}
-                        <div className="bg-slate-900/30 border border-slate-800 p-4 rounded-xl">
-                            <label className="block text-xs font-bold text-slate-500 uppercase mb-3">Delivery Method</label>
-                            <div className="flex flex-col sm:flex-row gap-4 mb-4">
-                                <label className={`flex-1 flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all ${scheduleMode === 'now' ? 'bg-cyan-500/10 border-cyan-500 text-white' : 'bg-slate-950 border-slate-800 text-slate-400'}`}>
-                                    <input type="radio" name="schedule" checked={scheduleMode === 'now'} onChange={() => setScheduleMode('now')} className="hidden" />
-                                    <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${scheduleMode === 'now' ? 'border-cyan-400' : 'border-slate-600'}`}>
-                                        {scheduleMode === 'now' && <div className="w-2 h-2 bg-cyan-400 rounded-full" />}
-                                    </div>
-                                    <span className="font-bold text-sm">Send Immediately</span>
-                                </label>
-
-                                <label className={`flex-1 flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all ${scheduleMode === 'later' ? 'bg-purple-500/10 border-purple-500 text-white' : 'bg-slate-950 border-slate-800 text-slate-400'}`}>
-                                    <input type="radio" name="schedule" checked={scheduleMode === 'later'} onChange={() => setScheduleMode('later')} className="hidden" />
-                                    <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${scheduleMode === 'later' ? 'border-purple-400' : 'border-slate-600'}`}>
-                                        {scheduleMode === 'later' && <div className="w-2 h-2 bg-purple-400 rounded-full" />}
-                                    </div>
-                                    <span className="font-bold text-sm">Schedule / Log</span>
-                                </label>
-                            </div>
-                        </div>
-
                         <div className="pt-2 flex flex-col md:flex-row gap-3">
                             <PremiumButton onClick={handleRealSend} icon={false} width="full" className={isSending ? "opacity-70 cursor-not-allowed flex-1" : "flex-1"}>
                                 {isSending ? (
@@ -280,7 +266,7 @@ const ManageEmails: React.FC = () => {
                                 ) : (
                                     <span className="flex items-center gap-2 justify-center">
                                         <RocketIcon className="w-5 h-5" />
-                                        Send Real Email (Server)
+                                        Send via Web3Forms
                                     </span>
                                 )}
                             </PremiumButton>
@@ -294,7 +280,7 @@ const ManageEmails: React.FC = () => {
                             </button>
                         </div>
                         <p className="text-[10px] text-slate-500 text-center">
-                            * "Real Send" requires EmailJS configuration (Settings). "Quick Send" opens your computer's mail app.
+                            * "Send via Web3Forms" requires an Access Key. "Quick Send" opens your computer's mail app.
                         </p>
                     </div>
                 </div>
