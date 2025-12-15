@@ -3,52 +3,10 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import PageWrapper from '../components/PageWrapper';
 import { motion, useScroll, useSpring } from 'framer-motion';
-import { EmailIcon, LinkedinIcon, TwitterIcon, CheckIcon, StarIcon, ArrowRightIcon, FacebookIcon, LinkIcon } from '../components/Icons';
+import { EmailIcon, LinkedinIcon, TwitterIcon, ArrowRightIcon, FacebookIcon, LinkIcon } from '../components/Icons';
 import PremiumButton from '../components/PremiumButton';
 import { supabase } from '../services/supabaseClient';
-
-// Mock Data - Content removed hardcoded IDs to demonstrate dynamic generation
-const blogData = {
-    title: "Why 'Cheap' Websites Cost You More: The Hidden Price of Template Solutions",
-    date: "November 26, 2025",
-    author: "Sameer Digital Lab",
-    role: "Administrator",
-    category: "Business",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop",
-    content: `
-        <p class="lead">If you’ve spent any serious time trying to grow your business online, you know the cycle: you find a service promising a stunning website for $500, see the banner that says “Launch in 24 Hours!” and you click. That initial click, a moment of hopeful excitement, is often the moment you step into the <strong>Template Trap</strong>.</p>
-        
-        <p>The truth is, most "budget" websites are simply generic placeholders. It’s the first quarter of a novel, designed to hook you before the inevitable limitations appear. You aren't investing in a digital asset; you're renting a generic layout that thousands of others already use.</p>
-        
-        <h2>The True Cost of a Generic Template</h2>
-        <p>This practice extracts an immense and invisible toll on businesses. A cost that goes far beyond the initial setup fee. This is the core reason Sameer Digital Lab was founded, built on one single, non-negotiable principle: <strong>100% Custom. 100% Performance. No Exceptions.</strong></p>
-        
-        <h2>Three Invisible Barriers to Growth</h2>
-        <p>The "cheap template" model doesn't just look generic; it strategically breaks down your brand authority and destroys conversion rates. Sameer Digital Lab directly addresses and eliminates these three destructive barriers:</p>
-        
-        <h3>1. The Speed & SEO Barrier</h3>
-        <p>You launch. It looks okay. But Google hates it. Bloated code, unoptimized images, and slow server response times kill your rankings before you even start. You wonder why you have no traffic.</p>
-        <ul>
-            <li><strong>The Cost:</strong> This isn’t just a loss of traffic. It’s the loss of <em>trust</em>. Users bounce within 3 seconds if a site doesn't load, forcing you into a cold, hard calculation of <em>lost revenue vs. saved development costs</em>.</li>
-        </ul>
-
-        <h3>2. The Scalability Gap</h3>
-        <p>This is perhaps the most insidious trap. You grow, you need custom features—a booking system, a client portal, a custom e-commerce flow. But your template is rigid. To add one feature, you have to rebuild the whole site.</p>
-        <ul>
-            <li><em>How do I integrate a custom CRM?</em></li>
-            <li><em>Why does my site break when I update a plugin?</em></li>
-            <li><em>How do I handle international traffic?</em></li>
-        </ul>
-
-        <h2>Mission Over Margin: The Sameer Digital Approach</h2>
-        <p>Our commitment to truly <strong>custom digital solutions</strong> is not a marketing gimmick—it is a foundational principle driven by a clear mission: <strong>to eliminate the technical barriers between your business and your success.</strong></p>
-        <p>We are able to maintain this world-class quality while remaining competitive because our model shifts the focus from mass-production to high-impact engineering.</p>
-        
-        <h2>Join the Digital Revolution</h2>
-        <p>The current web design industry is designed to keep you dependent and spending on fixes. Sameer Digital Lab is designed to launch you into independence.</p>
-        <p>Are you ready to stop paying for repairs, and start investing in growth?</p>
-    `
-};
+import { FALLBACK_BLOGS } from '../data/fallbackBlogs';
 
 const relatedBlogs = [
     { id: 1, title: 'The Future of Web Development in 2024', category: 'Technology', image: 'https://images.unsplash.com/photo-1504639725590-34d0984388bd?q=80&w=1974&auto=format&fit=crop' },
@@ -71,6 +29,9 @@ const BlogPostPage: React.FC = () => {
         restDelta: 0.001
     });
 
+    const [blogData, setBlogData] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
+
     // TOC State
     const [processedContent, setProcessedContent] = useState('');
     const [tocItems, setTocItems] = useState<TocItem[]>([]);
@@ -80,8 +41,55 @@ const BlogPostPage: React.FC = () => {
     const observer = useRef<IntersectionObserver | null>(null);
     const contentRef = useRef<HTMLDivElement>(null);
 
-    // 1. Process Content on Load (Generate IDs and TOC)
+    // 1. Fetch Blog Data (DB + Fallback)
     useEffect(() => {
+        const fetchBlogData = async () => {
+            setLoading(true);
+            const blogId = id ? parseInt(id, 10) : null;
+
+            // 1. Try finding in FALLBACK_BLOGS first (since we just added it)
+            const fallbackPost = FALLBACK_BLOGS.find(b => b.id === blogId);
+            
+            if (fallbackPost) {
+                // If found in fallback, use it immediately
+                setBlogData({
+                    ...fallbackPost,
+                    date: new Date(fallbackPost.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+                });
+                setLoading(false);
+                return;
+            }
+
+            // 2. If not in fallback, try Supabase
+            if (blogId) {
+                const { data, error } = await supabase
+                    .from('blogs')
+                    .select('*')
+                    .eq('id', blogId)
+                    .single();
+
+                if (data) {
+                    setBlogData({
+                        ...data,
+                        author: "Sameer Digital Lab", // DB might not have author, default it
+                        role: "Administrator",
+                        date: new Date(data.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+                    });
+                } else {
+                    console.error("Blog not found in DB or Fallback", error);
+                    // Handle 404 state if needed
+                }
+            }
+            setLoading(false);
+        };
+
+        fetchBlogData();
+    }, [id]);
+
+    // 2. Process Content (Generate IDs and TOC)
+    useEffect(() => {
+        if (!blogData || !blogData.content) return;
+
         const processHtml = () => {
             const parser = new DOMParser();
             const doc = parser.parseFromString(blogData.content, 'text/html');
@@ -110,9 +118,9 @@ const BlogPostPage: React.FC = () => {
         };
 
         processHtml();
-    }, [blogData.content]);
+    }, [blogData]);
 
-    // 2. Set up Intersection Observer for Active State
+    // 3. Set up Intersection Observer for Active State
     useEffect(() => {
         if (!processedContent) return;
 
@@ -147,17 +155,12 @@ const BlogPostPage: React.FC = () => {
     const [existingComments, setExistingComments] = useState<any[]>([]);
 
     useEffect(() => {
-        fetchComments();
+        if (id) fetchComments();
     }, [id]);
 
-    const getBlogId = () => {
-        const parsed = id ? parseInt(id, 10) : 6;
-        // Default to 6 if parsing fails (e.g. if URL is string based in future) to prevent NaN errors
-        return isNaN(parsed) ? 6 : parsed;
-    }
-
     const fetchComments = async () => {
-        const blogId = getBlogId();
+        if (!id) return;
+        const blogId = parseInt(id, 10);
 
         const { data, error } = await supabase
             .from('comments')
@@ -171,9 +174,10 @@ const BlogPostPage: React.FC = () => {
     const handleCommentSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!name || !email || !comment) return alert("Please fill required fields.");
-        
+        if (!id) return;
+
         setSubmitting(true);
-        const blogId = getBlogId();
+        const blogId = parseInt(id, 10);
 
         const { error } = await supabase.from('comments').insert([{
             blog_id: blogId,
@@ -205,7 +209,7 @@ const BlogPostPage: React.FC = () => {
 
     const handleShare = (platform: string) => {
         const url = window.location.href;
-        const text = `Check out this article by Sameer Digital Lab: ${blogData.title}`;
+        const text = `Check out this article by Sameer Digital Lab: ${blogData?.title}`;
         
         switch(platform) {
             case 'twitter':
@@ -235,6 +239,28 @@ const BlogPostPage: React.FC = () => {
             setActiveId(id); // Instant feedback
         }
     };
+
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-slate-950 flex items-center justify-center">
+                <div className="w-10 h-10 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
+            </div>
+        );
+    }
+
+    if (!blogData) {
+        return (
+            <PageWrapper>
+                <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center text-center p-4">
+                    <h1 className="text-3xl text-white font-bold mb-4">Blog Post Not Found</h1>
+                    <p className="text-slate-400 mb-8">The article you are looking for does not exist or has been moved.</p>
+                    <Link to="/blog">
+                        <PremiumButton>Back to Blog</PremiumButton>
+                    </Link>
+                </div>
+            </PageWrapper>
+        )
+    }
 
     return (
         <PageWrapper>
@@ -271,7 +297,7 @@ const BlogPostPage: React.FC = () => {
                             </div>
                             <div className="flex items-center gap-2">
                                 <span className="text-purple-400">✍️</span>
-                                <span>By {blogData.author}</span>
+                                <span>By {blogData.author || "Sameer Digital Lab"}</span>
                             </div>
                         </div>
                     </motion.div>
@@ -293,9 +319,16 @@ const BlogPostPage: React.FC = () => {
                                     .blog-content p { font-size: 1.125rem; margin-bottom: 1.5rem; color: #94a3b8; line-height: 1.8; }
                                     .blog-content p.lead { font-size: 1.35rem; font-weight: 400; color: #cbd5e1; border-left: 4px solid #22d3ee; padding-left: 1.5rem; margin-bottom: 2.5rem; }
                                     .blog-content ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 2rem; }
+                                    .blog-content ol { list-style-type: decimal; padding-left: 1.5rem; margin-bottom: 2rem; }
                                     .blog-content li { margin-bottom: 0.75rem; color: #94a3b8; font-size: 1.1rem; }
                                     .blog-content strong { color: #22d3ee; font-weight: 700; }
                                     .blog-content em { font-style: italic; color: #cbd5e1; }
+                                    .blog-content figure { margin: 2.5rem 0; }
+                                    .blog-content img { border-radius: 1rem; border: 1px solid rgba(148, 163, 184, 0.1); width: 100%; }
+                                    .blog-content figcaption { text-align: center; color: #64748b; font-size: 0.875rem; margin-top: 0.75rem; }
+                                    .blog-content code { background: #1e293b; color: #f472b6; padding: 0.2rem 0.4rem; border-radius: 0.25rem; font-family: monospace; }
+                                    .blog-content a { color: #22d3ee; text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.2s; }
+                                    .blog-content a:hover { border-bottom-color: #22d3ee; }
                                 `}</style>
                                 
                                 <div 
@@ -308,7 +341,9 @@ const BlogPostPage: React.FC = () => {
                                 <div className="mt-16 p-8 bg-slate-900 border border-slate-800 rounded-2xl text-center text-white relative overflow-hidden group">
                                     <div className="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-cyan-500/20 group-hover:opacity-100 transition-opacity"></div>
                                     <h3 className="text-2xl font-bold mb-4 relative z-10">Ready to Transform Your Digital Presence?</h3>
-                                    <PremiumButton onClick={() => window.location.href='/contact'} className="relative z-10">Start Your Project</PremiumButton>
+                                    <Link to="/contact">
+                                        <PremiumButton className="relative z-10">Start Your Project</PremiumButton>
+                                    </Link>
                                 </div>
                             </div>
 
@@ -318,8 +353,8 @@ const BlogPostPage: React.FC = () => {
                                     <img src="https://ui-avatars.com/api/?name=Sameer+Digital&background=0f172a&color=22d3ee" alt="Author" className="w-full h-full object-cover"/>
                                 </div>
                                 <div className="text-center sm:text-left">
-                                    <h4 className="text-2xl font-bold text-white mb-1">{blogData.author}</h4>
-                                    <p className="text-sm text-cyan-400 font-bold uppercase tracking-wider mb-4">Role: {blogData.role}</p>
+                                    <h4 className="text-2xl font-bold text-white mb-1">{blogData.author || "Sameer Digital Lab"}</h4>
+                                    <p className="text-sm text-cyan-400 font-bold uppercase tracking-wider mb-4">Role: {blogData.role || "Administrator"}</p>
                                     <div className="flex justify-center sm:justify-start gap-4">
                                         <a href="#" className="text-slate-400 hover:text-white transition-colors"><TwitterIcon className="w-5 h-5"/></a>
                                         <a href="#" className="text-slate-400 hover:text-white transition-colors"><LinkedinIcon className="w-5 h-5"/></a>

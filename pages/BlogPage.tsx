@@ -8,8 +8,9 @@ import ParticleBackground from '../components/ParticleBackground';
 import { ArrowRightIcon, SearchIcon, LoaderIcon } from '../components/Icons';
 import PremiumButton from '../components/PremiumButton';
 import { supabase } from '../services/supabaseClient';
+import { FALLBACK_BLOGS } from '../data/fallbackBlogs';
 
-const categories = ['All', 'Technology', 'Design', 'Business'];
+const categories = ['All', 'Technology', 'Design', 'Business', 'SEO & Google Ranking'];
 
 const BlogPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -31,14 +32,39 @@ const BlogPage: React.FC = () => {
               .select('*')
               .order('date', { ascending: false });
 
-          if (error) throw error;
+          // Merge fetched data with fallback data
+          // Prioritize DB data, but always include fallback data if not present in DB
+          let combinedPosts = [...(data || [])];
           
-          if (data) {
-              setPosts(data);
+          // Add fallback posts if they aren't already in the DB (check by title or ID logic if needed)
+          // For simplicity, we just append them here, but typically you'd check for duplicates.
+          // Since we want the "Daily" blog to show up, we add it to the TOP if no DB data, or mix it in.
+          if (combinedPosts.length === 0) {
+              combinedPosts = [...FALLBACK_BLOGS];
+          } else {
+              // Optional: Add fallback blogs to the list if you want them mixed in
+              // combinedPosts = [...combinedPosts, ...FALLBACK_BLOGS];
+              // For this specific request, let's Ensure FALLBACK_BLOGS are visible
+              const fallbackIds = new Set(FALLBACK_BLOGS.map(b => b.id));
+              const dbIds = new Set(combinedPosts.map(p => p.id));
+              
+              FALLBACK_BLOGS.forEach(fb => {
+                  if (!dbIds.has(fb.id)) {
+                      combinedPosts.push(fb);
+                  }
+              });
           }
+
+          // Re-sort by date
+          combinedPosts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+          setPosts(combinedPosts);
+          
+          if (error) console.warn("Supabase fetch warning (using fallbacks):", error.message);
+          
       } catch (error) {
           console.error("Error fetching posts:", error);
-          // Optional: Set fallback data here if needed, or leave empty
+          setPosts(FALLBACK_BLOGS);
       } finally {
           setLoading(false);
       }
@@ -47,7 +73,11 @@ const BlogPage: React.FC = () => {
   // Helper to format date
   const formatDate = (dateStr: string) => {
       if (!dateStr) return '';
-      return new Date(dateStr).toLocaleDateString('en-US', {
+      const date = new Date(dateStr);
+      // Check if date is valid
+      if (isNaN(date.getTime())) return dateStr;
+      
+      return date.toLocaleDateString('en-US', {
           year: 'numeric',
           month: 'short',
           day: 'numeric'
@@ -61,7 +91,7 @@ const BlogPage: React.FC = () => {
   }, [searchTerm, category, posts]);
 
   // Featured post is the FIRST one (latest) from the full list
-  const featuredPost = posts.length > 0 ? posts[0] : null;
+  const featuredPost = filteredPosts.length > 0 ? filteredPosts[0] : null;
 
   // If we are showing "All" and no search, we display the Featured section separately.
   // We exclude it from the grid in that case.
