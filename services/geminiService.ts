@@ -69,7 +69,10 @@ export const generateSeoContent = async (pageName: string): Promise<SeoContent> 
         if (response.text) {
             // Clean up potential markdown formatting just in case
             const cleanText = response.text.replace(/```json/g, "").replace(/```/g, "").trim();
-            return JSON.parse(cleanText);
+            // Attempt to extract JSON object if surrounded by other text
+            const jsonMatch = cleanText.match(/\{[\s\S]*\}/);
+            const finalJson = jsonMatch ? jsonMatch[0] : cleanText;
+            return JSON.parse(finalJson);
         }
         throw new Error("No response from AI");
 
@@ -194,7 +197,10 @@ export const generateBlogPost = async (topic?: string, category: string = "Techn
 
         if (response.text) {
             const cleanText = response.text.replace(/```json/g, "").replace(/```/g, "").trim();
-            return JSON.parse(cleanText);
+            // Attempt to extract JSON object if surrounded by other text
+            const jsonMatch = cleanText.match(/\{[\s\S]*\}/);
+            const finalJson = jsonMatch ? jsonMatch[0] : cleanText;
+            return JSON.parse(finalJson);
         }
         throw new Error("Empty response from Gemini");
 
@@ -272,7 +278,10 @@ export const generateWebsitePlan = async (userPrompt: string): Promise<WebsitePl
         if (response.text) {
             // Clean up potential markdown formatting from AI response before parsing
             const cleanText = response.text.replace(/```json/g, "").replace(/```/g, "").trim();
-            return JSON.parse(cleanText);
+            // Attempt to extract JSON object if surrounded by other text
+            const jsonMatch = cleanText.match(/\{[\s\S]*\}/);
+            const finalJson = jsonMatch ? jsonMatch[0] : cleanText;
+            return JSON.parse(finalJson);
         }
         throw new Error("No response from AI Architect");
 
