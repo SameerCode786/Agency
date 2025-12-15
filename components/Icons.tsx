@@ -91,6 +91,10 @@ export const WordPressIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) =>
     <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M11.6 8.9c-.6 0-1.1.3-1.4.7l-2-6c.7-.3 1.5-.4 2.3-.4 4.1 0 7.4 3.3 7.4 7.4 0 1.5-.4 2.8-1.2 4l-5.1-14.1v8.4zm-8.2 1.7c0-1.4.4-2.7 1.2-3.8l4.7 13c-3.5-1.3-5.9-4.6-5.9-9.2zm6.8 5.1l-2.3 6.5c.6.2 1.2.3 1.9.3.8 0 1.6-.2 2.3-.5l-1.9-6.3zm8.3-7.1l-4.4 12.8c2.9-1.4 4.9-4.3 4.9-7.7 0-1.8-.6-3.4-1.5-4.8l1-2.8c0 .2 0 .3 0 .5zM12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.6 0 12 0z"></path></svg>
 );
 
+export const ElementorIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M2.3 0A2.3 2.3 0 0 0 0 2.3v19.4A2.3 2.3 0 0 0 2.3 24h19.4A2.3 2.3 0 0 0 24 21.7V2.3A2.3 2.3 0 0 0 21.7 0H2.3zm4.5 7.1h2.7v9.8H6.8V7.1zm5.9 0h4.5v2.3h-4.5V7.1zm0 3.7h4.5v2.3h-4.5v-2.3zm0 3.8h4.5v2.3h-4.5v-2.3z"/></svg>
+);
+
 export const ReactIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
     <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"></circle><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(30 12 12)"></ellipse><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(150 12 12)"></ellipse><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(90 12 12)"></ellipse></svg>
 );
@@ -128,7 +132,7 @@ export const TailwindIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => 
 );
 
 export const RocketIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
-    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4.5 16.5c-1.5 1.5-3 1.5-4.5 0s-1.5-3 0-4.5 3-1.5 4.5 0l1.5 1.5-1.5 1.5-1.5-1.5-1.5 1.5 3 3 1.5-1.5 1.5 1.5-1.5-1.5-1.5zm15-15c1.5-1.5 3-1.5 4.5 0s1.5 3 0 4.5-3 1.5-4.5 0l-1.5-1.5 1.5-1.5 1.5 1.5 1.5-1.5-3-3-1.5 1.5-1.5-1.5-1.5-1.5zM9 15l-1.5-1.5-6-6L6 3l6 6L10.5 15z"></path></svg>
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4.5 16.5c-1.5 1.5-3 1.5-4.5 0s-1.5-3 0-4.5 3-1.5 4.5 0l1.5 1.5-1.5 1.5-1.5-1.5-1.5 1.5 3 3 1.5-1.5 1.5 1.5-1.5-1.5zM9 15l-1.5-1.5-6-6L6 3l6 6L10.5 15z"></path></svg>
 );
 
 export const TargetIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
