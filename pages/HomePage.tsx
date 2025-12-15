@@ -972,9 +972,11 @@ const HomePage: React.FC = () => {
                                         <span className="text-cyan-400 text-xs font-bold uppercase tracking-wider mb-2 block">{project.category}</span>
                                         <h3 className="text-2xl md:text-3xl font-bold text-white group-hover:text-cyan-400 transition-colors">{project.title}</h3>
                                      </div>
-                                      <Link to="/portfolio" className="text-slate-500 hover:text-cyan-400 transition-colors">
+                                      {/* Updated Link to live site with View Live Text */}
+                                      <a href={project.link || "#"} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-slate-500 hover:text-cyan-400 transition-colors group/link" title="Visit Live Website">
+                                            <span className="text-xs font-bold uppercase opacity-0 group-hover/link:opacity-100 transition-opacity duration-300 hidden sm:inline-block">Visit Live</span>
                                             <ArrowRightIcon className="w-6 h-6 -rotate-45" />
-                                     </Link>
+                                     </a>
                                 </div>
                                 <p className="text-slate-400 leading-relaxed mb-6 line-clamp-3 flex-grow">
                                     {project.description}
