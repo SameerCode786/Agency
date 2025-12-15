@@ -14,6 +14,21 @@ interface BlogPostData {
     category: string;
 }
 
+// New Interface for Website Architect
+export interface WebsitePlan {
+    projectName: string;
+    tagline: string;
+    summary: string;
+    colorPalette: string[];
+    typography: string;
+    pages: {
+        name: string;
+        content: string;
+        features: string[];
+    }[];
+    visualPrompt: string; // Prompt for the image generator
+}
+
 export const generateSeoContent = async (pageName: string): Promise<SeoContent> => {
     // Using the environment variable API Key
     const apiKey = process.env.API_KEY;
@@ -66,6 +81,39 @@ export const generateSeoContent = async (pageName: string): Promise<SeoContent> 
 };
 
 /**
+ * Generates a fresh, trending topic idea to avoid repetition.
+ */
+export const generateTrendingTopic = async (category: string): Promise<string> => {
+    const apiKey = process.env.API_KEY;
+    if (!apiKey) return `The Future of ${category} in 2025`;
+
+    const ai = new GoogleGenAI({ apiKey });
+    
+    // Get current date to force freshness
+    const today = new Date().toDateString();
+
+    const prompt = `
+        Generate ONE unique, trending, and specific blog post title for the industry: "${category}".
+        Context: Today is ${today}.
+        Requirements:
+        - Do NOT use generic titles like "Introduction to ${category}".
+        - Focus on a specific niche, a recent controversy, a new technology update, or a contrarian viewpoint.
+        - Example topics: "Why React Server Components are changing SEO", "The hidden cost of low-code platforms", "AI Ethics in 2025".
+        - Return ONLY the title string.
+    `;
+
+    try {
+        const response = await ai.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: prompt,
+        });
+        return response.text?.trim() || `${category} Trends`;
+    } catch (e) {
+        return `Latest Innovations in ${category}`;
+    }
+};
+
+/**
  * Generates a full blog post including HTML content and an image prompt.
  */
 export const generateBlogPost = async (topic?: string, category: string = "Technology"): Promise<BlogPostData> => {
@@ -97,18 +145,27 @@ export const generateBlogPost = async (topic?: string, category: string = "Techn
 
     const ai = new GoogleGenAI({ apiKey });
 
+    // Use specific topic or fallback
     const userTopic = topic || "The latest trends in Web Development and AI for Business Growth";
 
     const prompt = `
-        You are a senior content writer for 'Sameer Digital Lab', a premium web and mobile app development agency.
-        Write a high-quality, SEO-optimized blog post about: "${userTopic}".
-        Category context: ${category}.
+        You are a senior technical writer for 'Sameer Digital Lab', a premium web agency.
+        Write a high-quality, SEO-OPTIMIZED blog post about: "${userTopic}".
+        Category: ${category}.
 
         Requirements:
-        1. Title: Catchy, professional, and SEO-optimized.
-        2. Excerpt: A compelling summary (2 sentences).
-        3. Content: detailed, educational, and professional. Use HTML formatting (<h2>, <p>, <ul>, <li>, <strong>). Do NOT use <h1> or <html> tags. Include 3 key takeaways.
-        4. ImagePrompt: A detailed, artistic text description to generate a futuristic, cinematic, high-definition 4k wallpaper-style image representing this blog topic. (e.g. "Cyberpunk city with neon code, 4k, cinematic lighting").
+        1. Title: Create a click-worthy, SEO-rich title based on the topic.
+        2. Excerpt: A compelling summary (max 25 words) that hooks the reader.
+        3. Content: 
+           - Use strictly semantic HTML (<h2>, <h3>, <p>, <ul>, <li>, <strong>). 
+           - NO <h1> or <html> tags.
+           - Include at least 3 distinct sections (Introduction, Deep Dive, Conclusion).
+           - Focus on real-world application, industry stats, or professional advice.
+           - Tone: Professional, insightful, and slightly futuristic.
+        4. ImagePrompt: Write a prompt for an AI image generator to create a "Photorealistic, Cinematic, 4K" header image. 
+           - Avoid "cartoon", "illustration", or "abstract" terms unless the topic requires it.
+           - Focus on "office settings", "technology hardware", "people working", or "high-end editorial photography".
+           - Example: "Cinematic shot of a developer working on code in a modern glass office, night time, city lights bokeh, 8k resolution, photorealistic."
 
         Return JSON format.
     `;
@@ -140,6 +197,82 @@ export const generateBlogPost = async (topic?: string, category: string = "Techn
 
     } catch (error) {
         console.error("Blog Gen Error:", error);
+        throw error;
+    }
+};
+
+/**
+ * AI WEBSITE ARCHITECT
+ * Generates a full structure plan based on a user prompt.
+ */
+export const generateWebsitePlan = async (userPrompt: string): Promise<WebsitePlan> => {
+    const apiKey = process.env.API_KEY;
+    if (!apiKey) throw new Error("API Key Missing");
+
+    const ai = new GoogleGenAI({ apiKey });
+
+    const systemPrompt = `
+        You are a World-Class UI/UX Architect and Web Strategy Consultant.
+        The user will give you a rough idea for a website (e.g., "A modern dental clinic with blue colors").
+        Your job is to create a comprehensive "Website Blueprint".
+
+        Analyze the request and return a JSON object with:
+        1. projectName: A creative, catchy name for the project.
+        2. tagline: A short, punchy marketing tagline.
+        3. summary: A professional summary of the site's goal and aesthetic.
+        4. colorPalette: An array of 5 HEX color codes that match the requested vibe (or smart defaults).
+        5. typography: A suggestion for fonts (e.g., "Inter for headings, Roboto for body").
+        6. pages: An array of page objects. Each page must have:
+           - name: e.g., "Home", "About", "Services".
+           - content: A brief description of what goes on this page.
+           - features: An array of specific UI elements (e.g., "Booking Form", "Hero Video", "Team Grid").
+        7. visualPrompt: A highly detailed, descriptive prompt to generate a UI MOCKUP image of the Homepage. 
+           - Include details like "glassmorphism", "clean layout", specific colors, "high quality", "dribbble style", "4k render".
+           - NO text inside the image prompt (e.g. don't say "text saying Hello"), focus on layout and visuals.
+
+        User Prompt: "${userPrompt}"
+    `;
+
+    try {
+        const response = await ai.models.generateContent({
+            model: 'gemini-2.5-flash',
+            contents: systemPrompt,
+            config: {
+                responseMimeType: "application/json",
+                responseSchema: {
+                    type: Type.OBJECT,
+                    properties: {
+                        projectName: { type: Type.STRING },
+                        tagline: { type: Type.STRING },
+                        summary: { type: Type.STRING },
+                        colorPalette: { type: Type.ARRAY, items: { type: Type.STRING } },
+                        typography: { type: Type.STRING },
+                        pages: {
+                            type: Type.ARRAY,
+                            items: {
+                                type: Type.OBJECT,
+                                properties: {
+                                    name: { type: Type.STRING },
+                                    content: { type: Type.STRING },
+                                    features: { type: Type.ARRAY, items: { type: Type.STRING } }
+                                },
+                                required: ['name', 'content', 'features']
+                            }
+                        },
+                        visualPrompt: { type: Type.STRING }
+                    },
+                    required: ['projectName', 'pages', 'colorPalette', 'visualPrompt', 'summary', 'tagline', 'typography']
+                },
+            }
+        });
+
+        if (response.text) {
+            return JSON.parse(response.text);
+        }
+        throw new Error("No response from AI Architect");
+
+    } catch (error) {
+        console.error("Architect Error:", error);
         throw error;
     }
 };

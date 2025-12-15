@@ -7,7 +7,8 @@ import ManageProjects from './ManageProjects';
 import ManageBlogs from './ManageBlogs';
 import ManageEmails from './ManageEmails';
 import ManageComments from './ManageComments';
-import { LayersIcon, CodeIcon, ArrowRightIcon, EyeIcon, EyeOffIcon, EmailIcon, MessageIcon } from '../../components/Icons';
+import ManageAIArchitect from './ManageAIArchitect';
+import { LayersIcon, CodeIcon, ArrowRightIcon, EyeIcon, EyeOffIcon, EmailIcon, MessageIcon, BrainIcon } from '../../components/Icons';
 
 const AdminDashboard: React.FC = () => {
     const [session, setSession] = useState<any>(null);
@@ -15,7 +16,7 @@ const AdminDashboard: React.FC = () => {
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [activeTab, setActiveTab] = useState<'projects' | 'blogs' | 'emails' | 'comments'>('projects');
+    const [activeTab, setActiveTab] = useState<'projects' | 'blogs' | 'emails' | 'comments' | 'architect'>('projects');
     const [error, setError] = useState('');
 
     useEffect(() => {
@@ -118,6 +119,7 @@ const AdminDashboard: React.FC = () => {
             case 'blogs': return 'Manage Blog Posts';
             case 'emails': return 'Email Marketing';
             case 'comments': return 'Manage Comments';
+            case 'architect': return 'AI Website Architect';
             default: return 'Dashboard';
         }
     }
@@ -160,6 +162,14 @@ const AdminDashboard: React.FC = () => {
                         <EmailIcon className="w-5 h-5" />
                          <span className="hidden lg:block font-medium">Emails</span>
                     </button>
+                    <div className="my-2 border-t border-slate-800"></div>
+                    <button 
+                        onClick={() => setActiveTab('architect')}
+                        className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${activeTab === 'architect' ? 'bg-purple-500/10 text-purple-400' : 'text-slate-400 hover:text-white hover:bg-slate-800'}`}
+                    >
+                        <BrainIcon className="w-5 h-5" />
+                         <span className="hidden lg:block font-medium">AI Architect</span>
+                    </button>
                 </nav>
 
                 <div className="p-4 border-t border-slate-800">
@@ -182,7 +192,9 @@ const AdminDashboard: React.FC = () => {
                                 {getTitle()}
                             </h1>
                             <p className="text-slate-400">
-                                {activeTab === 'emails' ? 'Send bulk updates to your subscribers.' : 'Manage content and interactions.'}
+                                {activeTab === 'emails' ? 'Send bulk updates to your subscribers.' : 
+                                 activeTab === 'architect' ? 'Generate website structures and visuals with AI.' :
+                                 'Manage content and interactions.'}
                             </p>
                         </div>
                     </div>
@@ -192,6 +204,7 @@ const AdminDashboard: React.FC = () => {
                         {activeTab === 'blogs' && <ManageBlogs />}
                         {activeTab === 'emails' && <ManageEmails />}
                         {activeTab === 'comments' && <ManageComments />}
+                        {activeTab === 'architect' && <ManageAIArchitect />}
                     </div>
                  </div>
             </div>

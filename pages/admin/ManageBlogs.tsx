@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../services/supabaseClient';
-import { generateBlogPost } from '../../services/geminiService';
+import { generateBlogPost, generateTrendingTopic } from '../../services/geminiService';
 import { motion, AnimatePresence } from 'framer-motion';
 import PremiumButton from '../../components/PremiumButton';
 import { LightbulbIcon, StarIcon, LoaderIcon, CheckIcon, EyeIcon, EyeOffIcon } from '../../components/Icons';
@@ -21,19 +21,6 @@ interface Blog {
     content: string;
     status: BlogStatus; 
 }
-
-// Random topics per category for the "Daily Batch" feature
-const topicIdeas: Record<string, string[]> = {
-    'Technology': [
-        "The Rise of Quantum Computing", "Web Assembly vs JavaScript", "AI in Cybersecurity", "The Future of 5G"
-    ],
-    'Design': [
-        "Minimalism in 2025", "Micro-interactions that convert", "Color Theory for Dark Mode", "Typography Trends"
-    ],
-    'Business': [
-        "Scaling SaaS Products", "Remote Work Culture", "Digital Marketing ROI", "Startup Funding Guide"
-    ]
-};
 
 const ManageBlogs: React.FC = () => {
     const [blogs, setBlogs] = useState<Blog[]>([]);
@@ -151,13 +138,20 @@ const ManageBlogs: React.FC = () => {
     };
 
     const generateSinglePost = async (category: string, specificTopic?: string) => {
-        const topic = specificTopic || topicIdeas[category][Math.floor(Math.random() * topicIdeas[category].length)];
+        // Step 1: Generate a fresh topic if one isn't provided
+        let topic = specificTopic;
+        if (!topic) {
+            setBatchProgress(`Brainstorming ${category} topic...`);
+            topic = await generateTrendingTopic(category);
+        }
         
-        // 1. Text Generation
+        // Step 2: Generate Content
+        setBatchProgress(`Writing about: ${topic.substring(0, 20)}...`);
         const aiData = await generateBlogPost(topic, category);
         
-        // 2. Image Generation
-        const encodedPrompt = encodeURIComponent(aiData.imagePrompt + " high quality, 4k, trending on artstation, futuristic, sleek, tech, minimal");
+        // Step 3: Generate Image URL
+        // We append high-quality keywords to ensure the image looks "real" and professional
+        const encodedPrompt = encodeURIComponent(aiData.imagePrompt + " photorealistic, 4k, canon, depth of field, professional photography, cinematic lighting");
         const aiImageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1200&height=800&nologo=true&seed=${Math.floor(Math.random() * 1000)}`;
 
         // Generate slug for AI posts
@@ -197,6 +191,7 @@ const ManageBlogs: React.FC = () => {
             alert(`Generation failed: ${error.message}`);
         } finally {
             setIsGenerating(false);
+            setBatchProgress('');
         }
     };
 
@@ -208,7 +203,6 @@ const ManageBlogs: React.FC = () => {
             await checkApiKey();
 
             for (const cat of CATEGORIES) {
-                setBatchProgress(`Generating ${cat} post...`);
                 const newPost = await generateSinglePost(cat);
                 
                 // Save directly to Supabase
@@ -294,7 +288,7 @@ const ManageBlogs: React.FC = () => {
                             className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white px-4 py-2 rounded-lg text-sm font-bold transition-all disabled:opacity-50"
                         >
                             {isGenerating ? (
-                                <><LoaderIcon className="w-4 h-4 animate-spin" /> Generating...</>
+                                <><LoaderIcon className="w-4 h-4 animate-spin" /> {batchProgress || 'Generating...'}</>
                             ) : (
                                 <><StarIcon className="w-4 h-4" /> AI Fill</>
                             )}

@@ -17,7 +17,8 @@ import {
     SupabaseIcon,
     ArrowRightIcon,
     FigmaIcon,
-    CodeIcon
+    CodeIcon,
+    TailwindIcon
 } from '../components/Icons';
 import { useSeoContent } from '../hooks/useSeoContent';
 
@@ -33,6 +34,7 @@ interface ProjectData {
     timeline: string;
     fullImage: string;
     goals?: string[]; // Added goals for Weversity
+    link?: string; // Added link property
 }
 
 // --- REVIEWS & FAQ DATA ---
@@ -258,9 +260,9 @@ const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                     </div>
 
                     <div className="mt-auto">
-                        <Link to="/contact">
-                            <PremiumButton width="full" icon={true}>Visit Live Site</PremiumButton>
-                        </Link>
+                        <a href={project.link || "#"} target="_blank" rel="noopener noreferrer">
+                            <PremiumButton width="full" icon={true}>View Project</PremiumButton>
+                        </a>
                     </div>
                 </div>
 
@@ -351,15 +353,34 @@ const selectedProjects: ProjectData[] = [
         description: "Weversity is a transformative free learning platform built to democratize education. Developed within a rigorous 4-week challenge, this project leverages the power of WordPress and Elementor to deliver a seamless, accessible, and high-quality learning experience for everyone.",
         image1: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1765470774/weversity_portfolio_gmnt44.jpg",
         image2: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1765470774/weversity_portfolio_gmnt44.jpg",
-        tools: [<WordPressIcon className="w-5 h-5 text-blue-400" />, <span className="text-pink-400 font-bold text-xs flex items-center gap-1"><CodeIcon className="w-4 h-4"/>Elementor</span>, <JsIcon className="w-5 h-5 text-yellow-400" />],
+        tools: [<WordPressIcon className="w-5 h-5 text-blue-400" />, <span className="text-pink-400 font-bold text-xs flex items-center gap-1">Elementor</span>, <JsIcon className="w-5 h-5 text-yellow-400" />],
         role: "WordPress Developer",
         timeline: "4 Weeks Challenge",
         fullImage: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1765470870/screencapture-weversity-org-2025-11-30-22_34_09_xfle0e.png",
+        link: "https://weversity.org/",
         goals: [
             "Provide 100% free, high-quality education to underprivileged students worldwide.",
             "Create a lightweight, accessible interface that works seamlessly on low-bandwidth devices.",
             "Empower the youth with practical digital skills to achieve financial independence.",
             "Bridge the gap between traditional academic learning and modern industry demands."
+        ]
+    },
+    {
+        title: "AP Nusamas",
+        category: "Recruitment Agency",
+        description: "A premier recruitment agency based in Malaysia (Agensi Pekerjaan Nusamas), dedicated to connecting skilled talent with global opportunities. This project involved creating a professional, trustworthy digital presence to streamline the hiring process.",
+        image1: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1765811782/appusmans_xawuwq.png",
+        image2: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1765811782/appusmans_xawuwq.png",
+        tools: [<ReactIcon className="w-5 h-5 text-cyan-400" />, <TailwindIcon className="w-5 h-5 text-blue-400" />, <FigmaIcon className="w-5 h-5 text-purple-400" />],
+        role: "Full Stack Developer",
+        timeline: "5 Weeks",
+        fullImage: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1765811782/appusmans_xawuwq.png",
+        link: "https://apnusamas.com/",
+        goals: [
+            "Establish a credible digital presence for a licensed Malaysian recruitment agency.",
+            "Facilitate seamless connection between job seekers and employers.",
+            "Showcase services and industry expertise with a clean, corporate aesthetic.",
+            "Ensure mobile responsiveness for accessibility across all devices."
         ]
     },
     {
@@ -965,7 +986,7 @@ const HomePage: React.FC = () => {
                                         onClick={() => setSelectedProject(project)}
                                         className="bg-slate-900 hover:bg-slate-800 text-white border border-slate-700 hover:border-cyan-500/50 px-6 py-2 rounded-full text-sm font-bold transition-all shadow-lg shadow-cyan-500/5 flex items-center gap-2 group/btn"
                                     >
-                                        Visit Live
+                                        View Project
                                         <ArrowRightIcon className="w-4 h-4 transform group-hover/btn:translate-x-1 transition-transform" />
                                     </button>
 
