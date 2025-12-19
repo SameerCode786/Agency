@@ -23,7 +23,10 @@ import {
     ApiIcon,
     ShoppingCartIcon,
     CloudIcon,
-    CheckIcon
+    CheckIcon,
+    HtmlIcon,
+    CssIcon,
+    SupabaseIcon
 } from '../components/Icons';
 import { Link } from 'react-router-dom';
 import { useSeoContent } from '../hooks/useSeoContent';
@@ -347,8 +350,8 @@ const ThreeDProcessCard: React.FC<ProcessCardProps> = ({ i, title, subtitle, des
                 </div>
             </div>
         </motion.div>
-    )
-}
+    );
+};
 
 const buildProcess = [
     {
@@ -466,43 +469,35 @@ const deliveryContent: Record<DeliveryCategory, DeliverySection> = {
 };
 
 // --- EXPERTISE SECTION DATA ---
+// Updated to include specifically requested languages/frameworks
 const expertiseRows = [
-    ["JavaScript", "Vue.js", "Nuxt.js"],
-    ["Laravel", "WordPress"],
-    ["Opencart", "Prismic", "PHP"],
-    ["MySQL", "PostgreSQL"],
-    ["Web3js", "Three.js", "WebAR"],
-    ["REST API", "WebSocket"],
-    ["Redis", "MongoDB", "React Native"]
+    ["HTML", "CSS", "JavaScript"],
+    ["React.js", "React Native"],
+    ["WordPress", "WooCommerce"],
+    ["Node.js", "Express.js"],
+    ["MongoDB", "Supabase"]
 ];
 
 // Mapping technology names to their corresponding icons and colors
 const techIcons: Record<string, { icon: React.ReactNode, color: string }> = {
+    "HTML": { icon: <HtmlIcon className="w-full h-full" />, color: "#E34F26" },
+    "CSS": { icon: <CssIcon className="w-full h-full" />, color: "#1572B6" },
     "JavaScript": { icon: <JsIcon className="w-full h-full" />, color: "#F7DF1E" },
-    "Vue.js": { icon: <VueIcon className="w-full h-full" />, color: "#4FC08D" },
-    "Nuxt.js": { icon: <NuxtIcon className="w-full h-full" />, color: "#00C58E" },
-    "Laravel": { icon: <LaravelIcon className="w-full h-full" />, color: "#FF2D20" },
+    "React.js": { icon: <ReactIcon className="w-full h-full" />, color: "#61DAFB" },
+    "React Native": { icon: <ReactIcon className="w-full h-full" />, color: "#61DAFB" },
     "WordPress": { icon: <WordPressIcon className="w-full h-full" />, color: "#21759B" },
-    "Opencart": { icon: <ShoppingCartIcon className="w-full h-full" />, color: "#26B4D6" },
-    "Prismic": { icon: <CloudIcon className="w-full h-full" />, color: "#5163BA" },
-    "PHP": { icon: <PhpIcon className="w-full h-full" />, color: "#777BB4" },
-    "MySQL": { icon: <DatabaseIcon className="w-full h-full" />, color: "#4479A1" },
-    "PostgreSQL": { icon: <DatabaseIcon className="w-full h-full" />, color: "#336791" },
-    "Web3js": { icon: <CubeIcon className="w-full h-full" />, color: "#F16822" },
-    "Three.js": { icon: <CubeIcon className="w-full h-full" />, color: "#FFFFFF" },
-    "WebAR": { icon: <CubeIcon className="w-full h-full" />, color: "#22d3ee" },
-    "REST API": { icon: <ApiIcon className="w-full h-full" />, color: "#8936ea" },
-    "WebSocket": { icon: <ApiIcon className="w-full h-full" />, color: "#00C58E" },
-    "Redis": { icon: <DatabaseIcon className="w-full h-full" />, color: "#DC382D" },
+    "WooCommerce": { icon: <ShoppingCartIcon className="w-full h-full" />, color: "#96588A" },
+    "Node.js": { icon: <CodeIcon className="w-full h-full" />, color: "#339933" },
+    "Express.js": { icon: <ApiIcon className="w-full h-full" />, color: "#ffffff" },
     "MongoDB": { icon: <DatabaseIcon className="w-full h-full" />, color: "#47A248" },
-    "React Native": { icon: <ReactIcon className="w-full h-full" />, color: "#61DAFB" }
+    "Supabase": { icon: <SupabaseIcon className="w-full h-full" />, color: "#3ECF8E" }
 };
 
 
 const ServicesPage: React.FC = () => {
     const { title, description } = useSeoContent('Services');
     const [activeDeliveryTab, setActiveDeliveryTab] = useState<DeliveryCategory>('WORDPRESS');
-    const [hoveredTech, setHoveredTech] = useState("MySQL");
+    const [hoveredTech, setHoveredTech] = useState("React.js");
 
     // Refs for 3D Carousel Animation
     const containerRef = useRef(null);
@@ -791,7 +786,7 @@ const ServicesPage: React.FC = () => {
                                     className="w-full h-full flex items-center justify-center"
                                     style={{ color: techIcons[hoveredTech]?.color || '#ffffff' }}
                                 >
-                                    {techIcons[hoveredTech]?.icon || techIcons["MySQL"].icon}
+                                    {techIcons[hoveredTech]?.icon || techIcons["React.js"].icon}
                                 </motion.div>
                              </AnimatePresence>
                              
