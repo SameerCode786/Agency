@@ -17,10 +17,8 @@ const cultureImages = [
 ];
 
 const statsData = [
-    { value: "5.0", label: "Site of the Day", sub: "Google Reviews" },
-    { value: "38", label: "Awwwards", sub: "Honorable Mentions" },
-    { value: "250+", label: "Projects", sub: "Successfully Delivered" },
-    { value: "10+", label: "Years", sub: "Of Digital Excellence" },
+    { value: "20+", label: "Projects", sub: "Successfully Delivered" },
+    { value: "3+", label: "Years", sub: "Of Digital Excellence" },
 ];
 
 const teamMembers = [
@@ -176,16 +174,16 @@ const AboutPage: React.FC = () => {
                   >
                         <div className="text-slate-400 text-lg md:text-xl leading-relaxed space-y-6 font-light">
                             <p>
-                                With over a decade of experience, Sameer Digital Lab is an energetic, fresh, and vibrant team offering creative talent, industry knowledge, and extremely high standards.
+                                With 3 years of specialized experience, Sameer Digital Lab is a fast-growing, innovative team focused on delivering high-performance digital solutions.
                             </p>
                             <p>
-                                We transform ambitious start-ups and global brands like Blackberry and NHS into digital leaders.
+                                We transform ambitious start-ups and businesses into digital leaders through custom web development and strategic growth.
                             </p>
                         </div>
                   </motion.div>
               </div>
 
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
+              <div className="flex flex-wrap justify-center gap-8 md:gap-16">
                   {statsData.map((stat, i) => (
                       <motion.div 
                         key={i}
