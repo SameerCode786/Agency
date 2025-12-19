@@ -4,22 +4,22 @@ import { supabase } from '../../services/supabaseClient';
 import { generateBlogPost, generateTrendingTopic } from '../../services/geminiService';
 import { motion, AnimatePresence } from 'framer-motion';
 import PremiumButton from '../../components/PremiumButton';
-import { LightbulbIcon, StarIcon, LoaderIcon, CheckIcon, EyeIcon, EyeOffIcon } from '../../components/Icons';
+import { LightbulbIcon, StarIcon, LoaderIcon, CheckIcon, EyeIcon, SearchIcon } from '../../components/Icons';
 
-// Defined Categories to match the main website
 const CATEGORIES = ['Technology', 'Design', 'Business'];
 type BlogStatus = 'Published' | 'Draft' | 'Review';
 
 interface Blog {
     id: number;
     title: string;
-    slug?: string; // Added to support database schema
+    slug?: string;
     category: string;
     image: string;
     date: string;
     excerpt: string;
     content: string;
     status: BlogStatus; 
+    stock_keywords?: string; // Track keywords for editing
 }
 
 const ManageBlogs: React.FC = () => {
@@ -39,10 +39,11 @@ const ManageBlogs: React.FC = () => {
         slug: '',
         category: 'Technology',
         image: '',
-        date: new Date().toISOString().split('T')[0], // Default to today YYYY-MM-DD
+        date: new Date().toISOString().split('T')[0],
         excerpt: '',
         content: '',
-        status: 'Draft'
+        status: 'Draft',
+        stock_keywords: ''
     });
 
     useEffect(() => {
@@ -51,16 +52,10 @@ const ManageBlogs: React.FC = () => {
 
     const fetchBlogs = async () => {
         setLoading(true);
-        // Ensure your Supabase table has a 'status' column. If not, this might default to null/undefined.
         const { data, error } = await supabase.from('blogs').select('*').order('created_at', { ascending: false });
         if (error) {
             console.error('Error fetching blogs:', error);
-            if (error.message.includes('relation "public.blogs" does not exist')) {
-                alert("Table 'blogs' not found. Please run the setup SQL script in Supabase.");
-            }
-        }
-        else {
-            // Normalize data to include status if missing
+        } else {
             const normalizedData = (data || []).map((b: any) => ({
                 ...b,
                 status: b.status || 'Published' 
@@ -71,34 +66,29 @@ const ManageBlogs: React.FC = () => {
     };
 
     const handleSave = async () => {
-        // Robust Slug Generation Logic
         const generateSlug = (text: string) => {
             if (!text) return `post-${Date.now()}`;
-            const s = text.toString().toLowerCase().trim()
-                .replace(/\s+/g, '-')     // Replace spaces with -
-                .replace(/[^\w\-]+/g, '') // Remove all non-word chars
-                .replace(/\-\-+/g, '-');  // Replace multiple - with single -
-            
-            // If slug becomes empty (e.g. title was only special chars), fallback to timestamp
-            return s.length > 0 ? s : `post-${Date.now()}`;
+            return text.toString().toLowerCase().trim()
+                .replace(/\s+/g, '-')
+                .replace(/[^\w\-]+/g, '')
+                .replace(/\-\-+/g, '-');
         };
 
-        // Determine final slug: Use existing input, or generate from title, or fallback
         let finalSlug = currentBlog.slug;
         if (!finalSlug || finalSlug.trim() === '') {
             finalSlug = generateSlug(currentBlog.title || `blog-${Date.now()}`);
         }
 
-        // Explicitly construct payload to prevent 'null' values
         const blogData = {
             title: currentBlog.title || 'Untitled Post',
-            slug: finalSlug, // Guaranteed to be a string
+            slug: finalSlug,
             category: currentBlog.category || 'Technology',
             image: currentBlog.image || '',
             date: currentBlog.date || new Date().toISOString().split('T')[0],
             excerpt: currentBlog.excerpt || '',
             content: currentBlog.content || '',
-            status: currentBlog.status || 'Draft'
+            status: currentBlog.status || 'Draft',
+            stock_keywords: currentBlog.stock_keywords || ''
         };
 
         try {
@@ -114,8 +104,7 @@ const ManageBlogs: React.FC = () => {
             fetchBlogs();
             resetForm();
         } catch (error: any) {
-            console.error("Save Error Details:", error);
-            alert(`Error saving blog: ${error.message || 'Unknown error'}. Check console for details.`);
+            alert(`Error saving blog: ${error.message}`);
         }
     };
 
@@ -126,35 +115,20 @@ const ManageBlogs: React.FC = () => {
         else fetchBlogs();
     };
 
-    // --- AI LOGIC ---
-
-    const checkApiKey = async () => {
-        if ((window as any).aistudio) {
-            const hasKey = await (window as any).aistudio.hasSelectedApiKey();
-            if (!hasKey) {
-                await (window as any).aistudio.openSelectKey();
-            }
-        }
-    };
-
     const generateSinglePost = async (category: string, specificTopic?: string) => {
-        // Step 1: Generate a fresh topic if one isn't provided
         let topic = specificTopic;
         if (!topic) {
-            setBatchProgress(`Brainstorming ${category} topic...`);
+            setBatchProgress(`Brainstorming ${category}...`);
             topic = await generateTrendingTopic(category);
         }
         
-        // Step 2: Generate Content
-        setBatchProgress(`Writing about: ${topic.substring(0, 20)}...`);
+        setBatchProgress(`Writing: ${topic.substring(0, 15)}...`);
         const aiData = await generateBlogPost(topic, category);
         
-        // Step 3: Generate Image URL
-        // We append high-quality keywords to ensure the image looks "real" and professional
-        const encodedPrompt = encodeURIComponent(aiData.imagePrompt + " photorealistic, 4k, canon, depth of field, professional photography, cinematic lighting");
-        const aiImageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1200&height=800&nologo=true&seed=${Math.floor(Math.random() * 1000)}`;
+        // Use Unsplash source for REAL photography based on keywords
+        const keywords = aiData.imageKeywords.split(',').join(',');
+        const realPhotographyUrl = `https://source.unsplash.com/featured/1200x800/?${encodeURIComponent(keywords)}`;
 
-        // Generate slug for AI posts
         const slug = aiData.title
             .toLowerCase()
             .trim()
@@ -164,30 +138,24 @@ const ManageBlogs: React.FC = () => {
 
         return {
             title: aiData.title,
-            slug: slug || `ai-post-${Date.now()}`,
+            slug: slug || `post-${Date.now()}`,
             excerpt: aiData.excerpt,
             content: aiData.content,
             category: category,
-            image: aiImageUrl,
+            image: realPhotographyUrl,
+            stock_keywords: aiData.imageKeywords,
             date: new Date().toISOString().split('T')[0],
-            status: 'Draft' as BlogStatus // Auto-generated posts start as Drafts for safety
+            status: 'Draft' as BlogStatus
         };
     };
 
     const handleAIGenerate = async () => {
         setIsGenerating(true);
         try {
-            await checkApiKey();
             const category = currentBlog.category || 'Technology';
             const generatedData = await generateSinglePost(category, aiTopic);
-
-            setCurrentBlog({
-                ...currentBlog,
-                ...generatedData
-            });
-
+            setCurrentBlog({ ...currentBlog, ...generatedData });
         } catch (error: any) {
-            console.error("AI Generation Error:", error);
             alert(`Generation failed: ${error.message}`);
         } finally {
             setIsGenerating(false);
@@ -195,25 +163,17 @@ const ManageBlogs: React.FC = () => {
         }
     };
 
-    // Generates 1 post for EACH category automatically
     const handleDailyBatch = async () => {
         setIsGenerating(true);
-        setBatchProgress('Starting daily batch...');
+        setBatchProgress('Starting batch...');
         try {
-            await checkApiKey();
-
             for (const cat of CATEGORIES) {
                 const newPost = await generateSinglePost(cat);
-                
-                // Save directly to Supabase
-                const { error } = await supabase.from('blogs').insert([newPost]);
-                if (error) console.error(`Failed to save ${cat} post`, error);
+                await supabase.from('blogs').insert([newPost]);
             }
-
             setBatchProgress('Done!');
             setTimeout(() => setBatchProgress(''), 2000);
             fetchBlogs();
-
         } catch (error: any) {
             alert(`Batch failed: ${error.message}`);
         } finally {
@@ -221,34 +181,19 @@ const ManageBlogs: React.FC = () => {
         }
     };
 
-    // --- UI HELPERS ---
-
     const resetForm = () => {
         setCurrentBlog({ 
             category: 'Technology',
             status: 'Draft',
             slug: '',
-            date: new Date().toISOString().split('T')[0]
+            date: new Date().toISOString().split('T')[0],
+            stock_keywords: ''
         });
         setAiTopic('');
     };
 
     const openEdit = (blog: Blog) => {
-        // Ensure date is in YYYY-MM-DD for input
-        let formattedDate = blog.date;
-        // If date comes back as something else, try to parse it
-        if (blog.date && !blog.date.includes('-')) {
-             const dateObj = new Date(blog.date);
-             if (!isNaN(dateObj.getTime())) {
-                 formattedDate = dateObj.toISOString().split('T')[0];
-             }
-        }
-
-        setCurrentBlog({
-            ...blog,
-            slug: blog.slug || '', // Ensure slug is at least empty string if null in DB
-            date: formattedDate
-        });
+        setCurrentBlog({ ...blog });
         setIsEditing(true);
     };
 
@@ -259,22 +204,13 @@ const ManageBlogs: React.FC = () => {
 
     const filteredBlogs = blogs.filter(b => filterStatus === 'All' || b.status === filterStatus);
 
-    const getStatusColor = (status: string) => {
-        switch(status) {
-            case 'Published': return 'bg-green-500/20 text-green-400 border-green-500/30';
-            case 'Review': return 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30';
-            default: return 'bg-slate-700/50 text-slate-400 border-slate-600'; // Draft
-        }
-    };
-
     if (isEditing) {
         return (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
                     <h3 className="text-xl font-bold text-white">{currentBlog.id ? 'Edit Post' : 'New Post'}</h3>
                     
-                    {/* AI Generator Controls (Only for new or manual trigger) */}
-                    <div className="flex items-center gap-2 bg-slate-950 border border-purple-500/30 p-2 rounded-xl">
+                    <div className="flex items-center gap-2 bg-slate-950 border border-cyan-500/30 p-2 rounded-xl">
                         <input 
                             type="text" 
                             placeholder="Topic (Optional)" 
@@ -285,12 +221,12 @@ const ManageBlogs: React.FC = () => {
                         <button 
                             onClick={handleAIGenerate}
                             disabled={isGenerating}
-                            className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white px-4 py-2 rounded-lg text-sm font-bold transition-all disabled:opacity-50"
+                            className="flex items-center gap-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white px-4 py-2 rounded-lg text-sm font-bold transition-all disabled:opacity-50"
                         >
                             {isGenerating ? (
                                 <><LoaderIcon className="w-4 h-4 animate-spin" /> {batchProgress || 'Generating...'}</>
                             ) : (
-                                <><StarIcon className="w-4 h-4" /> AI Fill</>
+                                <><LightbulbIcon className="w-4 h-4" /> AI Content Engine</>
                             )}
                         </button>
                     </div>
@@ -308,19 +244,14 @@ const ManageBlogs: React.FC = () => {
                                 onChange={e => setCurrentBlog({...currentBlog, title: e.target.value})} 
                                 className="w-full bg-slate-950 border border-slate-800 p-3 rounded-lg text-white focus:border-cyan-500 outline-none font-bold text-lg" 
                             />
-                            
-                            {/* Slug Field (Added for transparency and fixing errors) */}
                             <label className="text-xs font-bold text-slate-500 uppercase block mt-2">Slug (URL)</label>
                             <input 
-                                placeholder="my-blog-post-url" 
                                 value={currentBlog.slug || ''} 
                                 onChange={e => setCurrentBlog({...currentBlog, slug: e.target.value})} 
                                 className="w-full bg-slate-900 border border-slate-800 p-2 rounded-lg text-cyan-400 text-sm focus:border-cyan-500 outline-none font-mono" 
                             />
-                            <p className="text-[10px] text-slate-600">This will be auto-generated from title if left blank.</p>
                         </div>
                         
-                        {/* Status & Date */}
                         <div className="space-y-4">
                             <label className="text-xs font-bold text-slate-500 uppercase">Publish Settings</label>
                             <div className="grid grid-cols-2 gap-2">
@@ -357,11 +288,18 @@ const ManageBlogs: React.FC = () => {
                             </select>
                         </div>
                         <div className="space-y-2">
-                            <label className="text-xs font-bold text-slate-500 uppercase">Cover Image URL</label>
+                            <label className="text-xs font-bold text-slate-500 uppercase">Stock Image Search Keywords</label>
                             <input 
-                                placeholder="https://..." 
-                                value={currentBlog.image || ''} 
-                                onChange={e => setCurrentBlog({...currentBlog, image: e.target.value})} 
+                                placeholder="e.g. modern business office, coding laptop" 
+                                value={currentBlog.stock_keywords || ''} 
+                                onChange={e => {
+                                    const kw = e.target.value;
+                                    setCurrentBlog({
+                                        ...currentBlog, 
+                                        stock_keywords: kw,
+                                        image: kw ? `https://source.unsplash.com/featured/1200x800/?${encodeURIComponent(kw)}` : currentBlog.image
+                                    });
+                                }} 
                                 className="w-full bg-slate-950 border border-slate-800 p-3 rounded-lg text-white focus:border-cyan-500 outline-none" 
                             />
                         </div>
@@ -371,7 +309,7 @@ const ManageBlogs: React.FC = () => {
                         <div className="space-y-2">
                             <label className="text-xs font-bold text-slate-500 uppercase">Short Excerpt</label>
                             <textarea 
-                                placeholder="Brief summary for the card..." 
+                                placeholder="Summary..." 
                                 rows={4} 
                                 value={currentBlog.excerpt || ''} 
                                 onChange={e => setCurrentBlog({...currentBlog, excerpt: e.target.value})} 
@@ -379,21 +317,23 @@ const ManageBlogs: React.FC = () => {
                             />
                         </div>
                         <div className="space-y-2">
-                            <label className="text-xs font-bold text-slate-500 uppercase">Image Preview</label>
+                            <label className="text-xs font-bold text-slate-500 uppercase flex justify-between">
+                                Image Preview (Real Photography)
+                                <span className="text-cyan-400 font-normal">Pulled from Unsplash</span>
+                            </label>
                             <div className="relative h-32 bg-slate-950 border border-slate-800 rounded-lg overflow-hidden flex items-center justify-center">
                                 {currentBlog.image ? (
                                     <img src={currentBlog.image} alt="Preview" className="w-full h-full object-cover" />
                                 ) : (
-                                    <span className="text-slate-600 text-xs">No Image</span>
+                                    <span className="text-slate-600 text-xs">Enter keywords to see photo</span>
                                 )}
                             </div>
                         </div>
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-xs font-bold text-slate-500 uppercase">Full Content (HTML Supported)</label>
+                        <label className="text-xs font-bold text-slate-500 uppercase">Full Content (HTML)</label>
                         <textarea 
-                            placeholder="<p>Write your blog content here...</p>" 
                             rows={15} 
                             value={currentBlog.content || ''} 
                             onChange={e => setCurrentBlog({...currentBlog, content: e.target.value})} 
@@ -403,9 +343,9 @@ const ManageBlogs: React.FC = () => {
                 </div>
                 
                 <div className="mt-8 flex justify-end gap-4 border-t border-slate-800 pt-6">
-                    <button onClick={() => setIsEditing(false)} className="px-6 py-3 text-slate-400 hover:text-white transition-colors">Discard</button>
+                    <button onClick={() => setIsEditing(false)} className="px-6 py-3 text-slate-400 hover:text-white">Discard</button>
                     <PremiumButton onClick={handleSave} icon={false} className="!px-8 !py-3">
-                        {currentBlog.status === 'Published' ? 'Publish Now' : 'Save as Draft'}
+                        {currentBlog.status === 'Published' ? 'Publish Post' : 'Save Draft'}
                     </PremiumButton>
                 </div>
             </motion.div>
@@ -414,31 +354,24 @@ const ManageBlogs: React.FC = () => {
 
     return (
         <div>
-            {/* Header Area */}
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8 gap-4">
                 <div>
                     <h2 className="text-lg font-bold text-white">Manage Blog Content</h2>
-                    <p className="text-slate-500 text-sm">Create, edit, or auto-generate posts.</p>
+                    <p className="text-slate-500 text-sm">Real stock photography only. No AI images permitted.</p>
                 </div>
                 <div className="flex flex-wrap gap-3">
-                    {/* Daily Batch Button */}
                     <button 
                         onClick={handleDailyBatch}
                         disabled={isGenerating}
-                        className="flex items-center gap-2 bg-gradient-to-r from-pink-600 to-orange-500 hover:from-pink-500 hover:to-orange-400 text-white px-4 py-2 rounded-lg text-sm font-bold transition-all disabled:opacity-50 shadow-lg shadow-orange-500/20"
+                        className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white px-4 py-2 rounded-lg text-sm font-bold transition-all disabled:opacity-50"
                     >
-                        {isGenerating && batchProgress ? (
-                            <><LoaderIcon className="w-4 h-4 animate-spin" /> {batchProgress}</>
-                        ) : (
-                            <><LightbulbIcon className="w-4 h-4" /> Generate Daily Bundle</>
-                        )}
+                        {isGenerating ? <LoaderIcon className="w-4 h-4 animate-spin" /> : <SearchIcon className="w-4 h-4" />}
+                        {batchProgress || 'Auto-Generate Daily'}
                     </button>
-
                     <PremiumButton onClick={openNew} icon={true} className="!px-6 !py-2 text-sm">New Post</PremiumButton>
                 </div>
             </div>
 
-            {/* Filter Tabs */}
             <div className="flex border-b border-slate-800 mb-6 space-x-6 overflow-x-auto">
                 {(['All', 'Published', 'Draft', 'Review'] as const).map((status) => (
                     <button
@@ -447,61 +380,44 @@ const ManageBlogs: React.FC = () => {
                         className={`pb-3 text-sm font-bold relative transition-colors ${filterStatus === status ? 'text-cyan-400' : 'text-slate-500 hover:text-white'}`}
                     >
                         {status}
-                        {filterStatus === status && (
-                            <motion.div layoutId="activeTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-cyan-400" />
-                        )}
+                        {filterStatus === status && <motion.div layoutId="activeTab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-cyan-400" />}
                     </button>
                 ))}
             </div>
 
-            {/* Content Grid */}
             {loading ? (
                 <div className="flex flex-col items-center justify-center py-20 text-slate-500 gap-4">
                     <LoaderIcon className="w-8 h-8 animate-spin text-cyan-500" />
-                    <p>Loading posts...</p>
+                    <p>Loading your articles...</p>
                 </div>
             ) : (
                 <div className="grid grid-cols-1 gap-4">
                     {filteredBlogs.map(blog => (
-                        <div key={blog.id} className="bg-slate-900/50 border border-slate-800 p-4 rounded-xl flex flex-col sm:flex-row items-center gap-6 hover:border-purple-500/30 transition-colors group">
-                            
-                            {/* Image Thumbnail */}
+                        <div key={blog.id} className="bg-slate-900/50 border border-slate-800 p-4 rounded-xl flex flex-col sm:flex-row items-center gap-6 group">
                             <div className="w-full sm:w-24 h-24 bg-slate-950 rounded-lg overflow-hidden flex-shrink-0 relative border border-slate-800">
                                 {blog.image ? (
                                     <img src={blog.image} alt={blog.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                 ) : (
-                                    <div className="w-full h-full flex items-center justify-center text-slate-700"><LightbulbIcon className="w-6 h-6"/></div>
+                                    <div className="w-full h-full flex items-center justify-center text-slate-700"><SearchIcon className="w-6 h-6"/></div>
                                 )}
                             </div>
-
-                            {/* Info */}
                             <div className="flex-1 text-center sm:text-left w-full">
                                 <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 mb-2">
-                                    <span className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded border ${getStatusColor(blog.status)}`}>
-                                        {blog.status || 'Draft'}
-                                    </span>
                                     <span className="text-[10px] uppercase font-bold bg-slate-800 text-slate-400 px-2 py-0.5 rounded border border-slate-700">
                                         {blog.category}
                                     </span>
                                     <span className="text-xs text-slate-500">{new Date(blog.date).toLocaleDateString()}</span>
                                 </div>
-                                <h4 className="text-white font-bold text-lg mb-1 line-clamp-1 group-hover:text-cyan-400 transition-colors">{blog.title}</h4>
+                                <h4 className="text-white font-bold text-lg mb-1 group-hover:text-cyan-400 transition-colors">{blog.title}</h4>
                                 <p className="text-slate-400 text-sm line-clamp-2">{blog.excerpt}</p>
                             </div>
-
-                            {/* Actions */}
                             <div className="flex gap-2 w-full sm:w-auto justify-center">
-                                <button onClick={() => openEdit(blog)} className="px-4 py-2 bg-slate-950 text-white border border-slate-700 rounded-lg text-xs font-bold hover:bg-slate-800 transition-colors">Edit</button>
-                                <button onClick={() => handleDelete(blog.id)} className="px-4 py-2 bg-red-500/10 text-red-400 border border-red-500/20 rounded-lg text-xs font-bold hover:bg-red-500/20 transition-colors">Delete</button>
+                                <button onClick={() => openEdit(blog)} className="px-4 py-2 bg-slate-950 text-white border border-slate-700 rounded-lg text-xs font-bold hover:bg-slate-800">Edit</button>
+                                <button onClick={() => handleDelete(blog.id)} className="px-4 py-2 bg-red-500/10 text-red-400 border border-red-500/20 rounded-lg text-xs font-bold hover:bg-red-500/20">Delete</button>
                             </div>
                         </div>
                     ))}
-                    {filteredBlogs.length === 0 && (
-                        <div className="text-center py-16 border-2 border-dashed border-slate-800 rounded-2xl">
-                            <p className="text-slate-500 mb-4">No {filterStatus !== 'All' ? filterStatus.toLowerCase() : ''} blog posts found.</p>
-                            <button onClick={openNew} className="text-cyan-400 hover:underline text-sm font-bold">Create your first post</button>
-                        </div>
-                    )}
+                    {filteredBlogs.length === 0 && <p className="text-center py-20 text-slate-500">No blog posts found.</p>}
                 </div>
             )}
         </div>
