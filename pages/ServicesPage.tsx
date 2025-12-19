@@ -309,7 +309,7 @@ const ServicesPage: React.FC = () => {
             />
 
             {/* 2. Content Container with 3D Tilt */}
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div className="container mx-auto px-2 sm:px-4 lg:px-6 relative z-10">
                 <motion.div
                     style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
                     initial={{ opacity: 0, y: 50 }}
@@ -329,10 +329,10 @@ const ServicesPage: React.FC = () => {
                             <span className="text-xs font-black tracking-[0.3em] uppercase">Services / 2025</span>
                         </motion.div>
 
-                        <h1 className="text-6xl md:text-8xl lg:text-[10rem] font-black text-white mb-8 leading-[0.8] tracking-tighter drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
-                            Modern<br />
+                        <h1 className="text-4xl md:text-6xl lg:text-[5.5rem] font-black text-white mb-8 leading-[0.95] tracking-tighter drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+                            We Build Modern Websites <br /> & Apps That <br />
                             <span className="text-transparent bg-clip-text bg-gradient-to-br from-white via-cyan-400 to-purple-600">
-                                Digital Lab
+                                Grow Your Business
                             </span>
                         </h1>
 
