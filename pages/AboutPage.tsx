@@ -16,7 +16,6 @@ const cultureImages = [
     "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=2070&auto=format&fit=crop"
 ];
 
-// --- NEW STATS DATA ---
 const statsData = [
     { value: "5.0", label: "Site of the Day", sub: "Google Reviews" },
     { value: "38", label: "Awwwards", sub: "Honorable Mentions" },
@@ -33,51 +32,53 @@ const teamMembers = [
     { name: "Sarah", role: "UI/UX Designer", image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1964&auto=format&fit=crop" },
 ];
 
-// --- NEW PROCESS SECTION DATA ---
 const processCategories = [
     { id: 0, title: "Design", color: "text-purple-400" },
     { id: 1, title: "Development", color: "text-cyan-400" },
     { id: 2, title: "Marketing", color: "text-blue-500" }
 ];
 
+// UPDATED EXPERTISE TAGS TO MATCH "SAMEER DIGITAL LAB" SERVICES
 const expertiseTags = [
-    // Design (0)
-    { label: "User Interface Design", cat: 0 },
-    { label: "User Experience Optimization", cat: 0 },
-    { label: "Wireframes & Prototyping", cat: 0 },
-    { label: "Branding", cat: 0 },
-    { label: "Logo Design", cat: 0 },
-    { label: "Mobile Design", cat: 0 },
+    // Design (cat: 0)
+    { label: "UI/UX Design", cat: 0 },
+    { label: "Web Design", cat: 0 },
+    { label: "Brand Identity", cat: 0 },
+    { label: "Product Prototyping", cat: 0 },
+    { label: "Design Systems", cat: 0 },
+    { label: "App Interface Design", cat: 0 },
+    { label: "Wireframing", cat: 0 },
     
-    // Development (1)
-    { label: "CMS Integration", cat: 1 },
-    { label: "Website Development", cat: 1 },
-    { label: "Web Apps", cat: 1 },
-    { label: "iOS/Android", cat: 1 },
-    { label: "Software Development", cat: 1 },
-    { label: "React Native", cat: 1 },
-    { label: "Shopify Liquid", cat: 1 },
-    { label: "Supabase", cat: 1 },
+    // Development (cat: 1)
+    { label: "WordPress Customization", cat: 1 },
+    { label: "React & Next.js", cat: 1 },
+    { label: "Shopify E-commerce", cat: 1 },
+    { label: "React Native Apps", cat: 1 },
+    { label: "Elementor & Gutenberg", cat: 1 },
+    { label: "Full Stack Development", cat: 1 },
+    { label: "Supabase Integration", cat: 1 },
+    { label: "Liquid Theme Dev", cat: 1 },
+    { label: "API Engineering", cat: 1 },
 
-    // Marketing (2)
-    { label: "SEO", cat: 2 },
-    { label: "Performance Reporting", cat: 2 },
-    { label: "Digital Ad Campaigns", cat: 2 },
-    { label: "Content Creation", cat: 2 },
-    { label: "Analytics", cat: 2 },
-    { label: "Conversion Rate Opt", cat: 2 },
+    // Marketing (cat: 2)
+    { label: "SEO Optimization", cat: 2 },
+    { label: "Technical SEO Audits", cat: 2 },
+    { label: "Keyword Strategy", cat: 2 },
+    { label: "Digital Strategy", cat: 2 },
+    { label: "Google Ranking", cat: 2 },
+    { label: "CRO & Growth", cat: 2 },
+    { label: "Analytics Reporting", cat: 2 },
+    { label: "Content Strategy", cat: 2 },
 ];
 
 const AboutPage: React.FC = () => {
     const { title, description } = useSeoContent('About');
     
-    // Header Scroll Logic
     const containerRef = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll({ target: containerRef });
     const y1 = useTransform(scrollYProgress, [0, 1], [0, -100]);
     const y2 = useTransform(scrollYProgress, [0, 1], [0, 100]);
 
-    // Process Section Scroll Logic
     const processRef = useRef<HTMLDivElement>(null);
     const { scrollYProgress: processProgress } = useScroll({
         target: processRef,
@@ -91,14 +92,12 @@ const AboutPage: React.FC = () => {
         else setActiveProcessIndex(2);
     });
 
-    // Video Scroll Logic (Expansion Effect)
     const videoSectionRef = useRef<HTMLDivElement>(null);
     const { scrollYProgress: videoScrollProgress } = useScroll({
         target: videoSectionRef,
         offset: ["start end", "center center"]
     });
 
-    // Animate from scale 0.8 (small) to 1 (full width)
     const videoScale = useTransform(videoScrollProgress, [0, 1], [0.8, 1]);
     const videoRadius = useTransform(videoScrollProgress, [0, 1], ["40px", "0px"]);
     const videoOpacity = useTransform(videoScrollProgress, [0, 0.2], [0.5, 1]);
@@ -123,7 +122,6 @@ const AboutPage: React.FC = () => {
                 </motion.h1>
             </div>
 
-            {/* Parallax Image Grid */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 h-[50vh] md:h-[60vh] overflow-hidden">
                 <motion.div style={{ y: y2 }} className="flex flex-col gap-4 mt-12">
                     <img src={cultureImages[0]} alt="Office" className="rounded-2xl w-full h-64 object-cover opacity-80 hover:opacity-100 transition-opacity duration-500" />
@@ -151,13 +149,10 @@ const AboutPage: React.FC = () => {
         </div>
       </section>
 
-      {/* 2. IDENTITY & STATS SECTION (REDESIGNED) */}
+      {/* 2. IDENTITY & STATS SECTION */}
       <section className="py-24 md:py-32 bg-slate-950 border-t border-slate-900 relative">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-              
-              {/* Top Text Content */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 mb-24">
-                  {/* Left Column */}
                   <motion.div
                         initial={{ opacity: 0, x: -30 }}
                         whileInView={{ opacity: 1, x: 0 }}
@@ -172,7 +167,6 @@ const AboutPage: React.FC = () => {
                         </h2>
                   </motion.div>
 
-                  {/* Right Column */}
                   <motion.div
                         initial={{ opacity: 0, x: 30 }}
                         whileInView={{ opacity: 1, x: 0 }}
@@ -191,7 +185,6 @@ const AboutPage: React.FC = () => {
                   </motion.div>
               </div>
 
-              {/* Bottom Stats Row with Laurels */}
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
                   {statsData.map((stat, i) => (
                       <motion.div 
@@ -213,11 +206,10 @@ const AboutPage: React.FC = () => {
                       </motion.div>
                   ))}
               </div>
-
           </div>
       </section>
 
-      {/* 3. EXPANDING VIDEO SECTION (Moved Here) */}
+      {/* 3. EXPANDING VIDEO SECTION */}
       <section ref={videoSectionRef} className="pb-32 bg-slate-950 relative overflow-hidden">
           <motion.div 
             style={{ 
@@ -227,27 +219,12 @@ const AboutPage: React.FC = () => {
             }}
             className="w-full h-[60vh] md:h-[90vh] relative mx-auto overflow-hidden shadow-2xl shadow-cyan-500/10"
           >
-              <video 
-                  autoPlay 
-                  loop 
-                  muted 
-                  playsInline 
-                  className="w-full h-full object-cover"
-              >
+              <video autoPlay loop muted playsInline className="w-full h-full object-cover">
                   <source src="https://res.cloudinary.com/dow2sbjsp/video/upload/v1765300961/shape-showreel-2024_looping-v3_czfqgh.mp4" type="video/mp4" />
               </video>
-              
-              {/* Gradient Overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-slate-950/20 opacity-60"></div>
-              
-              {/* Content Overlay */}
               <div className="absolute bottom-10 left-0 right-0 text-center z-10 p-4">
-                  <motion.div 
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.5 }}
-                    className="inline-block"
-                  >
+                  <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="inline-block">
                       <div className="px-6 py-3 bg-black/40 backdrop-blur-md border border-white/10 rounded-full text-white text-sm font-bold uppercase tracking-widest hover:bg-black/60 transition-colors cursor-pointer">
                           Watch Showreel 2024
                       </div>
@@ -256,19 +233,16 @@ const AboutPage: React.FC = () => {
           </motion.div>
       </section>
 
-      {/* 4. NEW PROCESS & EXPERTISE SECTION (Sticky Interactive) */}
+      {/* 4. PROCESS & EXPERTISE SECTION (STICKY INTERACTIVE) */}
       <section ref={processRef} className="relative h-[250vh] bg-slate-950 border-t border-slate-900">
           <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
               <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                  
-                  {/* Section Title */}
                   <div className="absolute top-24 left-4 lg:left-8 z-10">
                       <span className="text-white text-sm font-bold tracking-[0.2em] uppercase">OUR PROCESS AND EXPERTISE</span>
                   </div>
 
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center h-full pt-20">
-                      
-                      {/* Left: Animated Headings */}
+                      {/* Left: Categories */}
                       <div className="flex flex-col gap-8 lg:gap-16">
                           {processCategories.map((cat, index) => (
                               <motion.h2 
@@ -278,16 +252,13 @@ const AboutPage: React.FC = () => {
                                     ? `text-white scale-105 opacity-100 translate-x-4` 
                                     : 'text-slate-700 opacity-40 scale-100 hover:opacity-60'
                                 }`}
-                                onClick={() => {
-                                    // Optional: Click to scroll functionality could be added here
-                                }}
                               >
                                   {cat.title}
                               </motion.h2>
                           ))}
                       </div>
 
-                      {/* Right: Interactive Tags */}
+                      {/* Right: Expertise Tags (Updated Content) */}
                       <div className="flex flex-wrap content-center gap-3 lg:gap-4 lg:justify-end max-w-xl ml-auto">
                           {expertiseTags.map((tag, i) => {
                               const isActive = tag.cat === activeProcessIndex;
@@ -318,11 +289,9 @@ const AboutPage: React.FC = () => {
                               );
                           })}
                       </div>
-
                   </div>
               </div>
               
-              {/* Background Glow based on active index */}
               <div className={`absolute top-1/2 right-0 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-[150px] transition-colors duration-1000 -z-10 opacity-20
                   ${activeProcessIndex === 0 ? 'bg-purple-600' : activeProcessIndex === 1 ? 'bg-cyan-600' : 'bg-blue-600'}
               `}></div>
@@ -351,19 +320,8 @@ const AboutPage: React.FC = () => {
                           className="group relative"
                       >
                           <div className="relative overflow-hidden rounded-3xl bg-slate-900 border border-slate-800 aspect-[4/5]">
-                              <img 
-                                  src={member.image} 
-                                  alt={member.name} 
-                                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0" 
-                              />
+                              <img src={member.image} alt={member.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0" />
                               <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity"></div>
-                              
-                              <div className="absolute top-4 right-4">
-                                  <div className="bg-white/10 backdrop-blur p-2 rounded-full border border-white/20 opacity-0 group-hover:opacity-100 transition-all translate-y-4 group-hover:translate-y-0 duration-300">
-                                      <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
-                                  </div>
-                              </div>
-
                               <div className="absolute bottom-0 left-0 p-8 w-full">
                                   <h3 className="text-2xl font-bold text-white mb-1 translate-y-4 group-hover:translate-y-0 transition-transform duration-300">{member.name}</h3>
                                   <p className="text-cyan-400 text-sm font-bold uppercase tracking-wider translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75">{member.role}</p>
@@ -385,18 +343,10 @@ const AboutPage: React.FC = () => {
       <section className="py-24 bg-slate-900 border-t border-slate-800 relative overflow-hidden">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                  
-                  {/* Image Block */}
                   <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-cyan-500/10 order-2 lg:order-1">
-                      <img 
-                          src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070&auto=format&fit=crop" 
-                          alt="Our Culture" 
-                          className="w-full h-full object-cover min-h-[500px]"
-                      />
+                      <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070&auto=format&fit=crop" alt="Our Culture" className="w-full h-full object-cover min-h-[500px]" />
                       <div className="absolute inset-0 bg-gradient-to-tr from-slate-900/60 to-transparent"></div>
                   </div>
-
-                  {/* Text Block */}
                   <div className="order-1 lg:order-2">
                       <div className="mb-6">
                           <span className="text-purple-400 font-bold uppercase tracking-widest text-sm mb-2 block">Our Culture</span>
@@ -404,34 +354,23 @@ const AboutPage: React.FC = () => {
                               We've created an environment where everyone feels comfortable and open.
                           </h2>
                       </div>
-                      
                       <div className="space-y-6 text-slate-400 text-lg leading-relaxed mb-8">
-                          <p>
-                              We produce good work for good people, and with the idea that staff and the client will be happy throughout the full process. This in return will bring more work our way, whether that's via recommendation or further work from that client.
-                          </p>
+                          <p>We produce good work for good people, and with the idea that staff and the client will be happy throughout the full process.</p>
                       </div>
-
-                      {/* Founder Quote Box */}
                       <div className="bg-lime-300/10 border border-lime-300/30 p-6 rounded-2xl relative">
                           <div className="flex gap-4">
                               <div className="text-lime-300 text-4xl leading-none">“</div>
                               <div>
-                                  <p className="text-lime-200 font-medium italic mb-4">
-                                      My vision has always been to look after the clients we work with, but to also look after the staff just as much. That will get the best results for everyone.
-                                  </p>
+                                  <p className="text-lime-200 font-medium italic mb-4">My vision has always been to look after the clients we work with, but to also look after the staff just as much.</p>
                                   <div className="flex items-center gap-3">
                                       <div className="w-10 h-10 rounded-full bg-slate-800 overflow-hidden">
                                           <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1887&auto=format&fit=crop" alt="Sameer" className="w-full h-full object-cover" />
                                       </div>
-                                      <div>
-                                          <p className="text-white font-bold text-sm">Sameer</p>
-                                          <p className="text-lime-300 text-xs uppercase tracking-wider">Founder</p>
-                                      </div>
+                                      <div><p className="text-white font-bold text-sm">Sameer</p><p className="text-lime-300 text-xs uppercase tracking-wider">Founder</p></div>
                                   </div>
                               </div>
                           </div>
                       </div>
-                      
                       <div className="mt-8 flex justify-end">
                           <Link to="/about">
                               <button className="flex items-center gap-2 text-white border border-slate-700 rounded-full px-6 py-2 hover:bg-slate-800 transition-colors text-sm">
@@ -443,7 +382,6 @@ const AboutPage: React.FC = () => {
               </div>
           </div>
       </section>
-
     </PageWrapper>
   );
 };
