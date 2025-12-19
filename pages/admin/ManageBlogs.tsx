@@ -19,7 +19,6 @@ interface Blog {
     excerpt: string;
     content: string;
     status: BlogStatus; 
-    stock_keywords?: string; // Track keywords for editing
 }
 
 const ManageBlogs: React.FC = () => {
@@ -33,8 +32,8 @@ const ManageBlogs: React.FC = () => {
     const [batchProgress, setBatchProgress] = useState('');
     const [aiTopic, setAiTopic] = useState('');
     
-    // Form State
-    const [currentBlog, setCurrentBlog] = useState<Partial<Blog>>({
+    // Form State (Local stock_keywords for UI only)
+    const [currentBlog, setCurrentBlog] = useState<Partial<Blog & { stock_keywords: string }>>({
         title: '',
         slug: '',
         category: 'Technology',
@@ -79,6 +78,7 @@ const ManageBlogs: React.FC = () => {
             finalSlug = generateSlug(currentBlog.title || `blog-${Date.now()}`);
         }
 
+        // IMPORTANT: We omit 'stock_keywords' here because it doesn't exist in your Supabase table
         const blogData = {
             title: currentBlog.title || 'Untitled Post',
             slug: finalSlug,
@@ -87,8 +87,7 @@ const ManageBlogs: React.FC = () => {
             date: currentBlog.date || new Date().toISOString().split('T')[0],
             excerpt: currentBlog.excerpt || '',
             content: currentBlog.content || '',
-            status: currentBlog.status || 'Draft',
-            stock_keywords: currentBlog.stock_keywords || ''
+            status: currentBlog.status || 'Draft'
         };
 
         try {
@@ -125,9 +124,9 @@ const ManageBlogs: React.FC = () => {
         setBatchProgress(`Writing: ${topic.substring(0, 15)}...`);
         const aiData = await generateBlogPost(topic, category);
         
-        // Use Unsplash source for REAL photography based on keywords
-        const keywords = aiData.imageKeywords.split(',').join(',');
-        const realPhotographyUrl = `https://source.unsplash.com/featured/1200x800/?${encodeURIComponent(keywords)}`;
+        // Fixed: Use LoremFlickr (stable) instead of deprecated Unsplash Source
+        const keywords = aiData.imageKeywords.split(',')[0].trim().replace(/\s+/g, ',');
+        const realPhotographyUrl = `https://loremflickr.com/1280/800/${encodeURIComponent(keywords)}`;
 
         const slug = aiData.title
             .toLowerCase()
@@ -169,7 +168,9 @@ const ManageBlogs: React.FC = () => {
         try {
             for (const cat of CATEGORIES) {
                 const newPost = await generateSinglePost(cat);
-                await supabase.from('blogs').insert([newPost]);
+                // Remove local UI-only field before saving to DB
+                const { stock_keywords, ...dbPost } = newPost as any;
+                await supabase.from('blogs').insert([dbPost]);
             }
             setBatchProgress('Done!');
             setTimeout(() => setBatchProgress(''), 2000);
@@ -193,7 +194,7 @@ const ManageBlogs: React.FC = () => {
     };
 
     const openEdit = (blog: Blog) => {
-        setCurrentBlog({ ...blog });
+        setCurrentBlog({ ...blog, stock_keywords: '' });
         setIsEditing(true);
     };
 
@@ -294,10 +295,11 @@ const ManageBlogs: React.FC = () => {
                                 value={currentBlog.stock_keywords || ''} 
                                 onChange={e => {
                                     const kw = e.target.value;
+                                    const formattedKw = kw.trim().replace(/\s+/g, ',');
                                     setCurrentBlog({
                                         ...currentBlog, 
                                         stock_keywords: kw,
-                                        image: kw ? `https://source.unsplash.com/featured/1200x800/?${encodeURIComponent(kw)}` : currentBlog.image
+                                        image: kw ? `https://loremflickr.com/1280/800/${encodeURIComponent(formattedKw)}` : currentBlog.image
                                     });
                                 }} 
                                 className="w-full bg-slate-950 border border-slate-800 p-3 rounded-lg text-white focus:border-cyan-500 outline-none" 
@@ -319,11 +321,21 @@ const ManageBlogs: React.FC = () => {
                         <div className="space-y-2">
                             <label className="text-xs font-bold text-slate-500 uppercase flex justify-between">
                                 Image Preview (Real Photography)
-                                <span className="text-cyan-400 font-normal">Pulled from Unsplash</span>
+                                <span className="text-cyan-400 font-normal">Sourced from Real Stock</span>
                             </label>
                             <div className="relative h-32 bg-slate-950 border border-slate-800 rounded-lg overflow-hidden flex items-center justify-center">
                                 {currentBlog.image ? (
-                                    <img src={currentBlog.image} alt="Preview" className="w-full h-full object-cover" />
+                                    <img 
+                                        key={currentBlog.image} // Force re-render on image change
+                                        src={currentBlog.image} 
+                                        alt="Preview" 
+                                        className="w-full h-full object-cover" 
+                                        onLoad={() => console.log('Image Loaded')}
+                                        onError={(e) => {
+                                            const target = e.target as HTMLImageElement;
+                                            target.src = 'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1200';
+                                        }}
+                                    />
                                 ) : (
                                     <span className="text-slate-600 text-xs">Enter keywords to see photo</span>
                                 )}
