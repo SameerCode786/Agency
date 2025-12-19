@@ -412,7 +412,7 @@ interface DeliverySection {
 
 const deliveryContent: Record<DeliveryCategory, DeliverySection> = {
     WORDPRESS: {
-        tagline: "The world's most popular CMS, optimized for performance.",
+        tagline: "Building the foundation of your digital presence.",
         statement: "Custom WordPress solutions crafted with speed, security, and scalability in mind.",
         items: [
             { id: "01", title: "WordPress Development", description: "Custom, fast, and secure WordPress websites developed with clean, scalable code." },
@@ -687,33 +687,34 @@ const ServicesPage: React.FC = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-stretch">
                     
                     {/* LEFT SIDE: BRAND CARD (High Contrast - White) */}
-                    <div className="lg:col-span-6 sticky top-32 h-full">
+                    <div className="lg:col-span-6 lg:sticky lg:top-32">
                         <motion.div
                             key={activeDeliveryTab + "-card"}
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.5 }}
-                            className="bg-white p-10 rounded-[2.5rem] relative overflow-hidden shadow-2xl group min-h-[500px] flex flex-col hover:scale-[1.02] transition-transform duration-500"
+                            className="bg-white p-10 rounded-[2.5rem] relative overflow-hidden shadow-2xl group flex flex-col h-full hover:scale-[1.01] transition-transform duration-500"
                         >
-                            {/* Card Content Structure */}
-                            <div className="relative z-10 flex flex-col h-full justify-between">
-                                {/* Top Section: Title (Left) & Tagline (Right) */}
-                                <div className="flex justify-between items-start gap-8">
-                                    <h2 className="text-5xl md:text-6xl font-black tracking-tighter leading-[0.9] text-slate-950 uppercase break-words hyphens-auto">
+                            {/* Top Section: Title & Tagline */}
+                            <div className="relative z-10">
+                                <div className="flex justify-between items-start mb-4">
+                                    <h2 className="text-5xl md:text-6xl font-black tracking-tighter leading-[0.9] text-slate-950 uppercase break-words hyphens-auto pr-4">
                                         {activeDeliveryTab}
                                     </h2>
-                                    <p className="text-sm font-bold text-slate-500 max-w-[200px] text-right pt-1 leading-snug">
+                                    <p className="text-[10px] font-black text-slate-400 text-right uppercase tracking-[0.2em] max-w-[120px] leading-tight pt-1">
                                         {deliveryContent[activeDeliveryTab].tagline}
                                     </p>
                                 </div>
                                 
-                                {/* Bottom Section: Large Statement pinned to bottom */}
-                                <div className="mt-auto pt-24">
-                                     <div className="h-1.5 w-16 bg-slate-900 mb-6"></div>
-                                     <p className="text-3xl md:text-4xl font-medium leading-[1.1] tracking-tight text-slate-900">
-                                        {deliveryContent[activeDeliveryTab].statement}
-                                    </p>
-                                </div>
+                                {/* Divider - Close to heading */}
+                                <div className="h-1.5 w-16 bg-slate-900 mb-6"></div>
+                            </div>
+
+                            {/* Bottom Section: Statement pushed to very bottom */}
+                            <div className="mt-auto pt-24">
+                                 <p className="text-3xl md:text-4xl font-medium leading-[1.1] tracking-tight text-slate-900">
+                                    {deliveryContent[activeDeliveryTab].statement}
+                                </p>
                             </div>
                         </motion.div>
                     </div>
