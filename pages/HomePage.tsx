@@ -36,8 +36,8 @@ interface ProjectData {
     role: string;
     timeline: string;
     fullImage: string;
-    goals?: string[]; // Added goals for Weversity
-    link?: string; // Added link property
+    goals?: string[]; 
+    link?: string; 
 }
 
 // --- REVIEWS & FAQ DATA ---
@@ -47,28 +47,28 @@ const reviewsData = [
         role: "Project Lead",
         quote: "Sameer Digital Lab is a very quick study and is very creative across many different skill sets which we used for this project. I would highly recommend them to anyone needing premium services. It was a joy to work with, detailed oriented and always able to make excellent recommendations.",
         stars: 5,
-        image: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1764442737/mantwo_dwcstk.png" // Man 2
+        image: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1764442737/mantwo_dwcstk.png" 
     },
     {
         name: "James T.",
         role: "CEO, TechFlow",
         quote: "Sameer Digital Lab did an awesome job. They were proactive with communication, gave additional tips on SEO, and completed the task as expected. Great choice if you're looking to get your SEO up and running.",
         stars: 5,
-        image: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1764442767/manthree_ol3l4l.png" // Man 3
+        image: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1764442767/manthree_ol3l4l.png" 
     },
     {
         name: "Sarah Jenkins",
         role: "Marketing Director",
         quote: "The team at Sameer Digital Lab transformed our online presence. Their design sense is impeccable, and the development quality is top-notch. Our conversion rates have doubled since the launch.",
         stars: 5,
-        image: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1764442822/women_y9wmlf.png" // Woman
+        image: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1764442822/women_y9wmlf.png" 
     },
     {
         name: "Michael R.",
         role: "Founder, StartupX",
         quote: "I was impressed by the speed and efficiency. Sameer Digital Lab delivered a complex React application ahead of schedule without compromising on quality. Highly recommended for scalable solutions.",
         stars: 5,
-        image: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1764442792/man_wrn6b3.png" // Man 1
+        image: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1764442792/man_wrn6b3.png" 
     }
 ];
 
@@ -96,25 +96,40 @@ const faqData: Record<string, {q: string, a: string}[]> = {
 
 const latestBlogs = [
     {
-        id: 1,
-        title: "The Future of Web Development in 2024",
+        id: 102,
+        title: "Scaling Your Shopify Store in 2025",
         category: "Technology",
-        image: "https://images.unsplash.com/photo-1504639725590-34d0984388bd?q=80&w=1974&auto=format&fit=crop",
-        link: "/blog"
+        readTime: "8 min read",
+        image: "https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?q=80&w=2070&auto=format&fit=crop",
+        link: "/blog/102",
+        excerpt: "Discover the technical strategies high-growth brands use to turn visitors into loyal customers on Shopify."
     },
     {
-        id: 2,
-        title: "5 UI/UX Principles for Higher Conversion",
+        id: 101,
+        title: "Why Technical SEO is the Missing Piece",
         category: "Design",
-        image: "https://images.unsplash.com/photo-1586717791821-3f44a5638d48?q=80&w=2070&auto=format&fit=crop",
-        link: "/blog"
+        readTime: "6 min read",
+        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop",
+        link: "/blog/101",
+        excerpt: "Is your beautiful website invisible to Google? Hidden technical barriers could be killing your rankings."
     },
     {
         id: 3,
-        title: "Why Your Business Needs a Mobile App",
+        title: "The Future of Web Development in 2024",
         category: "Business",
-        image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=2070&auto=format&fit=crop",
-        link: "/blog"
+        readTime: "10 min read",
+        image: "https://images.unsplash.com/photo-1504639725590-34d0984388bd?q=80&w=1974&auto=format&fit=crop",
+        link: "/blog",
+        excerpt: "Exploring how AI and next-gen frameworks are reshaping the way we build for the web."
+    },
+    {
+        id: 4,
+        title: "AI in Creative Agencies",
+        category: "Technology",
+        readTime: "12 min read",
+        image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1932&auto=format&fit=crop",
+        link: "/blog",
+        excerpt: "How generative AI is helping agencies speed up content creation while maintaining high quality."
     }
 ];
 
@@ -175,7 +190,6 @@ interface ProjectModalProps {
 }
 
 const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
-    // Lock body scroll when modal is open
     useEffect(() => {
         document.body.style.overflow = 'hidden';
         return () => {
@@ -199,7 +213,6 @@ const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                 className="bg-slate-900 border border-slate-700 w-full max-w-7xl h-[90vh] md:h-[85vh] rounded-2xl overflow-hidden flex flex-col md:flex-row shadow-2xl shadow-cyan-500/20 relative"
                 onClick={(e) => e.stopPropagation()}
             >
-                {/* Close Button */}
                 <button 
                     onClick={onClose}
                     className="absolute top-4 right-4 z-50 p-2 bg-slate-800/80 rounded-full text-white hover:bg-red-500/80 transition-colors"
@@ -209,7 +222,6 @@ const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                     </svg>
                 </button>
 
-                {/* LEFT SIDE: DETAILS (50% Width) */}
                 <div className="w-full md:w-1/2 p-8 md:p-10 overflow-y-auto custom-scrollbar border-r border-slate-800 flex flex-col">
                     <div className="mb-6">
                          <span className="inline-block px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-bold uppercase tracking-wider mb-3">
@@ -236,7 +248,6 @@ const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                         </p>
                     </div>
 
-                    {/* Project Goals Section - Only shows if goals exist */}
                     {project.goals && (
                         <div className="mb-8">
                             <h3 className="text-lg font-bold text-white mb-3">Project Goals</h3>
@@ -269,10 +280,8 @@ const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                     </div>
                 </div>
 
-                {/* RIGHT SIDE: SCROLLING IMAGE (50% Width) */}
                 <div className="w-full md:w-1/2 h-full bg-slate-950 relative overflow-hidden group">
                     <div className="absolute inset-0 w-full h-full">
-                         {/* CSS Animation for Auto Scrolling */}
                          <style>{`
                             @keyframes scroll-image {
                                 0% { transform: translateY(0); }
@@ -292,7 +301,6 @@ const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                         />
                     </div>
                     
-                    {/* Overlay hint */}
                     <div className="absolute bottom-6 right-6 bg-black/60 backdrop-blur px-4 py-2 rounded-full text-white text-xs font-bold pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
                         Scrolling Preview
                     </div>
@@ -403,85 +411,41 @@ const selectedProjects: ProjectData[] = [
             "Ensure a responsive and accessible design for all users.",
             "Implement a professional aesthetic that reflects the firm's values."
         ]
-    },
-    {
-        title: "Elegantnast",
-        category: "Luxury Beauty Brand",
-        description: "Created a multilingual luxury website for Elegantnast, focusing on elegance and premium brand aesthetics.",
-        image1: "https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=2070&auto=format&fit=crop",
-        image2: "https://images.unsplash.com/photo-1596462502278-27bfdd403348?q=80&w=2070&auto=format&fit=crop",
-        tools: [<WordPressIcon className="w-5 h-5 text-blue-400" />, <FigmaIcon className="w-5 h-5 text-purple-400" />, <JsIcon className="w-5 h-5 text-yellow-400" />],
-        role: "Lead Developer & Designer",
-        timeline: "6 Weeks",
-        fullImage: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1764387541/ittefaq_xlwtfu.jpg"
-    },
-    {
-        title: "Macrostate Landing Page",
-        category: "SaaS Landing Page",
-        description: "I designed and developed a high-converting solution landing page for MacroState in Webflow, showcasing their UniFi Door Access solutions.",
-        image1: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop",
-        image2: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop",
-        tools: [<ReactIcon className="w-5 h-5 text-cyan-400" />, <FigmaIcon className="w-5 h-5 text-purple-400" />, <JsIcon className="w-5 h-5 text-yellow-400" />],
-        role: "Frontend Developer",
-        timeline: "3 Weeks",
-        fullImage: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1764387541/ittefaq_xlwtfu.jpg"
-    },
-    {
-        title: "MAJER Sales – Conversion",
-        category: "Corporate Website",
-        description: "High converting landing page for MAJER Sales — licensing the 'Automakler-System' (auto brokerage system) for partners in Germany.",
-        image1: "https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?q=80&w=2070&auto=format&fit=crop",
-        image2: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2070&auto=format&fit=crop",
-        tools: [<WordPressIcon className="w-5 h-5 text-blue-400" />, <ReactIcon className="w-5 h-5 text-cyan-400" />, <JsIcon className="w-5 h-5 text-yellow-400" />],
-        role: "Full Stack Developer",
-        timeline: "5 Weeks",
-        fullImage: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1764387541/ittefaq_xlwtfu.jpg"
-    },
-    {
-        title: "GWP's Aerospace",
-        category: "Industrial / Aerospace",
-        description: "For this project, I partnered with Brafton to establish the digital presence of a company specializing in Aluminum Wing Skins.",
-        image1: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=2070&auto=format&fit=crop",
-        image2: "https://images.unsplash.com/photo-1537462715879-360eeb61a0ad?q=80&w=2106&auto=format&fit=crop",
-        tools: [<ReactIcon className="w-5 h-5 text-cyan-400" />, <ExpoIcon className="w-5 h-5 text-white" />, <SupabaseIcon className="w-5 h-5 text-green-400" />],
-        role: "Lead Developer",
-        timeline: "8 Weeks",
-        fullImage: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1764387541/ittefaq_xlwtfu.jpg"
-    },
-    {
-        title: "NeonFlux E-Com",
-        category: "E-Commerce",
-        description: "A futuristic fashion e-commerce store built with Shopify Hydrogen. Blazing fast speeds and immersive product interactions.",
-        image1: "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?q=80&w=2070&auto=format&fit=crop",
-        image2: "https://images.unsplash.com/photo-1550989460-0adf9ea622e2?q=80&w=2074&auto=format&fit=crop",
-        tools: [<ReactIcon className="w-5 h-5 text-blue-400" />, <JsIcon className="w-5 h-5 text-yellow-400" />, <FigmaIcon className="w-5 h-5 text-purple-400" />],
-        role: "Shopify Developer",
-        timeline: "4 Weeks",
-        fullImage: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1764387541/ittefaq_xlwtfu.jpg"
     }
 ];
 
 const HomePage: React.FC = () => {
     const { title, description } = useSeoContent('Home');
     const [currentHeadingIndex, setCurrentHeadingIndex] = useState(0);
-    const { setCursorVariant, setCursorText } = useCursor(); // Use cursor hook
+    const { setCursorVariant, setCursorText } = useCursor();
     const workContainerRef = useRef<HTMLDivElement>(null);
     const [selectedProject, setSelectedProject] = useState<ProjectData | null>(null);
 
-    // Reviews Section Animation Refs
+    // Carousel Ref for Blog Section
+    const blogCarouselRef = useRef<HTMLDivElement>(null);
+
+    const scrollBlog = (direction: 'left' | 'right') => {
+        if (blogCarouselRef.current) {
+            const { scrollLeft, clientWidth } = blogCarouselRef.current;
+            const scrollAmount = clientWidth * 0.8;
+            const targetScroll = direction === 'left' ? scrollLeft - scrollAmount : scrollLeft + scrollAmount;
+            blogCarouselRef.current.scrollTo({
+                left: targetScroll,
+                behavior: 'smooth'
+            });
+        }
+    };
+
     const reviewsContainerRef = useRef<HTMLDivElement>(null);
     const [activeTab, setActiveTab] = useState<'reviews' | 'faqs'>('reviews');
     const [activeFaqCategory, setActiveFaqCategory] = useState('General');
     const [activeFaq, setActiveFaq] = useState<number | null>(null);
-    
-    // Check for navigation state to scroll to reviews
     const location = useLocation();
     
     useEffect(() => {
         if (location.state && (location.state as any).scrollTo === 'reviews') {
             const element = document.getElementById('reviews');
             if (element) {
-                // Small delay to ensure rendering is complete
                 setTimeout(() => {
                     element.scrollIntoView({ behavior: 'smooth' });
                 }, 100);
@@ -494,13 +458,9 @@ const HomePage: React.FC = () => {
         offset: ["start start", "end end"]
     });
 
-    // Pinning and Width Expansion Animation
-    // As the user scrolls down the container, the content sticks (pins).
-    // The width expands from 85% to 100% during the first 30% of the scroll.
     const containerWidth = useTransform(reviewsScrollProgress, [0, 0.3], ["85%", "100%"]);
     const containerRadius = useTransform(reviewsScrollProgress, [0, 0.3], ["40px", "0px"]);
 
-    // Review Slider Logic
     const [reviewIndex, setReviewIndex] = useState(0);
     const reviewsPerPage = 2;
 
@@ -514,13 +474,11 @@ const HomePage: React.FC = () => {
 
     const currentReviews = reviewsData.slice(reviewIndex, reviewIndex + reviewsPerPage);
 
-
     const { scrollYProgress } = useScroll({
         target: workContainerRef,
         offset: ["start end", "end start"]
     });
     
-    // Parallax effect for "Our Work" text
     const parallaxX = useTransform(scrollYProgress, [0, 1], ["10%", "-10%"]);
 
     useEffect(() => {
@@ -538,7 +496,6 @@ const HomePage: React.FC = () => {
       <title>{title}</title>
       <meta name="description" content={description} />
       
-      {/* Project Details Modal */}
       <AnimatePresence>
         {selectedProject && (
             <ProjectModal 
@@ -550,24 +507,13 @@ const HomePage: React.FC = () => {
 
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-slate-950">
-        <video 
-            autoPlay 
-            loop 
-            muted 
-            playsInline 
-            className="absolute inset-0 w-full h-full object-cover"
-        >
+        <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover">
             <source src={backgroundVideoUrl} type="video/mp4" />
         </video>
-        
         <div className="absolute inset-0 bg-slate-950/95 z-0"></div>
-
         <ParticleBackground />
-
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 z-20 relative w-full h-full flex items-center py-24 lg:py-32">
             <div className="flex flex-col lg:flex-row items-center justify-between w-full gap-12">
-                
-                {/* Left Side */}
                 <motion.div
                     initial="hidden"
                     animate="visible"
@@ -580,19 +526,10 @@ const HomePage: React.FC = () => {
                     }}
                     className="w-full lg:w-1/2 text-left"
                 >
-                    <motion.div 
-                        variants={{ hidden: { opacity: 0, y: -10 }, visible: { opacity: 1, y: 0 } }}
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-900/20 border border-cyan-500/30 text-cyan-300 mb-3 backdrop-blur-sm shadow-lg shadow-cyan-500/10"
-                    >
-                        <span className="font-bold tracking-widest uppercase text-[14px]">
-                            Web & Mobile App Development Agency
-                        </span>
+                    <motion.div variants={{ hidden: { opacity: 0, y: -10 }, visible: { opacity: 1, y: 0 } }} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-900/20 border border-cyan-500/30 text-cyan-300 mb-3 backdrop-blur-sm shadow-lg shadow-cyan-500/10">
+                        <span className="font-bold tracking-widest uppercase text-[14px]">Web & Mobile App Development Agency</span>
                     </motion.div>
-
-                    <motion.h1 
-                        variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: 'easeOut' } }}}
-                        className="text-[42px] sm:text-[48px] lg:text-[56px] font-bold text-slate-50 tracking-tight mb-2 drop-shadow-2xl leading-[1.1]"
-                    >
+                    <motion.h1 variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: 'easeOut' } }}} className="text-[42px] sm:text-[48px] lg:text-[56px] font-bold text-slate-50 tracking-tight mb-2 drop-shadow-2xl leading-[1.1]">
                         Transform Your Ideas Into <br />
                         <div className="inline-block relative h-[55px] sm:h-[65px] lg:h-[75px] w-full min-w-[320px] mt-2 overflow-hidden">
                             <AnimatePresence mode="wait">
@@ -609,85 +546,29 @@ const HomePage: React.FC = () => {
                             </AnimatePresence>
                         </div>
                     </motion.h1>
-
-                    <motion.p 
-                        variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: 'easeOut' } }}}
-                        className="text-[16px] text-slate-300 mb-8 max-w-lg leading-relaxed font-light border-l-4 border-cyan-500/30 pl-6"
-                    >
-                        We turn your vision into reality with cutting-edge web and mobile applications. 
-                        Our expertise in React Native, WordPress, and modern frameworks ensures your digital presence stands out. 
-                        We don't just build software - we create solutions that drive growth, engage users, and deliver tangible business results.
+                    <motion.p variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: 'easeOut' } }}} className="text-[16px] text-slate-300 mb-8 max-w-lg leading-relaxed font-light border-l-4 border-cyan-500/30 pl-6">
+                        We turn your vision into reality with cutting-edge web and mobile applications. Our expertise in React Native, WordPress, and modern frameworks ensures your digital presence stands out. 
                     </motion.p>
-
-                    <motion.div 
-                        variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: 'easeOut' } }}}
-                        className="flex items-center"
-                    >
+                    <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: 'easeOut' } }}} className="flex items-center">
                         <div className="inline-flex items-center p-1 rounded-full border border-slate-700 bg-slate-900/40 backdrop-blur-sm">
-                            <Link to="/contact">
-                                <PremiumButton className="!m-0">Start Your Project</PremiumButton>
-                            </Link>
-                            <Link to="/portfolio">
-                                <span className="px-6 py-4 text-slate-300 font-bold hover:text-white transition-colors duration-300 cursor-pointer">
-                                    View Our Work
-                                </span>
-                            </Link>
+                            <Link to="/contact"><PremiumButton className="!m-0">Start Your Project</PremiumButton></Link>
+                            <Link to="/portfolio"><span className="px-6 py-4 text-slate-300 font-bold hover:text-white transition-colors duration-300 cursor-pointer">View Our Work</span></Link>
                         </div>
                     </motion.div>
                 </motion.div>
-
-                {/* Right Side: Foreground Video */}
-                <motion.div 
-                    className="hidden lg:flex w-full lg:w-1/2 justify-center items-center relative"
-                    initial={{ opacity: 0, x: 50 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 1, delay: 0.6, ease: "easeOut" }}
-                >
+                <motion.div className="hidden lg:flex w-full lg:w-1/2 justify-center items-center relative" initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 1, delay: 0.6, ease: "easeOut" }}>
                      <div className="relative w-[400px] h-[400px] flex items-center justify-center">
                         <div className="absolute inset-0 pointer-events-none z-10 flex items-center justify-center">
-                            <motion.div
-                                animate={{ rotate: 360 }}
-                                transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-                                className="absolute w-[70%] h-[70%] border border-cyan-500/10 rounded-full"
-                            >
+                            <motion.div animate={{ rotate: 360 }} transition={{ duration: 25, repeat: Infinity, ease: "linear" }} className="absolute w-[70%] h-[70%] border border-cyan-500/10 rounded-full">
                                 <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-950/80 backdrop-blur-sm p-1.5 rounded-full border border-cyan-500/50 shadow-lg shadow-cyan-500/20">
                                     <motion.div animate={{ rotate: -360 }} transition={{ duration: 25, repeat: Infinity, ease: "linear" }}>
                                         <ReactIcon className="w-6 h-6 text-cyan-400" />
                                     </motion.div>
                                 </div>
-                                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 bg-slate-950/80 backdrop-blur-sm p-1.5 rounded-full border border-cyan-500/50 shadow-lg shadow-cyan-500/20">
-                                    <motion.div animate={{ rotate: -360 }} transition={{ duration: 25, repeat: Infinity, ease: "linear" }}>
-                                        <SupabaseIcon className="w-6 h-6 text-green-400" />
-                                    </motion.div>
-                                </div>
-                            </motion.div>
-
-                            <motion.div
-                                animate={{ rotate: -360 }}
-                                transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-                                className="absolute w-[100%] h-[100%] border border-purple-500/10 rounded-full border-dashed"
-                            >
-                                <div className="absolute top-1/2 left-0 -translate-x-1/2 -translate-y-1/2 bg-slate-950/80 backdrop-blur-sm p-1.5 rounded-full border border-purple-500/50 shadow-lg shadow-purple-500/20">
-                                    <motion.div animate={{ rotate: 360 }} transition={{ duration: 30, repeat: Infinity, ease: "linear" }}>
-                                        <JsIcon className="w-6 h-6 text-yellow-400" />
-                                    </motion.div>
-                                </div>
-                                <div className="absolute top-1/2 right-0 translate-x-1/2 -translate-y-1/2 bg-slate-950/80 backdrop-blur-sm p-1.5 rounded-full border border-purple-500/50 shadow-lg shadow-purple-500/20">
-                                    <motion.div animate={{ rotate: 360 }} transition={{ duration: 30, repeat: Infinity, ease: "linear" }}>
-                                        <ExpoIcon className="w-6 h-6 text-white" />
-                                    </motion.div>
-                                </div>
                             </motion.div>
                         </div>
-
                         <div className="w-[50%] h-[50%] z-20 flex justify-center items-center overflow-hidden rounded-full">
-                            <video 
-                                autoPlay 
-                                loop 
-                                muted 
-                                playsInline 
-                                className="w-full h-full object-cover mix-blend-screen transform scale-110"
-                            >
+                            <video autoPlay loop muted playsInline className="w-full h-full object-cover mix-blend-screen transform scale-110">
                                 <source src={foregroundVideoUrl} type="video/mp4" />
                             </video>
                         </div>
@@ -695,18 +576,6 @@ const HomePage: React.FC = () => {
                 </motion.div>
             </div>
         </div>
-        
-        <motion.div 
-            className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 text-cyan-400/70 cursor-pointer"
-            animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
-        >
-            <div className="flex flex-col items-center gap-2">
-                <span className="text-[10px] uppercase tracking-widest opacity-70">Scroll</span>
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
-            </div>
-        </motion.div>
       </section>
 
       {/* DIGITAL PROCESS SECTION */}
@@ -714,169 +583,71 @@ const HomePage: React.FC = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20">
                 <div>
-                    <motion.h2 
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        className="text-5xl md:text-6xl font-bold leading-tight"
-                    >
+                    <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-5xl md:text-6xl font-bold leading-tight">
                         It all starts with our <br />
                         <span className="italic font-light text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">DIGITAL PROCESS.</span>
                     </motion.h2>
                 </div>
                 <div className="flex flex-col justify-center items-start">
-                    <motion.p 
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.2 }}
-                        className="text-slate-400 text-lg leading-relaxed mb-8"
-                    >
-                        Every project begins with a strong digital process. At Sameer Digital Lab, we don’t rely on guesswork — we deliver results through clear strategy, in-depth research, and proven methods. For every website, we understand user needs, explore innovative solutions, and test every feature before final delivery to ensure you receive a top-performing website.
+                    <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="text-slate-400 text-lg leading-relaxed mb-8">
+                        Every project begins with a strong digital process. At Sameer Digital Lab, we don’t rely on guesswork — we deliver results through clear strategy, in-depth research, and proven methods.
                     </motion.p>
-                    <motion.div
-                         initial={{ opacity: 0 }}
-                         whileInView={{ opacity: 1 }}
-                         viewport={{ once: true }}
-                         transition={{ delay: 0.4 }}
-                    >
-                        <Link to="/about">
-                            <PremiumButton icon={false} className="border border-white/30 !bg-none hover:bg-white hover:text-black hover:from-white hover:to-white">
-                                Find Out More
-                            </PremiumButton>
-                        </Link>
-                    </motion.div>
                 </div>
             </div>
-
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {/* Steps with staggered animation */}
-                <motion.div 
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.1 }}
-                    className="flex flex-col items-center text-center group"
-                >
+                <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="flex flex-col items-center text-center group">
                     <div className="mb-6 p-0 rounded-full transition-colors duration-500 overflow-hidden w-32 h-32 flex items-center justify-center bg-black relative">
                         <video autoPlay loop muted playsInline className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity duration-300">
                             <source src="https://res.cloudinary.com/dow2sbjsp/video/upload/v1763708206/discover-animation_tnruml.mp4" type="video/mp4" />
                         </video>
                     </div>
                     <h3 className="text-xl font-bold mb-4 tracking-widest text-cyan-200">DISCOVER</h3>
-                    <p className="text-slate-400 text-sm leading-relaxed max-w-xs">
-                        We discover your goals, brand identity, and user needs so we can build the right strategy from day one.
-                    </p>
+                    <p className="text-slate-400 text-sm leading-relaxed max-w-xs">We discover your goals, brand identity, and user needs so we can build the right strategy from day one.</p>
                 </motion.div>
-
-                <motion.div 
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.3 }}
-                    className="flex flex-col items-center text-center group"
-                >
+                <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="flex flex-col items-center text-center group">
                      <div className="mb-6 p-0 rounded-full transition-colors duration-500 overflow-hidden w-32 h-32 flex items-center justify-center bg-black relative">
                         <video autoPlay loop muted playsInline className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity duration-300">
                             <source src="https://res.cloudinary.com/dow2sbjsp/video/upload/v1763708273/explore-animation_hteza3.mp4" type="video/mp4" />
                         </video>
                     </div>
                     <h3 className="text-xl font-bold mb-4 tracking-widest text-cyan-200">EXPLORE</h3>
-                    <p className="text-slate-400 text-sm leading-relaxed max-w-xs">
-                        We explore modern design ideas and powerful technical solutions to create a website that is fast, modern, and impactful.
-                    </p>
+                    <p className="text-slate-400 text-sm leading-relaxed max-w-xs">We explore modern design ideas and powerful technical solutions to create a website that is fast and modern.</p>
                 </motion.div>
-
-                <motion.div 
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.5 }}
-                    className="flex flex-col items-center text-center group"
-                >
+                <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.4 }} className="flex flex-col items-center text-center group">
                      <div className="mb-6 p-0 rounded-full transition-colors duration-500 overflow-hidden w-32 h-32 flex items-center justify-center bg-black relative">
                         <video autoPlay loop muted playsInline className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity duration-300">
                             <source src="https://res.cloudinary.com/dow2sbjsp/video/upload/v1763708320/experiment-animation_pnda4i.mp4" type="video/mp4" />
                         </video>
                     </div>
                     <h3 className="text-xl font-bold mb-4 tracking-widest text-cyan-200">EXPERIENCE</h3>
-                    <p className="text-slate-400 text-sm leading-relaxed max-w-xs">
-                        We deliver a high-performance experience—a website that loads fast, ranks higher, and grows your business.
-                    </p>
+                    <p className="text-slate-400 text-sm leading-relaxed max-w-xs">We deliver a high-performance experience—a website that loads fast, ranks higher, and grows your business.</p>
                 </motion.div>
             </div>
         </div>
       </section>
 
-      {/* HOW WE TAKE YOUR BUSINESS TO THE NEXT LEVEL */}
+      {/* CORE SERVICES SECTION */}
       <section className="py-24 bg-slate-950 relative z-10 overflow-hidden">
         <div className="mb-16 opacity-30 pointer-events-none">
             <ParallaxText baseVelocity={5}>HIRE US</ParallaxText>
         </div>
-
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-end mb-20 border-b border-slate-800 pb-12">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                >
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-end mb-20 border-b border-slate-800 pb-12">
+                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
                     <span className="text-cyan-400 text-sm font-bold tracking-[0.2em] uppercase mb-4 block">Our Expertise</span>
-                    <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.1] tracking-tight">
-                        How we take your business to the next level
-                    </h2>
+                    <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.1] tracking-tight">How we take your business to the next level</h2>
                 </motion.div>
-
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.2 }}
-                    className="flex flex-col items-start"
-                >
-                    <p className="text-slate-400 text-lg leading-relaxed mb-8 max-w-md">
-                        We are a results-driven digital agency, and our mission is simple — to build fast, modern, and high-performing digital experiences that help your business grow. Through powerful design, smart technology, and proven optimization, we create solutions that bring real impact.
-                    </p>
-                    <Link to="/services">
-                        <PremiumButton>See all services</PremiumButton>
-                    </Link>
+                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="flex flex-col items-start">
+                    <p className="text-slate-400 text-lg leading-relaxed mb-8 max-w-md">We are a results-driven digital agency, and our mission is simple — to build fast, modern, and high-performing digital experiences.</p>
+                    <Link to="/services"><PremiumButton>See all services</PremiumButton></Link>
                 </motion.div>
             </div>
-
-            <div className="text-left mb-8">
-                 <h3 className="text-2xl font-bold text-white tracking-widest uppercase">Our Core Services</h3>
-            </div>
-
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {coreServicesData.map((service, index) => (
-                    <Link 
-                        to={service.link}
-                        key={index}
-                        className={`group relative overflow-hidden rounded-2xl h-[400px] border border-slate-800 hover:border-cyan-500/50 transition-all duration-500 ${service.colSpan || ''}`}
-                        onMouseEnter={() => {
-                            setCursorVariant('view-more');
-                            setCursorText('View More');
-                        }}
-                        onMouseLeave={() => {
-                            setCursorVariant('default');
-                            setCursorText('');
-                        }}
-                    >
-                        <motion.div 
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: index * 0.1 }}
-                            className="h-full w-full relative"
-                        >
+                    <Link to={service.link} key={index} className={`group relative overflow-hidden rounded-2xl h-[400px] border border-slate-800 hover:border-cyan-500/50 transition-all duration-500 ${service.colSpan || ''}`} onMouseEnter={() => { setCursorVariant('view-more'); setCursorText('Explore'); }} onMouseLeave={() => { setCursorVariant('default'); setCursorText(''); }}>
+                        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.1 }} className="h-full w-full relative">
                             <div className="absolute inset-0 z-0">
-                                <video 
-                                    autoPlay 
-                                    loop 
-                                    muted 
-                                    playsInline 
-                                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
-                                >
+                                <video autoPlay loop muted playsInline className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700">
                                     <source src={service.video} type="video/mp4" />
                                 </video>
                             </div>
@@ -884,66 +655,27 @@ const HomePage: React.FC = () => {
                             <div className="absolute inset-0 z-20 p-8 flex flex-col justify-end">
                                 <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                                     <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors">{service.title}</h3>
-                                    <p className="text-slate-300 text-sm leading-relaxed opacity-80 group-hover:opacity-100 transition-opacity">
-                                        {service.desc}
-                                    </p>
+                                    <p className="text-slate-300 text-sm leading-relaxed opacity-80 group-hover:opacity-100 transition-opacity">{service.desc}</p>
                                 </div>
                             </div>
                         </motion.div>
                     </Link>
                 ))}
             </div>
-
-            {/* CLOSING SECTION: Text Left, Button Right */}
-            <motion.div 
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="mt-24 grid grid-cols-1 lg:grid-cols-3 gap-12 items-center"
-            >
-                <div className="lg:col-span-2">
-                    <p className="text-2xl md:text-3xl text-slate-300 leading-relaxed font-light">
-                        "In a digital world full of competition, we create the advantage. Our solutions turn your ideas into high-performing digital experiences—experiences that inspire trust, drive engagement, and push your business forward with real results."
-                    </p>
-                </div>
-                <div className="flex lg:justify-end">
-                    <Link to="/contact">
-                        <PremiumButton className="text-lg px-12 py-5">Start a Project</PremiumButton>
-                    </Link>
-                </div>
-            </motion.div>
         </div>
       </section>
 
       {/* SELECTED WORK SECTION */}
       <section className="relative py-32 bg-slate-950 overflow-hidden" ref={workContainerRef}>
-        {/* Parallax Background Text - Moved down to be behind content */}
-        <motion.div 
-            style={{ x: parallaxX }}
-            className="absolute top-40 left-0 text-[18vw] font-black text-white/[0.03] whitespace-nowrap leading-none select-none pointer-events-none z-0"
-        >
-            Our Work
-        </motion.div>
-
+        <motion.div style={{ x: parallaxX }} className="absolute top-40 left-0 text-[18vw] font-black text-white/[0.03] whitespace-nowrap leading-none select-none pointer-events-none z-0">Our Work</motion.div>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
-                <motion.div
-                    initial={{ opacity: 0, x: -50 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                >
+                <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
                     <span className="text-cyan-400 text-sm font-bold tracking-[0.2em] uppercase mb-4 block">Projects</span>
                     <h2 className="text-5xl md:text-6xl font-bold text-white mb-4">Selected Work</h2>
-                    <p className="text-slate-400 max-w-xl text-lg">
-                        Craft meets conversion. Here are a few recent projects that pushed boundaries.
-                    </p>
+                    <p className="text-slate-400 max-w-xl text-lg">Craft meets conversion. Here are a few recent projects that pushed boundaries.</p>
                 </motion.div>
-                
-                <motion.div
-                     initial={{ opacity: 0, x: 50 }}
-                     whileInView={{ opacity: 1, x: 0 }}
-                     viewport={{ once: true }}
-                >
+                <motion.div initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
                     <Link to="/portfolio">
                         <button className="flex items-center gap-2 text-white border-b border-white pb-1 hover:text-cyan-400 hover:border-cyan-400 transition-colors">
                             View All Work <ArrowRightIcon className="w-5 h-5"/>
@@ -951,73 +683,36 @@ const HomePage: React.FC = () => {
                     </Link>
                 </motion.div>
             </div>
-
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {selectedProjects.map((project, index) => (
-                    <motion.div
-                        key={index}
-                        initial={{ opacity: 0, y: 50 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: index * 0.2 }}
-                        className="relative group rounded-2xl p-[2px] overflow-hidden" 
-                    >
-                         {/* Animated Rotating Border (Cyan + Purple) */}
+                    <motion.div key={index} initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.2 }} className="relative group rounded-2xl p-[2px] overflow-hidden">
                         <div className="absolute inset-[-50%] bg-[conic-gradient(from_0deg_at_50%_50%,#0f172a_0%,#0f172a_40%,#22d3ee_50%,#0f172a_60%,#0f172a_90%,#8936ea_100%)] animate-[spin_4s_linear_infinite] opacity-70 group-hover:opacity-100 transition-opacity duration-500" />
-                        
-                         {/* Inner Card */}
                         <div className="relative h-full bg-slate-950 rounded-xl overflow-hidden flex flex-col">
-                            {/* Image Container */}
                             <div className="relative aspect-[4/3] w-full overflow-hidden bg-slate-900 border-b border-slate-800">
-                                {/* Base Image */}
-                                <img 
-                                    src={project.image1} 
-                                    alt={project.title} 
-                                    className="absolute inset-0 w-full h-full object-cover transition-all duration-500 opacity-100 group-hover:opacity-0"
-                                />
-                                {/* Hover Image (Zoom out/pop effect & Color) */}
-                                <img 
-                                    src={project.image2} 
-                                    alt={`${project.title} hover`} 
-                                    className="absolute inset-0 w-full h-full object-cover transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:scale-110 grayscale group-hover:grayscale-0"
-                                />
-                                
-                                {/* Overlay Gradient */}
+                                <img src={project.image1} alt={project.title} className="absolute inset-0 w-full h-full object-cover transition-all duration-500 opacity-100 group-hover:opacity-0" />
+                                <img src={project.image2} alt={`${project.title} hover`} className="absolute inset-0 w-full h-full object-cover transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:scale-110 grayscale group-hover:grayscale-0" />
                                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/50 via-transparent to-transparent opacity-60"></div>
                             </div>
-
-                            {/* Content Below */}
                             <div className="p-6 md:p-8 flex flex-col flex-grow">
                                 <div className="flex justify-between items-start mb-4">
                                      <div>
                                         <span className="text-cyan-400 text-xs font-bold uppercase tracking-wider mb-2 block">{project.category}</span>
                                         <h3 className="text-2xl md:text-3xl font-bold text-white group-hover:text-cyan-400 transition-colors">{project.title}</h3>
                                      </div>
-                                      {/* Updated Link to live site with Visit Live Text (Always Visible) */}
                                       <a href={project.link || "#"} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-slate-500 hover:text-cyan-400 transition-colors group/link whitespace-nowrap" title="Visit Live Website">
                                             <span className="text-xs font-bold uppercase tracking-wider">Visit Live</span>
                                             <ArrowRightIcon className="w-5 h-5 -rotate-45" />
                                      </a>
                                 </div>
-                                <p className="text-slate-400 leading-relaxed mb-6 line-clamp-3 flex-grow">
-                                    {project.description}
-                                </p>
-                                
-                                 {/* Footer: Button & Tech Stack */}
+                                <p className="text-slate-400 leading-relaxed mb-6 line-clamp-3 flex-grow">{project.description}</p>
                                 <div className="mt-auto pt-6 border-t border-slate-800 flex flex-wrap items-center justify-between gap-4">
-                                    <button 
-                                        onClick={() => setSelectedProject(project)}
-                                        className="bg-slate-900 hover:bg-slate-800 text-white border border-slate-700 hover:border-cyan-500/50 px-6 py-2 rounded-full text-sm font-bold transition-all shadow-lg shadow-cyan-500/5 flex items-center gap-2 group/btn"
-                                    >
+                                    <button onClick={() => setSelectedProject(project)} className="bg-slate-900 hover:bg-slate-800 text-white border border-slate-700 hover:border-cyan-500/50 px-6 py-2 rounded-full text-sm font-bold transition-all shadow-lg shadow-cyan-500/5 flex items-center gap-2 group/btn">
                                         View Project
                                         <ArrowRightIcon className="w-4 h-4 transform group-hover/btn:translate-x-1 transition-transform" />
                                     </button>
-
                                     <div className="flex items-center gap-3">
                                         {project.tools.map((tool, tIndex) => (
-                                            <div key={tIndex} className="text-slate-400 hover:text-white transition-colors p-1.5 bg-slate-900 rounded-md border border-slate-800 shadow-sm hover:border-purple-500/30">
-                                                {tool}
-                                            </div>
+                                            <div key={tIndex} className="text-slate-400 hover:text-white transition-colors p-1.5 bg-slate-900 rounded-md border border-slate-800 shadow-sm">{tool}</div>
                                         ))}
                                     </div>
                                 </div>
@@ -1029,88 +724,29 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* NEW: REVIEWS & FAQs SECTION */}
-      {/* 
-          SCROLL BEHAVIOR:
-          - The container is tall (130vh) to allow for scrolling "time".
-          - The inner wrapper is sticky at top:0 and 100vh tall.
-          - As you scroll down the 130vh parent, the child stays sticky.
-          - The transform hooks (scrollYProgress) map that 30vh of scroll distance to the width expansion animation.
-          - Once scroll > 30% (fully expanded), the stickiness holds for a moment, then releases as the parent scroll ends.
-          - Result: The user scrolls -> Section grows -> Section locks -> User scrolls past.
-      */}
+      {/* REVIEWS & FAQS SECTION */}
       <section ref={reviewsContainerRef} id="reviews" className="relative h-[130vh] bg-slate-950">
         <div className="sticky top-0 h-screen flex flex-col justify-center items-center overflow-hidden">
-            <motion.div 
-                style={{ 
-                    width: containerWidth,
-                    borderRadius: containerRadius,
-                }} 
-                className="bg-slate-900 border-y border-slate-800/50 shadow-2xl overflow-hidden relative z-10 w-[85%] rounded-[40px] max-w-[1920px]"
-            >
+            <motion.div style={{ width: containerWidth, borderRadius: containerRadius }} className="bg-slate-900 border-y border-slate-800/50 shadow-2xl overflow-hidden relative z-10 w-[85%] rounded-[40px] max-w-[1920px]">
                  <div className="container mx-auto px-6 py-12 md:p-16 lg:p-20 relative z-10">
-                     
                      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
-                         {/* Left Column: Context & Controls */}
                          <div className="lg:col-span-4 flex flex-col justify-center">
-                             <span className="inline-block px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-bold tracking-[0.2em] uppercase mb-4 w-fit">
-                                Client Success & Insights
-                             </span>
-                             <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
-                                What People <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500">Say & Ask</span>
-                             </h2>
-                             <p className="text-slate-400 text-lg leading-relaxed mb-10 max-w-md">
-                                 We pride ourselves on transparent communication and exceptional results. Explore our client feedback and answers to common queries.
-                             </p>
-                             
-                             {/* Modern Toggle Switch (Solid Style) */}
+                             <span className="inline-block px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-bold tracking-[0.2em] uppercase mb-4 w-fit">Client Success & Insights</span>
+                             <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">What People <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500">Say & Ask</span></h2>
+                             <p className="text-slate-400 text-lg leading-relaxed mb-10 max-w-md">We pride ourselves on transparent communication and exceptional results.</p>
                              <div className="inline-flex bg-black p-1.5 rounded-full border border-slate-800 relative w-full sm:w-auto">
-                                 <motion.div 
-                                    className="absolute top-1.5 bottom-1.5 bg-cyan-500 rounded-full"
-                                    initial={false}
-                                    animate={{ 
-                                        left: activeTab === 'reviews' ? '6px' : '50%', 
-                                        width: 'calc(50% - 6px)' 
-                                    }}
-                                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                                 />
-                                 <button 
-                                    onClick={() => setActiveTab('reviews')}
-                                    className={`relative z-10 px-8 py-4 rounded-full text-sm font-bold transition-colors duration-300 flex-1 sm:w-48 text-center uppercase tracking-wider ${activeTab === 'reviews' ? 'text-black' : 'text-slate-400 hover:text-white'}`}
-                                 >
-                                     Client Reviews
-                                 </button>
-                                 <button 
-                                    onClick={() => setActiveTab('faqs')}
-                                    className={`relative z-10 px-8 py-4 rounded-full text-sm font-bold transition-colors duration-300 flex-1 sm:w-48 text-center uppercase tracking-wider ${activeTab === 'faqs' ? 'text-black' : 'text-slate-400 hover:text-white'}`}
-                                 >
-                                     Common Questions
-                                 </button>
+                                 <motion.div className="absolute top-1.5 bottom-1.5 bg-cyan-500 rounded-full" initial={false} animate={{ left: activeTab === 'reviews' ? '6px' : '50%', width: 'calc(50% - 6px)' }} transition={{ type: "spring", stiffness: 300, damping: 30 }} />
+                                 <button onClick={() => setActiveTab('reviews')} className={`relative z-10 px-8 py-4 rounded-full text-sm font-bold transition-colors duration-300 flex-1 sm:w-48 text-center uppercase tracking-wider ${activeTab === 'reviews' ? 'text-black' : 'text-slate-400 hover:text-white'}`}>Client Reviews</button>
+                                 <button onClick={() => setActiveTab('faqs')} className={`relative z-10 px-8 py-4 rounded-full text-sm font-bold transition-colors duration-300 flex-1 sm:w-48 text-center uppercase tracking-wider ${activeTab === 'faqs' ? 'text-black' : 'text-slate-400 hover:text-white'}`}>Common Questions</button>
                              </div>
                          </div>
-
-                         {/* Right Column: Dynamic Content */}
                          <div className="lg:col-span-8 min-h-[500px] flex items-center">
                              <AnimatePresence mode="wait">
                                  {activeTab === 'reviews' ? (
-                                     <motion.div
-                                        key="reviews"
-                                        initial={{ opacity: 0, x: 50 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        exit={{ opacity: 0, x: -50 }}
-                                        transition={{ duration: 0.5, ease: "easeOut" }}
-                                        className="w-full h-full flex flex-col justify-center"
-                                     >
+                                     <motion.div key="reviews" initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }} transition={{ duration: 0.5, ease: "easeOut" }} className="w-full h-full flex flex-col justify-center">
                                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                                             {/* Display Reviews with Pagination (2 items per page) */}
                                              {currentReviews.map((review, i) => (
-                                                 <motion.div 
-                                                    key={review.name} 
-                                                    initial={{ opacity: 0, y: 20 }}
-                                                    animate={{ opacity: 1, y: 0 }}
-                                                    transition={{ duration: 0.4, delay: i * 0.1 }}
-                                                    className="bg-slate-800 p-8 rounded-2xl border border-slate-700/50 hover:border-cyan-500/30 transition-all duration-500 relative flex flex-col h-full"
-                                                 >
+                                                 <motion.div key={review.name} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: i * 0.1 }} className="bg-slate-800 p-8 rounded-2xl border border-slate-700/50 hover:border-cyan-500/30 transition-all duration-500 relative flex flex-col h-full">
                                                      <div className="flex items-center gap-4 mb-6">
                                                          <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-slate-700">
                                                             <img src={review.image} alt={review.name} className="w-full h-full object-cover" />
@@ -1120,173 +756,144 @@ const HomePage: React.FC = () => {
                                                              <p className="text-cyan-400 text-xs uppercase tracking-wider font-bold">{review.role}</p>
                                                          </div>
                                                      </div>
-                                                     
-                                                     <p className="text-slate-300 text-sm leading-relaxed mb-6 flex-grow">
-                                                         "{review.quote}"
-                                                     </p>
-
-                                                     <div className="flex gap-1 text-yellow-400">
-                                                         {[...Array(review.stars)].map((_, idx) => <StarIcon key={idx} className="w-4 h-4 fill-current" />)}
-                                                     </div>
+                                                     <p className="text-slate-300 text-sm leading-relaxed mb-6 flex-grow">"{review.quote}"</p>
+                                                     <div className="flex gap-1 text-yellow-400">{[...Array(review.stars)].map((_, idx) => <StarIcon key={idx} className="w-4 h-4 fill-current" />)}</div>
                                                  </motion.div>
                                              ))}
                                          </div>
-
-                                         {/* Navigation Buttons */}
                                          <div className="flex justify-center gap-4">
-                                             <button 
-                                                onClick={prevReview}
-                                                className="w-12 h-12 rounded-full border border-slate-700 bg-slate-900 text-white flex items-center justify-center hover:bg-cyan-500 hover:border-cyan-500 transition-all group"
-                                             >
-                                                 <ArrowRightIcon className="w-5 h-5 rotate-180 group-hover:text-black transition-colors" />
-                                             </button>
-                                             <button 
-                                                onClick={nextReview}
-                                                className="w-12 h-12 rounded-full border border-slate-700 bg-slate-900 text-white flex items-center justify-center hover:bg-cyan-500 hover:border-cyan-500 transition-all group"
-                                             >
-                                                 <ArrowRightIcon className="w-5 h-5 group-hover:text-black transition-colors" />
-                                             </button>
+                                             <button onClick={prevReview} className="w-12 h-12 rounded-full border border-slate-700 bg-slate-900 text-white flex items-center justify-center hover:bg-cyan-500 transition-all"><ArrowRightIcon className="w-5 h-5 rotate-180" /></button>
+                                             <button onClick={nextReview} className="w-12 h-12 rounded-full border border-slate-700 bg-slate-900 text-white flex items-center justify-center hover:bg-cyan-500 transition-all"><ArrowRightIcon className="w-5 h-5" /></button>
                                          </div>
                                      </motion.div>
                                  ) : (
-                                     <motion.div
-                                        key="faqs"
-                                        initial={{ opacity: 0, x: 50 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        exit={{ opacity: 0, x: -50 }}
-                                        transition={{ duration: 0.5, ease: "easeOut" }}
-                                        className="w-full flex flex-col h-full justify-center"
-                                     >
-                                         {/* Nested FAQ Tabs */}
+                                     <motion.div key="faqs" initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }} transition={{ duration: 0.5, ease: "easeOut" }} className="w-full flex flex-col h-full justify-center">
                                          <div className="flex border-b border-slate-800 mb-8 overflow-x-auto no-scrollbar gap-8">
                                              {faqCategories.map((cat) => (
-                                                 <button
-                                                     key={cat}
-                                                     onClick={() => {
-                                                         setActiveFaqCategory(cat);
-                                                         setActiveFaq(null); // Reset open accordion
-                                                     }}
-                                                     className={`pb-4 text-sm font-bold whitespace-nowrap transition-all relative uppercase tracking-wider ${
-                                                         activeFaqCategory === cat 
-                                                         ? 'text-cyan-400' 
-                                                         : 'text-slate-500 hover:text-slate-300'
-                                                     }`}
-                                                 >
-                                                     {cat === 'Process' ? 'Process' : cat}
-                                                     {activeFaqCategory === cat && (
-                                                         <motion.div 
-                                                             layoutId="faqTabIndicator"
-                                                             className="absolute bottom-0 left-0 right-0 h-0.5 bg-cyan-400"
-                                                         />
-                                                     )}
+                                                 <button key={cat} onClick={() => { setActiveFaqCategory(cat); setActiveFaq(null); }} className={`pb-4 text-sm font-bold whitespace-nowrap transition-all relative uppercase tracking-wider ${activeFaqCategory === cat ? 'text-cyan-400' : 'text-slate-500 hover:text-slate-300'}`}>
+                                                     {cat}
+                                                     {activeFaqCategory === cat && <motion.div layoutId="faqTabIndicator" className="absolute bottom-0 left-0 right-0 h-0.5 bg-cyan-400" />}
                                                  </button>
                                              ))}
                                          </div>
-
-                                         {/* FAQ Accordion List */}
                                          <div className="space-y-2">
-                                             <AnimatePresence mode="wait">
-                                                <motion.div
-                                                    key={activeFaqCategory}
-                                                    initial={{ opacity: 0, y: 10 }}
-                                                    animate={{ opacity: 1, y: 0 }}
-                                                    exit={{ opacity: 0, y: -10 }}
-                                                    transition={{ duration: 0.3 }}
-                                                    className="space-y-3"
-                                                >
-                                                    {faqData[activeFaqCategory].map((faq, i) => (
-                                                        <motion.div 
-                                                            key={i}
-                                                            className={`bg-slate-800/50 border border-slate-800 rounded-xl overflow-hidden transition-all duration-300 ${activeFaq === i ? 'bg-slate-800 border-slate-700' : ''}`}
-                                                        >
-                                                            <button 
-                                                                onClick={() => setActiveFaq(activeFaq === i ? null : i)}
-                                                                className="w-full text-left py-4 px-6 flex justify-between items-center hover:text-cyan-400 transition-colors group"
-                                                            >
-                                                                <span className={`text-base font-bold transition-colors duration-300 pr-4 ${activeFaq === i ? 'text-cyan-400' : 'text-slate-200'}`}>
-                                                                    {faq.q}
-                                                                </span>
-                                                                <span className={`transform transition-transform duration-300 flex-shrink-0 ${activeFaq === i ? 'rotate-180 text-cyan-400' : 'text-slate-500 group-hover:text-cyan-400'}`}>
-                                                                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                                                                    </svg>
-                                                                </span>
-                                                            </button>
-                                                            <AnimatePresence>
-                                                                {activeFaq === i && (
-                                                                    <motion.div
-                                                                        initial={{ height: 0, opacity: 0 }}
-                                                                        animate={{ height: "auto", opacity: 1 }}
-                                                                        exit={{ height: 0, opacity: 0 }}
-                                                                        transition={{ duration: 0.3, ease: "easeInOut" }}
-                                                                        className="overflow-hidden"
-                                                                    >
-                                                                        <div className="pt-0 pb-6 px-6 text-slate-400 text-sm leading-relaxed">
-                                                                            {faq.a}
-                                                                        </div>
-                                                                    </motion.div>
-                                                                )}
-                                                            </AnimatePresence>
-                                                        </motion.div>
-                                                    ))}
-                                                </motion.div>
-                                             </AnimatePresence>
+                                            {faqData[activeFaqCategory].map((faq, i) => (
+                                                <div key={i} className={`bg-slate-800/50 border border-slate-800 rounded-xl overflow-hidden transition-all duration-300 ${activeFaq === i ? 'bg-slate-800 border-slate-700' : ''}`}>
+                                                    <button onClick={() => setActiveFaq(activeFaq === i ? null : i)} className="w-full text-left py-4 px-6 flex justify-between items-center hover:text-cyan-400 transition-colors group">
+                                                        <span className={`text-base font-bold transition-colors duration-300 ${activeFaq === i ? 'text-cyan-400' : 'text-slate-200'}`}>{faq.q}</span>
+                                                        <span className={`transform transition-transform duration-300 ${activeFaq === i ? 'rotate-180 text-cyan-400' : 'text-slate-500'}`}><svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg></span>
+                                                    </button>
+                                                    <AnimatePresence>
+                                                        {activeFaq === i && (
+                                                            <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3 }} className="overflow-hidden">
+                                                                <div className="pt-0 pb-6 px-6 text-slate-400 text-sm leading-relaxed">{faq.a}</div>
+                                                            </motion.div>
+                                                        )}
+                                                    </AnimatePresence>
+                                                </div>
+                                            ))}
                                          </div>
                                      </motion.div>
                                  )}
                              </AnimatePresence>
                          </div>
                      </div>
-
                  </div>
             </motion.div>
         </div>
       </section>
 
-      {/* NEW BLOG SECTION */}
-      <section className="py-24 bg-slate-950 relative border-t border-slate-900">
+      {/* FINAL BLOG SECTION: ROW CAROUSEL LAYOUT */}
+      <section 
+        className="py-32 bg-slate-950 relative border-t border-slate-900 group/blog overflow-hidden"
+        onMouseEnter={() => { setCursorVariant('view-more'); setCursorText('View'); }}
+        onMouseLeave={() => { setCursorVariant('default'); setCursorText(''); }}
+      >
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
-                  <div>
-                      <span className="text-cyan-400 text-sm font-bold tracking-[0.2em] uppercase mb-4 block">Blog</span>
-                      <h2 className="text-4xl md:text-5xl font-bold text-white">The latest from our design studio</h2>
-                  </div>
-                   <Link to="/blog">
-                       <PremiumButton icon={true}>View All</PremiumButton>
-                   </Link>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {latestBlogs.map((blog, index) => (
-                      <Link to={blog.link} key={blog.id} className="group cursor-pointer">
-                          <motion.div
-                              initial={{ opacity: 0, y: 30 }}
-                              whileInView={{ opacity: 1, y: 0 }}
-                              viewport={{ once: true }}
-                              transition={{ delay: index * 0.1 }}
-                              className="bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 hover:border-cyan-500/50 transition-all duration-300"
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+                  
+                  {/* Left Column: Heading, Button & Controls */}
+                  <div className="lg:col-span-4 flex flex-col lg:h-full lg:sticky lg:top-32">
+                      <div className="mb-12">
+                          <div className="flex items-center gap-2 mb-6">
+                              <span className="w-2 h-2 rounded-full bg-white"></span>
+                              <span className="text-white text-xs font-bold uppercase tracking-[0.3em]">Blog</span>
+                          </div>
+                          <h2 className="text-5xl md:text-7xl font-bold text-white leading-[1.05] tracking-tighter mb-10">
+                              The latest <br />
+                              from our <br />
+                              <span className="text-slate-400">design studio</span>
+                          </h2>
+                          <Link to="/blog">
+                               <PremiumButton icon={true} className="!px-10 !py-5 shadow-xl">
+                                   View all blogs
+                               </PremiumButton>
+                          </Link>
+                      </div>
+                      
+                      {/* Carousel Navigation Buttons */}
+                      <div className="flex gap-4 mt-auto">
+                          <button 
+                            onClick={() => scrollBlog('left')}
+                            className="w-14 h-14 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-white hover:text-black transition-all active:scale-95"
                           >
-                              <div className="relative h-64 overflow-hidden">
-                                  <img 
-                                      src={blog.image} 
-                                      alt={blog.title} 
-                                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                                  />
-                                  <div className="absolute top-4 left-4 bg-slate-950/80 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-cyan-400 uppercase tracking-wider">
-                                      {blog.category}
-                                  </div>
-                              </div>
-                              <div className="p-8">
-                                  <h3 className="text-xl font-bold text-white mb-4 leading-tight group-hover:text-cyan-400 transition-colors">
-                                      {blog.title}
-                                  </h3>
-                                  <div className="flex items-center text-slate-500 text-sm font-semibold group-hover:text-white transition-colors">
-                                      Read Article <ArrowRightIcon className="w-4 h-4 ml-2" />
-                                  </div>
-                              </div>
-                          </motion.div>
-                      </Link>
-                  ))}
+                              <ArrowRightIcon className="w-6 h-6 rotate-180" />
+                          </button>
+                          <button 
+                            onClick={() => scrollBlog('right')}
+                            className="w-14 h-14 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-white hover:text-black transition-all active:scale-95"
+                          >
+                              <ArrowRightIcon className="w-6 h-6" />
+                          </button>
+                      </div>
+                  </div>
+
+                  {/* Right Column: Horizontal Scrolling Carousel */}
+                  <div className="lg:col-span-8 w-full overflow-hidden">
+                      <div 
+                        ref={blogCarouselRef}
+                        className="flex gap-8 overflow-x-auto no-scrollbar scroll-smooth snap-x snap-mandatory"
+                        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                      >
+                          {latestBlogs.map((blog, index) => (
+                              <Link to={blog.link} key={blog.id} className="min-w-full sm:min-w-[420px] snap-start group cursor-pointer">
+                                  <motion.div
+                                      initial={{ opacity: 0, x: 100 }}
+                                      whileInView={{ opacity: 1, x: 0 }}
+                                      viewport={{ once: true }}
+                                      transition={{ delay: index * 0.1 }}
+                                      className="flex flex-col h-full"
+                                  >
+                                      {/* Image Card: Mimicking image with large border radius */}
+                                      <div className="relative aspect-[16/10] overflow-hidden rounded-[2.5rem] md:rounded-[3rem] mb-6 bg-slate-900 shadow-2xl">
+                                          <img 
+                                              src={blog.image} 
+                                              alt={blog.title} 
+                                              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                          />
+                                          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                      </div>
+                                      
+                                      {/* Meta */}
+                                      <div className="flex items-center gap-2 mb-4 px-4">
+                                          <span className="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+                                          <span className="text-slate-500 text-xs font-bold uppercase tracking-widest">{blog.readTime || '5 min read'}</span>
+                                      </div>
+
+                                      {/* Content */}
+                                      <div className="px-4">
+                                          <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 leading-tight group-hover:text-cyan-400 transition-colors">
+                                              {blog.title}
+                                          </h3>
+                                          <p className="text-slate-500 text-sm md:text-base leading-relaxed line-clamp-2">
+                                              {blog.excerpt}
+                                          </p>
+                                      </div>
+                                  </motion.div>
+                              </Link>
+                          ))}
+                      </div>
+                  </div>
               </div>
           </div>
       </section>
