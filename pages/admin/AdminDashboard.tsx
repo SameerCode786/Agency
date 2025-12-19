@@ -8,6 +8,7 @@ import ManageBlogs from './ManageBlogs';
 import ManageEmails from './ManageEmails';
 import ManageComments from './ManageComments';
 import ManageAIArchitect from './ManageAIArchitect';
+import ManageInquiries from './ManageInquiries';
 import { LayersIcon, CodeIcon, ArrowRightIcon, EyeIcon, EyeOffIcon, EmailIcon, MessageIcon, BrainIcon } from '../../components/Icons';
 
 const AdminDashboard: React.FC = () => {
@@ -16,7 +17,7 @@ const AdminDashboard: React.FC = () => {
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [activeTab, setActiveTab] = useState<'projects' | 'blogs' | 'emails' | 'comments' | 'architect'>('projects');
+    const [activeTab, setActiveTab] = useState<'projects' | 'blogs' | 'emails' | 'comments' | 'architect' | 'inquiries'>('projects');
     const [error, setError] = useState('');
 
     useEffect(() => {
@@ -118,6 +119,7 @@ const AdminDashboard: React.FC = () => {
             case 'projects': return 'Manage Portfolio';
             case 'blogs': return 'Manage Blog Posts';
             case 'emails': return 'Email Marketing';
+            case 'inquiries': return 'Contact Inquiries';
             case 'comments': return 'Manage Comments';
             case 'architect': return 'AI Website Architect';
             default: return 'Dashboard';
@@ -149,6 +151,13 @@ const AdminDashboard: React.FC = () => {
                          <span className="hidden lg:block font-medium">Blogs</span>
                     </button>
                     <button 
+                        onClick={() => setActiveTab('inquiries')}
+                        className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${activeTab === 'inquiries' ? 'bg-cyan-500/10 text-cyan-400' : 'text-slate-400 hover:text-white hover:bg-slate-800'}`}
+                    >
+                        <EmailIcon className="w-5 h-5" />
+                         <span className="hidden lg:block font-medium">Inquiries</span>
+                    </button>
+                    <button 
                         onClick={() => setActiveTab('comments')}
                         className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${activeTab === 'comments' ? 'bg-cyan-500/10 text-cyan-400' : 'text-slate-400 hover:text-white hover:bg-slate-800'}`}
                     >
@@ -160,7 +169,7 @@ const AdminDashboard: React.FC = () => {
                         className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${activeTab === 'emails' ? 'bg-cyan-500/10 text-cyan-400' : 'text-slate-400 hover:text-white hover:bg-slate-800'}`}
                     >
                         <EmailIcon className="w-5 h-5" />
-                         <span className="hidden lg:block font-medium">Emails</span>
+                         <span className="hidden lg:block font-medium">Marketing</span>
                     </button>
                     <div className="my-2 border-t border-slate-800"></div>
                     <button 
@@ -194,6 +203,7 @@ const AdminDashboard: React.FC = () => {
                             <p className="text-slate-400">
                                 {activeTab === 'emails' ? 'Send bulk updates to your subscribers.' : 
                                  activeTab === 'architect' ? 'Generate website structures and visuals with AI.' :
+                                 activeTab === 'inquiries' ? 'Review messages from potential clients.' :
                                  'Manage content and interactions.'}
                             </p>
                         </div>
@@ -203,6 +213,7 @@ const AdminDashboard: React.FC = () => {
                         {activeTab === 'projects' && <ManageProjects />}
                         {activeTab === 'blogs' && <ManageBlogs />}
                         {activeTab === 'emails' && <ManageEmails />}
+                        {activeTab === 'inquiries' && <ManageInquiries />}
                         {activeTab === 'comments' && <ManageComments />}
                         {activeTab === 'architect' && <ManageAIArchitect />}
                     </div>
