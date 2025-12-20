@@ -914,8 +914,8 @@ const HomePage: React.FC = () => {
                               <span className="text-white text-xs font-bold uppercase tracking-[0.3em]">Blog</span>
                           </div>
                           <h2 className="text-3xl md:text-5xl font-bold text-white leading-[1.05] tracking-tighter mb-10">
-                              Intelligence from <br /> 
-                              our <span className="text-slate-400">digital lab</span>
+                              Expert Insights & <br /> 
+                              <span className="text-slate-400">Digital Thinking</span>
                           </h2>
                           <Link to="/blog">
                                <PremiumButton icon={true} className="!px-10 !py-5 shadow-xl">
@@ -942,14 +942,14 @@ const HomePage: React.FC = () => {
                   </div>
 
                   {/* Right Column: Horizontal Scrolling Carousel */}
-                  <div className="lg:col-span-8 w-full overflow-hidden">
+                  <div className="lg:col-span-8 w-full overflow-visible">
                       <div 
                         ref={blogCarouselRef}
-                        className="flex gap-8 overflow-x-auto no-scrollbar scroll-smooth snap-x snap-mandatory"
+                        className="flex gap-8 overflow-x-auto no-scrollbar scroll-smooth snap-x snap-mandatory pr-[20%] md:pr-0"
                         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                       >
                           {latestBlogs.map((blog, index) => (
-                              <Link to={blog.link} key={blog.id} className="min-w-full sm:min-w-[45%] snap-start group cursor-none">
+                              <Link to={blog.link} key={blog.id} className="min-w-[85%] md:min-w-[42%] lg:min-w-[38%] snap-start group cursor-none">
                                   <motion.div
                                       initial={{ opacity: 0, x: 100 }}
                                       whileInView={{ opacity: 1, x: 0 }}
@@ -975,10 +975,10 @@ const HomePage: React.FC = () => {
 
                                       {/* Content */}
                                       <div className="px-4">
-                                          <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 leading-tight group-hover:text-cyan-400 transition-colors">
+                                          <h3 className="text-xl md:text-2xl font-bold text-white mb-4 leading-tight group-hover:text-cyan-400 transition-colors">
                                               {blog.title}
                                           </h3>
-                                          <p className="text-slate-500 text-sm md:text-base leading-relaxed line-clamp-2">
+                                          <p className="text-slate-500 text-xs md:text-sm leading-relaxed line-clamp-2">
                                               {blog.excerpt}
                                           </p>
                                       </div>
