@@ -1,11 +1,12 @@
 
 import React, { useRef, useState, useEffect } from 'react';
 import PageWrapper from '../components/PageWrapper';
-import { motion, useScroll, useTransform, useMotionValueEvent } from 'framer-motion';
+import { motion, useScroll, useTransform, useMotionValueEvent, useMotionValue, useSpring } from 'framer-motion';
 import { useSeoContent } from '../hooks/useSeoContent';
 import PremiumButton from '../components/PremiumButton';
 import { Link } from 'react-router-dom';
-import { StarIcon, ArrowRightIcon, RocketIcon, CodeIcon, StrategyIcon, LaurelWreathIcon } from '../components/Icons';
+// Fixed: Added TwitterIcon and LinkedinIcon to the import list to resolve "Cannot find name" errors on lines 155 and 158.
+import { StarIcon, ArrowRightIcon, RocketIcon, CodeIcon, StrategyIcon, LaurelWreathIcon, TwitterIcon, LinkedinIcon } from '../components/Icons';
 
 // --- DATA ---
 
@@ -22,12 +23,42 @@ const statsData = [
 ];
 
 const teamMembers = [
-    { name: "Sameer", role: "Founder & Lead Developer", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1887&auto=format&fit=crop" },
-    { name: "Natasia", role: "Content Writer", image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1887&auto=format&fit=crop" },
-    { name: "Chris", role: "Accounts & Finance", image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=2070&auto=format&fit=crop" },
-    { name: "Ruby", role: "Design Intern", image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=1887&auto=format&fit=crop" },
-    { name: "Joe", role: "Web Developer", image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1887&auto=format&fit=crop" },
-    { name: "Sarah", role: "UI/UX Designer", image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1964&auto=format&fit=crop" },
+    { 
+        name: "Sameer", 
+        role: "Chief Architect", 
+        image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1887&auto=format&fit=crop",
+        bio: "Leading the lab's technical vision, Sameer specializes in building high-performance architectures that bridge the gap between design and scale."
+    },
+    { 
+        name: "Natasia", 
+        role: "Content Strategist", 
+        image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1887&auto=format&fit=crop",
+        bio: "Mastering the art of digital storytelling, Natasia crafts compelling narratives that drive engagement and rank at the top of search engines."
+    },
+    { 
+        name: "Sarah", 
+        role: "UI/UX Director", 
+        image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1964&auto=format&fit=crop",
+        bio: "With a keen eye for aesthetics and user behavior, Sarah designs interfaces that are not just beautiful, but psychologically optimized for conversion."
+    },
+    { 
+        name: "Joe", 
+        role: "Full-Stack Engineer", 
+        image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1887&auto=format&fit=crop",
+        bio: "A logic-driven developer who thrives on clean code and complex integrations, Joe ensures every digital product is as stable as it is fast."
+    },
+    { 
+        name: "Chris", 
+        role: "Growth Operations", 
+        image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=2070&auto=format&fit=crop",
+        bio: "Chris manages the engine behind our operations, ensuring every project is delivered with financial precision and strategic efficiency."
+    },
+    { 
+        name: "Ruby", 
+        role: "Visual Designer", 
+        image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=1887&auto=format&fit=crop",
+        bio: "The creative spark in the design process, Ruby blends modern trends with timeless principles to create iconic visual identities."
+    },
 ];
 
 const processCategories = [
@@ -36,9 +67,7 @@ const processCategories = [
     { id: 2, title: "Marketing", color: "text-blue-500" }
 ];
 
-// UPDATED EXPERTISE TAGS TO MATCH "SAMEER DIGITAL LAB" SERVICES
 const expertiseTags = [
-    // Design (cat: 0)
     { label: "UI/UX Design", cat: 0 },
     { label: "Web Design", cat: 0 },
     { label: "Brand Identity", cat: 0 },
@@ -46,8 +75,6 @@ const expertiseTags = [
     { label: "Design Systems", cat: 0 },
     { label: "App Interface Design", cat: 0 },
     { label: "Wireframing", cat: 0 },
-    
-    // Development (cat: 1)
     { label: "WordPress Customization", cat: 1 },
     { label: "React & Next.js", cat: 1 },
     { label: "Shopify E-commerce", cat: 1 },
@@ -57,8 +84,6 @@ const expertiseTags = [
     { label: "Supabase Integration", cat: 1 },
     { label: "Liquid Theme Dev", cat: 1 },
     { label: "API Engineering", cat: 1 },
-
-    // Marketing (cat: 2)
     { label: "SEO Optimization", cat: 2 },
     { label: "Technical SEO Audits", cat: 2 },
     { label: "Keyword Strategy", cat: 2 },
@@ -68,6 +93,89 @@ const expertiseTags = [
     { label: "Analytics Reporting", cat: 2 },
     { label: "Content Strategy", cat: 2 },
 ];
+
+// --- 3D TEAM CARD COMPONENT ---
+const TeamMemberCard = ({ member, index }: { member: typeof teamMembers[0], index: number }) => {
+    const x = useMotionValue(0);
+    const y = useMotionValue(0);
+
+    const mouseXSpring = useSpring(x);
+    const mouseYSpring = useSpring(y);
+
+    const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["10deg", "-10deg"]);
+    const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-10deg", "10deg"]);
+
+    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        const width = rect.width;
+        const height = rect.height;
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+        const xPct = mouseX / width - 0.5;
+        const yPct = mouseY / height - 0.5;
+        x.set(xPct);
+        y.set(yPct);
+    };
+
+    const handleMouseLeave = () => {
+        x.set(0);
+        y.set(0);
+    };
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: index * 0.1 }}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+            className="group relative cursor-pointer perspective-1000"
+        >
+            <div className="relative overflow-hidden rounded-[2rem] bg-slate-900 border border-white/5 aspect-[4/5] shadow-2xl transition-all duration-500 group-hover:border-cyan-500/30">
+                {/* 3D Depth Elements */}
+                <div className="absolute inset-0 z-0 transition-transform duration-700 group-hover:scale-110">
+                    <img 
+                        src={member.image} 
+                        alt={member.name} 
+                        className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" 
+                    />
+                </div>
+                
+                {/* Gradients Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent opacity-80 group-hover:opacity-60 transition-opacity"></div>
+                
+                {/* Bio Reveal Overlay */}
+                <div className="absolute inset-0 bg-cyan-950/90 backdrop-blur-md p-8 flex flex-col justify-center translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out z-20">
+                    <p className="text-cyan-100 text-base md:text-lg leading-relaxed font-medium mb-6">
+                        {member.bio}
+                    </p>
+                    <div className="flex gap-4">
+                        <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors">
+                            <TwitterIcon className="w-4 h-4 text-white" />
+                        </div>
+                        <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors">
+                            <LinkedinIcon className="w-4 h-4 text-white" />
+                        </div>
+                    </div>
+                </div>
+
+                {/* Name & Role Text (Always visible but shifts on hover) */}
+                <div className="absolute bottom-0 left-0 p-8 w-full z-10 group-hover:opacity-0 transition-opacity duration-300">
+                    <h3 className="text-3xl font-black text-white mb-1 tracking-tighter uppercase">{member.name}</h3>
+                    <div className="flex items-center gap-2">
+                        <div className="w-1.5 h-1.5 rounded-full bg-cyan-400"></div>
+                        <p className="text-cyan-400 text-xs font-bold uppercase tracking-[0.2em]">{member.role}</p>
+                    </div>
+                </div>
+            </div>
+            
+            {/* Background Glow */}
+            <div className="absolute -inset-2 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-[2.5rem] blur-2xl opacity-0 group-hover:opacity-10 transition-opacity -z-10"></div>
+        </motion.div>
+    );
+};
 
 const AboutPage: React.FC = () => {
     const { title, description } = useSeoContent('About');
@@ -134,7 +242,7 @@ const AboutPage: React.FC = () => {
                     <img src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=2070&auto=format&fit=crop" alt="Coding" className="rounded-2xl w-full h-72 object-cover opacity-80 hover:opacity-100 transition-opacity duration-500" />
                 </motion.div>
                 <motion.div style={{ y: y1 }} className="hidden md:flex flex-col gap-4">
-                    <img src="https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?q=80&w=2070&auto=format&fit=crop" alt="Discussion" className="rounded-2xl w-full h-64 object-cover opacity-80 hover:opacity-100 transition-opacity duration-500" />
+                    <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=2070&auto=format&fit=crop" alt="Discussion" className="rounded-2xl w-full h-64 object-cover opacity-80 hover:opacity-100 transition-opacity duration-500" />
                     <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2071&auto=format&fit=crop" alt="Laughing" className="rounded-2xl w-full h-48 object-cover opacity-80 hover:opacity-100 transition-opacity duration-500" />
                 </motion.div>
             </div>
@@ -296,42 +404,41 @@ const AboutPage: React.FC = () => {
           </div>
       </section>
 
-      {/* 5. TEAM SECTION */}
+      {/* 5. REDESIGNED TEAM SECTION */}
       <section className="py-32 bg-slate-950 border-t border-slate-900">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="text-center mb-20">
-                  <span className="text-cyan-400 font-bold uppercase tracking-widest text-sm mb-4 block">Our Team</span>
-                  <h2 className="text-4xl md:text-6xl font-bold text-white">
-                      Multiple personalities, <br />
-                      <span className="text-slate-600">No egos.</span>
-                  </h2>
+              <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
+                  <div className="max-w-2xl">
+                      <div className="flex items-center gap-3 mb-6">
+                           <span className="px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-bold tracking-[0.2em] uppercase">Specialists</span>
+                           <span className="text-slate-500 text-sm font-bold uppercase tracking-widest">{teamMembers.length} Architects</span>
+                      </div>
+                      <h2 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-[0.95] tracking-tighter">
+                          Mastering the craft. <br />
+                          <span className="text-slate-700 italic font-serif">Fueling innovation.</span>
+                      </h2>
+                      <p className="text-slate-400 text-lg md:text-xl leading-relaxed font-light">
+                          Sameer Digital Lab is a collective of visionary digital crafters. We don't just build sites; we architect experiences that define brands and push boundaries.
+                      </p>
+                  </div>
+                  
+                  <Link to="/contact" className="hidden lg:block">
+                       <div className="w-28 h-28 rounded-full border border-white/10 flex items-center justify-center group hover:bg-cyan-500 transition-all duration-500">
+                           <ArrowRightIcon className="w-8 h-8 text-white -rotate-45 group-hover:rotate-0 transition-transform duration-500" />
+                       </div>
+                  </Link>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
                   {teamMembers.map((member, i) => (
-                      <motion.div
-                          key={i}
-                          initial={{ opacity: 0, scale: 0.9 }}
-                          whileInView={{ opacity: 1, scale: 1 }}
-                          viewport={{ once: true }}
-                          transition={{ delay: i * 0.1 }}
-                          className="group relative"
-                      >
-                          <div className="relative overflow-hidden rounded-3xl bg-slate-900 border border-slate-800 aspect-[4/5]">
-                              <img src={member.image} alt={member.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0" />
-                              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity"></div>
-                              <div className="absolute bottom-0 left-0 p-8 w-full">
-                                  <h3 className="text-2xl font-bold text-white mb-1 translate-y-4 group-hover:translate-y-0 transition-transform duration-300">{member.name}</h3>
-                                  <p className="text-cyan-400 text-sm font-bold uppercase tracking-wider translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75">{member.role}</p>
-                              </div>
-                          </div>
-                      </motion.div>
+                      <TeamMemberCard key={i} member={member} index={i} />
                   ))}
               </div>
 
-              <div className="flex justify-center mt-16">
+              <div className="flex flex-col items-center mt-24 text-center">
+                  <h3 className="text-white text-2xl font-bold mb-8">Want to join the lab?</h3>
                   <Link to="/contact">
-                      <PremiumButton icon={false}>Meet the whole Team</PremiumButton>
+                      <PremiumButton icon={true}>Check Career Openings</PremiumButton>
                   </Link>
               </div>
           </div>
