@@ -5,8 +5,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import PremiumButton from './PremiumButton';
 
 const navLinks = [
-  { name: 'Services', path: '/services' },
-  { name: 'Work', path: '/portfolio' },
+  { name: 'Services', path: '/services', badge: '5' },
+  { name: 'Work', path: '/portfolio', badge: 'NEW 4' },
   { name: 'About', path: '/about' },
   { name: 'Blog', path: '/blog' },
 ];
@@ -40,15 +40,20 @@ const Header: React.FC<HeaderProps> = ({ isVisible }) => {
                 <img src={logoUrl} alt="Sameer Digital Lab Logo" className="h-20 w-auto" />
               </Link>
 
-              <nav className="hidden lg:flex items-center space-x-8">
+              <nav className="hidden lg:flex items-center space-x-10">
                 {navLinks.map((link) => (
                   <NavLink
                     key={link.name}
                     to={link.path}
-                    className="text-slate-300 hover:text-cyan-400 transition-colors duration-300 font-medium relative group"
+                    className="text-slate-300 hover:text-cyan-400 transition-colors duration-300 font-medium relative group py-2"
                     style={({ isActive }) => (isActive ? activeLinkStyle : {})}
                   >
                     {link.name}
+                    {link.badge && (
+                      <span className="absolute -top-3 -right-4 bg-indigo-600 text-white text-[9px] font-black px-1.5 py-0.5 rounded-full shadow-[0_0_12px_rgba(79,70,229,0.6)] flex items-center justify-center min-w-[18px] tracking-tighter uppercase whitespace-nowrap">
+                        {link.badge}
+                      </span>
+                    )}
                     <span className="absolute bottom-[-4px] left-0 w-0 h-0.5 bg-cyan-400 group-hover:w-full transition-all duration-300"></span>
                   </NavLink>
                 ))}
@@ -86,10 +91,15 @@ const Header: React.FC<HeaderProps> = ({ isVisible }) => {
                     key={link.name}
                     to={link.path}
                     onClick={() => setMenuOpen(false)}
-                    className="text-gray-300 hover:text-cyan-400 transition-colors duration-300 font-medium text-lg"
+                    className="text-gray-300 hover:text-cyan-400 transition-colors duration-300 font-medium text-lg relative"
                     style={({ isActive }) => (isActive ? activeLinkStyle : {})}
                   >
                     {link.name}
+                    {link.badge && (
+                      <span className="absolute -top-2 -right-6 bg-indigo-600 text-white text-[8px] font-black px-1.5 py-0.5 rounded-full tracking-tighter">
+                        {link.badge}
+                      </span>
+                    )}
                   </NavLink>
                 ))}
                 <div className="mt-4">
