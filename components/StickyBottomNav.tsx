@@ -52,7 +52,7 @@ const StickyBottomNav: React.FC<StickyBottomNavProps> = ({ isVisible }) => {
                         <motion.span 
                             initial={{ scale: 0.9, y: 0 }}
                             whileHover={{ scale: 1.1, y: -2 }}
-                            className="absolute -top-5 -right-5 flex items-center justify-center px-1.5 py-0.5 text-[7px] md:text-[8px] font-black leading-none text-white rounded-full bg-gradient-to-br from-purple-500/90 to-indigo-600/90 backdrop-blur-md border border-white/20 shadow-lg min-w-[15px] h-3.5"
+                            className={`absolute -top-5 ${link.name === 'Work' ? '-right-10' : '-right-5'} flex items-center justify-center px-1.5 py-0.5 text-[7px] md:text-[8px] font-black leading-none text-white rounded-full bg-gradient-to-br from-purple-500/90 to-indigo-600/90 backdrop-blur-md border border-white/20 shadow-lg min-w-[15px] h-3.5 whitespace-nowrap`}
                         >
                             {link.badge}
                         </motion.span>

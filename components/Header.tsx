@@ -55,7 +55,7 @@ const Header: React.FC<HeaderProps> = ({ isVisible }) => {
                                 initial={{ scale: 0.8, opacity: 0, y: 5 }}
                                 animate={{ scale: 1, opacity: 1, y: 0 }}
                                 whileHover={{ scale: 1.1, y: -2 }}
-                                className="absolute -top-6 -right-5 px-2 py-0.5 text-[9px] font-black uppercase tracking-tighter text-white rounded-full bg-gradient-to-br from-purple-600/90 to-indigo-700/90 backdrop-blur-md border border-white/20 shadow-[0_0_15px_rgba(139,92,246,0.3)] min-w-[18px] text-center flex items-center justify-center h-4.5 z-10"
+                                className={`absolute -top-6 ${link.name === 'Work' ? '-right-10' : '-right-5'} px-2 py-0.5 text-[9px] font-black uppercase tracking-tighter text-white rounded-full bg-gradient-to-br from-purple-600/90 to-indigo-700/90 backdrop-blur-md border border-white/20 shadow-[0_0_15px_rgba(139,92,246,0.3)] min-w-[18px] text-center flex items-center justify-center h-4.5 z-10 whitespace-nowrap`}
                             >
                                 {link.badge}
                             </motion.span>
