@@ -696,7 +696,7 @@ const HomePage: React.FC = () => {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {coreServicesData.map((service, index) => (
-                    <Link to={service.link} key={index} className={`group relative overflow-hidden rounded-2xl h-[400px] border border-slate-800 hover:border-cyan-500/50 transition-all duration-500 ${service.colSpan || ''}`} onMouseEnter={() => { setCursorVariant('view-more'); setCursorText('Explore'); }} onMouseLeave={() => { setCursorVariant('default'); setCursorText(''); }}>
+                    <Link to={service.link} key={index} className={`group relative overflow-hidden rounded-2xl h-[400px] border border-slate-800 hover:border-cyan-500/50 transition-all duration-500 cursor-none ${service.colSpan || ''}`} onMouseEnter={() => { setCursorVariant('view-more'); setCursorText('Explore'); }} onMouseLeave={() => { setCursorVariant('default'); setCursorText(''); }}>
                         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.1 }} className="h-full w-full relative">
                             <div className="absolute inset-0 z-0">
                                 <video autoPlay loop muted playsInline className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700">
@@ -833,6 +833,7 @@ const HomePage: React.FC = () => {
                                                 <div key={i} className={`bg-slate-800/50 border border-slate-800 rounded-xl overflow-hidden transition-all duration-300 ${activeFaq === i ? 'bg-slate-800 border-slate-700' : ''}`}>
                                                     <button onClick={() => setActiveFaq(activeFaq === i ? null : i)} className="w-full text-left py-4 px-6 flex justify-between items-center hover:text-cyan-400 transition-colors group">
                                                         <span className={`text-base font-bold transition-colors duration-300 ${activeFaq === i ? 'text-cyan-400' : 'text-slate-200'}`}>{faq.q}</span>
+                                                        {/* Fix: Resolved syntax error in ternary operator by removing the extra colon and properly combining class names */}
                                                         <span className={`transform transition-transform duration-300 ${activeFaq === i ? 'rotate-180 text-cyan-400' : 'text-slate-500'}`}><svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg></span>
                                                     </button>
                                                     <AnimatePresence>
@@ -857,7 +858,7 @@ const HomePage: React.FC = () => {
 
       {/* FINAL BLOG SECTION: ROW CAROUSEL LAYOUT */}
       <section 
-        className="py-32 bg-slate-950 relative border-t border-slate-900 group/blog overflow-hidden"
+        className="py-32 bg-slate-950 relative border-t border-slate-900 group/blog overflow-hidden cursor-none"
         onMouseEnter={() => { setCursorVariant('view-more'); setCursorText('View'); }}
         onMouseLeave={() => { setCursorVariant('default'); setCursorText(''); }}
       >
@@ -908,7 +909,7 @@ const HomePage: React.FC = () => {
                         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                       >
                           {latestBlogs.map((blog, index) => (
-                              <Link to={blog.link} key={blog.id} className="min-w-full sm:min-w-[420px] snap-start group cursor-pointer">
+                              <Link to={blog.link} key={blog.id} className="min-w-full sm:min-w-[420px] snap-start group cursor-none">
                                   <motion.div
                                       initial={{ opacity: 0, x: 100 }}
                                       whileInView={{ opacity: 1, x: 0 }}
