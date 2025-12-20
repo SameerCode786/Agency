@@ -328,7 +328,7 @@ const HomePage: React.FC = () => {
                 {['DISCOVER', 'EXPLORE', 'EXPERIENCE'].map((step, i) => (
                     <div key={step} className="flex flex-col items-center text-center group">
                         <div className="mb-6 w-32 h-32 rounded-full overflow-hidden bg-black relative border border-white/10 group-hover:border-cyan-500/50 transition-colors">
-                            <video autoPlay loop muted playsInline className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"><source src={`https://res.cloudinary.com/dow2sbjsp/video/upload/v17637082${06+i*67}/discover-animation_tnruml.mp4`} type="video/mp4" /></video>
+                            <video autoPlay loop muted playsInline className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"><source src={`https://res.cloudinary.com/dow2sbjsp/video/upload/v17637082${6 + i * 67}/discover-animation_tnruml.mp4`} type="video/mp4" /></video>
                         </div>
                         <h3 className="text-xl font-bold mb-4 tracking-widest text-cyan-200">{step}</h3>
                         <p className="text-slate-400 text-sm leading-relaxed max-w-xs">We guide you from the initial idea to a high-performance experience that grows your business.</p>
