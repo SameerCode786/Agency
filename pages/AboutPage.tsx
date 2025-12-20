@@ -5,6 +5,7 @@ import { motion, useScroll, useTransform, useMotionValueEvent, useMotionValue, u
 import { useSeoContent } from '../hooks/useSeoContent';
 import PremiumButton from '../components/PremiumButton';
 import { Link } from 'react-router-dom';
+import ProjectPlannerModal from '../components/ProjectPlannerModal';
 // Fixed: Added TwitterIcon and LinkedinIcon to the import list to resolve "Cannot find name" errors on lines 155 and 158.
 import { StarIcon, ArrowRightIcon, RocketIcon, CodeIcon, StrategyIcon, LaurelWreathIcon, TwitterIcon, LinkedinIcon } from '../components/Icons';
 
@@ -95,7 +96,13 @@ const expertiseTags = [
 ];
 
 // --- 3D TEAM CARD COMPONENT ---
-const TeamMemberCard = ({ member, index }: { member: typeof teamMembers[0], index: number }) => {
+interface TeamMemberCardProps {
+    member: typeof teamMembers[0];
+    index: number;
+}
+
+// FIX: Explicitly typed the TeamMemberCard component with React.FC and a props interface.
+const TeamMemberCard: React.FC<TeamMemberCardProps> = ({ member, index }) => {
     const x = useMotionValue(0);
     const y = useMotionValue(0);
 
@@ -179,6 +186,7 @@ const TeamMemberCard = ({ member, index }: { member: typeof teamMembers[0], inde
 
 const AboutPage: React.FC = () => {
     const { title, description } = useSeoContent('About');
+    const [isPlannerOpen, setIsPlannerOpen] = useState(false);
     
     const containerRef = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll({ target: containerRef });
@@ -213,6 +221,8 @@ const AboutPage: React.FC = () => {
       <title>{title}</title>
       <meta name="description" content={description} />
       
+      <ProjectPlannerModal isOpen={isPlannerOpen} onClose={() => setIsPlannerOpen(false)} />
+
       {/* 1. HERO SECTION */}
       <section ref={containerRef} className="relative pt-32 pb-24 lg:pt-48 lg:pb-32 bg-slate-950 overflow-hidden">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -435,11 +445,28 @@ const AboutPage: React.FC = () => {
                   ))}
               </div>
 
-              <div className="flex flex-col items-center mt-24 text-center">
-                  <h3 className="text-white text-2xl font-bold mb-8">Want to join the lab?</h3>
-                  <Link to="/contact">
-                      <PremiumButton icon={true}>Check Career Openings</PremiumButton>
-                  </Link>
+              {/* UPDATED: SPLIT-GRID JOIN CTA SECTION */}
+              <div className="mt-32 pt-20 border-t border-slate-900">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-start">
+                      <div>
+                         <h3 className="text-white text-4xl md:text-6xl lg:text-7xl font-black tracking-tight leading-[1.05]">
+                             It's Time to Turn Your <br />
+                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400">Vision into Reality.</span>
+                         </h3>
+                      </div>
+                      <div className="flex flex-col items-start pt-2">
+                          <p className="text-slate-400 text-lg md:text-xl leading-relaxed mb-10 font-medium max-w-xl">
+                              Partner with our elite team to redefine your digital presence. Let's collaborate to transform your boldest ideas into high-performance experiences that dominate the global market. We are ready to make your goals a global success.
+                          </p>
+                          <PremiumButton 
+                            onClick={() => setIsPlannerOpen(true)}
+                            icon={true}
+                            className="!px-12 !py-5 shadow-2xl shadow-indigo-500/20"
+                          >
+                            Start Your Mission Now
+                          </PremiumButton>
+                      </div>
+                  </div>
               </div>
           </div>
       </section>

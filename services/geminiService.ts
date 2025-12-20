@@ -176,6 +176,88 @@ export const generateBlogPost = async (topic?: string, category: string = "Techn
     }
 };
 
+/**
+ * MULTI-AGENT AI SYSTEM (n8n Workflow Simulation)
+ * Powering the Admin Dashboard Blog Automation
+ */
+export const generateAutomatedBlog = async (lastCategory?: string): Promise<string> => {
+    const apiKey = process.env.API_KEY;
+    if (!apiKey) throw new Error("API Key required for Multi-Agent Workflow.");
+
+    const ai = new GoogleGenAI({ apiKey });
+
+    const multiAgentPrompt = `
+You are NOT a single chatbot.
+You are a MULTI-AGENT AI SYSTEM designed to work like an automation workflow (similar to n8n / Make).
+
+Your job is to power an ADMIN DASHBOARD BLOG SYSTEM.
+
+==============================
+SYSTEM ARCHITECTURE (MANDATORY)
+==============================
+You must internally behave as these AI agents:
+1️⃣ Content Strategist Agent  
+2️⃣ SEO Specialist Agent  
+3️⃣ Image Research Agent  
+4️⃣ Blog Writer Agent  
+5️⃣ Quality Control Agent  
+
+==============================
+WORKFLOW (LIKE n8n)
+==============================
+Trigger → Content Strategy → SEO Planning → Image Research → Blog Writing → Final Quality Check → Admin-Ready Output
+
+==============================
+AGENT RESPONSIBILITIES
+==============================
+🔹 1. Content Strategist Agent: Select ONE fresh topic matching the rotation. (Last category was: ${lastCategory || 'None'}).
+🔹 2. SEO Specialist Agent: Define SEO Title (<=60), Meta Description (<=155), Slug, Keywords.
+🔹 3. Image Research Agent: Suggest 3-5 REAL stock keywords for Unsplash/Pexels. NO AI IMAGES.
+🔹 4. Blog Writer Agent: Write 1200–1800 words in expert agency tone. Semantic HTML formatting.
+🔹 5. Quality Control Agent: Verify all rules before output.
+
+==============================
+CATEGORY ROTATION (STRICT)
+==============================
+Daily Rotation: 1. Web Development, 2. WordPress, 3. SEO & Google Ranking, 4. Shopify / eCommerce, 5. App Development, 6. Digital Growth for Businesses.
+
+==============================
+ADMIN DASHBOARD OUTPUT FORMAT
+==============================
+Return the response EXACTLY in this order for easy CMS parsing:
+
+[Category]
+[SEO Title]
+[Meta Description]
+[URL Slug]
+[Primary Keyword]
+[Secondary Keywords]
+[Blog Content]
+(Include image blocks inside content in this format:
+Image Block:
+Placement:
+Source:
+Search Keywords:
+Alt Text:
+)
+    `;
+
+    try {
+        const response = await ai.models.generateContent({
+            model: 'gemini-3-pro-preview',
+            contents: "Execute current daily blog workflow trigger.",
+            config: {
+                systemInstruction: multiAgentPrompt,
+            }
+        });
+
+        return response.text || "Workflow Error: Empty Output";
+    } catch (error) {
+        console.error("Multi-Agent Workflow Error:", error);
+        throw error;
+    }
+};
+
 export const generateWebsitePlan = async (userPrompt: string): Promise<WebsitePlan> => {
     const apiKey = process.env.API_KEY;
     if (!apiKey) throw new Error("API Key Missing");
