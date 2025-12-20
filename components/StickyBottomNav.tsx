@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import PremiumButton from './PremiumButton';
 
 const navLinks = [
-  { name: 'Services', path: '/services', badge: '13' },
+  { name: 'Services', path: '/services', badge: '5' },
   { name: 'Work', path: '/portfolio', badge: 'NEW 4' },
   { name: 'About', path: '/about' },
   { name: 'Blog', path: '/blog' },
@@ -43,19 +43,21 @@ const StickyBottomNav: React.FC<StickyBottomNavProps> = ({ isVisible }) => {
               <NavLink
                 key={link.name}
                 to={link.path}
-                className="px-3 md:px-6 py-2.5 rounded-full text-xs md:text-base font-medium text-slate-200 transition-all duration-300 border border-transparent hover:bg-slate-800 flex items-center gap-1 relative group"
+                className="px-3 md:px-6 py-2.5 rounded-full text-xs md:text-base font-medium text-slate-200 transition-all duration-300 border border-transparent hover:bg-slate-800 flex items-center relative group"
                 style={({ isActive }) => (isActive ? activeLinkStyle : {})}
               >
-                {link.name}
-                {link.badge && (
-                    <motion.span 
-                        initial={{ scale: 0.9 }}
-                        whileHover={{ scale: 1.1, y: -2 }}
-                        className="flex items-center justify-center px-1.5 py-0.5 text-[8px] md:text-[9px] font-black leading-none text-white rounded-full bg-gradient-to-br from-purple-500/90 to-indigo-600/90 backdrop-blur-md border border-white/20 shadow-lg"
-                    >
-                        {link.badge}
-                    </motion.span>
-                )}
+                <span className="relative">
+                    {link.name}
+                    {link.badge && (
+                        <motion.span 
+                            initial={{ scale: 0.9, y: 0 }}
+                            whileHover={{ scale: 1.1, y: -2 }}
+                            className="absolute -top-4 -right-4 flex items-center justify-center px-1.5 py-0.5 text-[7px] md:text-[8px] font-black leading-none text-white rounded-full bg-gradient-to-br from-purple-500/90 to-indigo-600/90 backdrop-blur-md border border-white/20 shadow-lg min-w-[15px] h-3.5"
+                        >
+                            {link.badge}
+                        </motion.span>
+                    )}
+                </span>
               </NavLink>
             ))}
 

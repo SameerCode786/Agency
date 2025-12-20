@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import PremiumButton from './PremiumButton';
 
 const navLinks = [
-  { name: 'Services', path: '/services', badge: '13' },
+  { name: 'Services', path: '/services', badge: '5' },
   { name: 'Work', path: '/portfolio', badge: 'NEW 4' },
   { name: 'About', path: '/about' },
   { name: 'Blog', path: '/blog' },
@@ -40,7 +40,7 @@ const Header: React.FC<HeaderProps> = ({ isVisible }) => {
                 <img src={logoUrl} alt="Sameer Digital Lab Logo" className="h-20 w-auto" />
               </Link>
 
-              <nav className="hidden lg:flex items-center space-x-10">
+              <nav className="hidden lg:flex items-center space-x-12">
                 {navLinks.map((link) => (
                   <NavLink
                     key={link.name}
@@ -48,17 +48,19 @@ const Header: React.FC<HeaderProps> = ({ isVisible }) => {
                     className="text-slate-300 hover:text-cyan-400 transition-colors duration-300 font-medium relative group flex items-center"
                     style={({ isActive }) => (isActive ? activeLinkStyle : {})}
                   >
-                    {link.name}
-                    {link.badge && (
-                        <motion.span 
-                            initial={{ scale: 0.8, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            whileHover={{ scale: 1.1, y: -2 }}
-                            className="ml-1.5 px-2 py-0.5 text-[10px] font-black uppercase tracking-tighter text-white rounded-full bg-gradient-to-br from-purple-600/90 to-indigo-700/90 backdrop-blur-md border border-white/20 shadow-[0_0_15px_rgba(139,92,246,0.3)] min-w-[20px] text-center flex items-center justify-center h-5"
-                        >
-                            {link.badge}
-                        </motion.span>
-                    )}
+                    <span className="relative">
+                        {link.name}
+                        {link.badge && (
+                            <motion.span 
+                                initial={{ scale: 0.8, opacity: 0, y: 5 }}
+                                animate={{ scale: 1, opacity: 1, y: 0 }}
+                                whileHover={{ scale: 1.1, y: -2 }}
+                                className="absolute -top-4 -right-4 px-2 py-0.5 text-[9px] font-black uppercase tracking-tighter text-white rounded-full bg-gradient-to-br from-purple-600/90 to-indigo-700/90 backdrop-blur-md border border-white/20 shadow-[0_0_15px_rgba(139,92,246,0.3)] min-w-[18px] text-center flex items-center justify-center h-4.5 z-10"
+                            >
+                                {link.badge}
+                            </motion.span>
+                        )}
+                    </span>
                     <span className="absolute bottom-[-4px] left-0 w-0 h-0.5 bg-cyan-400 group-hover:w-full transition-all duration-300"></span>
                   </NavLink>
                 ))}
@@ -90,18 +92,18 @@ const Header: React.FC<HeaderProps> = ({ isVisible }) => {
                 exit={{ opacity: 0, height: 0 }}
                 transition={{ duration: 0.3 }}
             >
-              <nav className="flex flex-col items-center space-y-4 py-8">
+              <nav className="flex flex-col items-center space-y-6 py-10">
                 {navLinks.map((link) => (
                   <NavLink
                     key={link.name}
                     to={link.path}
                     onClick={() => setMenuOpen(false)}
-                    className="text-gray-300 hover:text-cyan-400 transition-colors duration-300 font-medium text-lg flex items-center gap-2"
+                    className="text-gray-300 hover:text-cyan-400 transition-colors duration-300 font-medium text-lg flex items-center gap-2 relative"
                     style={({ isActive }) => (isActive ? activeLinkStyle : {})}
                   >
                     {link.name}
                     {link.badge && (
-                        <span className="px-2 py-0.5 text-[9px] font-bold text-white rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 border border-white/10">
+                        <span className="absolute -top-3 -right-6 px-1.5 py-0.5 text-[8px] font-bold text-white rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 border border-white/10">
                             {link.badge}
                         </span>
                     )}
