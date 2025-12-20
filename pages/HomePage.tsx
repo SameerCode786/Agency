@@ -425,6 +425,7 @@ const heroToolsOrbit = [
     { name: 'HTML', icon: <HtmlIcon className="w-5 h-5 text-orange-500" /> },
     { name: 'CSS', icon: <CssIcon className="w-5 h-5 text-blue-500" /> },
     { name: 'Node JS', icon: <CodeIcon className="w-5 h-5 text-green-600" /> },
+    { name: 'Figma', icon: <FigmaIcon className="w-5 h-5 text-purple-400" /> },
 ];
 
 const HomePage: React.FC = () => {
@@ -571,15 +572,19 @@ const HomePage: React.FC = () => {
                 </motion.div>
                 <motion.div className="hidden lg:flex w-full lg:w-1/2 justify-center items-center relative" initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 1, delay: 0.6, ease: "easeOut" }}>
                      <div className="relative w-[450px] h-[450px] flex items-center justify-center">
-                        {/* Circular Tool Orbit Around Earth */}
+                        
+                        {/* OUTER ORBIT (Clockwise - Cyan Path) */}
                         <div className="absolute inset-0 pointer-events-none z-30 flex items-center justify-center">
+                            {/* Visible Path Line 1 */}
+                            <div className="absolute w-[95%] h-[95%] border border-cyan-500/15 rounded-full"></div>
+                            
                             <motion.div 
                                 animate={{ rotate: 360 }} 
-                                transition={{ duration: 30, repeat: Infinity, ease: "linear" }} 
+                                transition={{ duration: 25, repeat: Infinity, ease: "linear" }} 
                                 className="absolute w-[95%] h-[95%] rounded-full"
                             >
-                                {heroToolsOrbit.map((tool, idx) => {
-                                    const angle = (idx / heroToolsOrbit.length) * 360;
+                                {heroToolsOrbit.slice(0, 4).map((tool, idx) => {
+                                    const angle = (idx / 4) * 360;
                                     return (
                                         <div 
                                             key={tool.name}
@@ -591,12 +596,11 @@ const HomePage: React.FC = () => {
                                             <div className="bg-slate-950/80 backdrop-blur-md p-2 rounded-full border border-cyan-500/30 shadow-lg shadow-cyan-500/20 group hover:border-cyan-400 transition-colors">
                                                 <motion.div 
                                                     animate={{ rotate: -360 }} 
-                                                    transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+                                                    transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
                                                     className="w-8 h-8 flex items-center justify-center"
                                                 >
                                                     {tool.icon}
                                                 </motion.div>
-                                                {/* Tool Name Tooltip */}
                                                 <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 bg-cyan-950/90 text-cyan-300 text-[10px] font-bold px-2 py-1 rounded border border-cyan-500/50 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
                                                     {tool.name}
                                                 </div>
@@ -606,20 +610,58 @@ const HomePage: React.FC = () => {
                                 })}
                             </motion.div>
                         </div>
+
+                        {/* INNER ORBIT (Counter-Clockwise - Purple Path) */}
+                        <div className="absolute inset-0 pointer-events-none z-20 flex items-center justify-center">
+                            {/* Visible Path Line 2 */}
+                            <div className="absolute w-[72%] h-[72%] border border-purple-500/15 rounded-full"></div>
+
+                            <motion.div 
+                                animate={{ rotate: -360 }} 
+                                transition={{ duration: 20, repeat: Infinity, ease: "linear" }} 
+                                className="absolute w-[72%] h-[72%] rounded-full"
+                            >
+                                {heroToolsOrbit.slice(4, 8).map((tool, idx) => {
+                                    const angle = (idx / 4) * 360;
+                                    return (
+                                        <div 
+                                            key={tool.name}
+                                            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+                                            style={{ 
+                                                transform: `rotate(${angle}deg) translate(160px) rotate(-${angle}deg)` 
+                                            }}
+                                        >
+                                            <div className="bg-slate-950/80 backdrop-blur-md p-2 rounded-full border border-purple-500/30 shadow-lg shadow-purple-500/20 group hover:border-purple-400 transition-colors">
+                                                <motion.div 
+                                                    animate={{ rotate: 360 }} 
+                                                    transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                                                    className="w-8 h-8 flex items-center justify-center"
+                                                >
+                                                    {tool.icon}
+                                                </motion.div>
+                                                <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 bg-purple-950/90 text-purple-300 text-[10px] font-bold px-2 py-1 rounded border border-purple-500/50 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                                                    {tool.name}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </motion.div>
+                        </div>
                         
-                        {/* Inner Glowing Ring */}
+                        {/* Static Core Orbit */}
                         <div className="absolute inset-0 pointer-events-none z-10 flex items-center justify-center">
-                            <motion.div animate={{ rotate: 360 }} transition={{ duration: 25, repeat: Infinity, ease: "linear" }} className="absolute w-[70%] h-[70%] border border-cyan-500/10 rounded-full">
-                                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-950/80 backdrop-blur-sm p-1.5 rounded-full border border-cyan-500/50 shadow-lg shadow-cyan-500/20">
+                            <motion.div animate={{ rotate: 360 }} transition={{ duration: 25, repeat: Infinity, ease: "linear" }} className="absolute w-[60%] h-[60%] border border-cyan-500/5 rounded-full">
+                                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-950/80 backdrop-blur-sm p-1.5 rounded-full border border-cyan-500/30 shadow-lg shadow-cyan-500/20">
                                     <motion.div animate={{ rotate: -360 }} transition={{ duration: 25, repeat: Infinity, ease: "linear" }}>
-                                        <ReactIcon className="w-6 h-6 text-cyan-400" />
+                                        <ReactIcon className="w-5 h-5 text-cyan-400" />
                                     </motion.div>
                                 </div>
                             </motion.div>
                         </div>
 
-                        {/* Central Earth-like foreground video */}
-                        <div className="w-[55%] h-[55%] z-20 flex justify-center items-center overflow-hidden rounded-full shadow-[0_0_50px_rgba(34,211,238,0.2)] border border-white/5">
+                        {/* Central Earth globe */}
+                        <div className="w-[50%] h-[50%] z-20 flex justify-center items-center overflow-hidden rounded-full shadow-[0_0_60px_rgba(34,211,238,0.15)] border border-white/10">
                             <video autoPlay loop muted playsInline className="w-full h-full object-cover mix-blend-screen transform scale-110">
                                 <source src={foregroundVideoUrl} type="video/mp4" />
                             </video>
@@ -833,7 +875,6 @@ const HomePage: React.FC = () => {
                                                 <div key={i} className={`bg-slate-800/50 border border-slate-800 rounded-xl overflow-hidden transition-all duration-300 ${activeFaq === i ? 'bg-slate-800 border-slate-700' : ''}`}>
                                                     <button onClick={() => setActiveFaq(activeFaq === i ? null : i)} className="w-full text-left py-4 px-6 flex justify-between items-center hover:text-cyan-400 transition-colors group">
                                                         <span className={`text-base font-bold transition-colors duration-300 ${activeFaq === i ? 'text-cyan-400' : 'text-slate-200'}`}>{faq.q}</span>
-                                                        {/* Fix: Resolved syntax error in ternary operator by removing the extra colon and properly combining class names */}
                                                         <span className={`transform transition-transform duration-300 ${activeFaq === i ? 'rotate-180 text-cyan-400' : 'text-slate-500'}`}><svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg></span>
                                                     </button>
                                                     <AnimatePresence>
