@@ -2,7 +2,6 @@
 import React from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import PremiumButton from './PremiumButton';
 
 const navLinks = [
   { name: 'Services', path: '/services', badge: '5' },
@@ -18,45 +17,58 @@ interface StickyBottomNavProps {
 const StickyBottomNav: React.FC<StickyBottomNavProps> = ({ isVisible }) => {
   const logoUrl = "https://res.cloudinary.com/dow2sbjsp/image/upload/v1763314768/Sameer_en7cdu.png";
   
-  const activeLinkStyle = {
-    borderColor: '#22d3ee', // cyan-500
-    color: '#67e8f9', // cyan-300
-    background: 'rgba(34, 211, 238, 0.1)',
-  };
+  const activeLinkStyle = "bg-white/10 text-cyan-400 border-white/10";
+  const inactiveLinkStyle = "text-slate-300 border-transparent hover:text-white hover:bg-white/5";
 
   return (
     <AnimatePresence>
       {isVisible && (
         <motion.div
-          className="fixed bottom-6 inset-x-0 flex justify-center z-40 px-4"
+          className="fixed bottom-6 inset-x-0 flex justify-center z-[70] px-4"
           initial={{ y: 100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
-          transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+          transition={{ type: 'spring', stiffness: 400, damping: 30 }}
         >
-          <div className="flex items-center gap-1.5 bg-slate-950/80 backdrop-blur-lg border border-slate-700/60 rounded-full p-1.5 shadow-lg shadow-cyan-500/10 max-w-full overflow-visible">
-            <Link to="/" className="flex-shrink-0 flex items-center justify-center px-2">
-              <img src={logoUrl} alt="Sameer Digital Lab" className="h-8 w-auto"/>
+          <div className="flex items-center bg-slate-950/90 backdrop-blur-2xl border border-white/15 rounded-full p-1.5 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.8)] max-w-full md:max-w-max">
+            
+            {/* Logo - Icon only on mobile to save space */}
+            <Link to="/" className="flex-shrink-0 flex items-center justify-center pl-3 pr-2 md:pr-4 group border-r border-white/10">
+              <img src={logoUrl} alt="Logo" className="h-6 md:h-7 w-auto transition-transform group-hover:scale-110"/>
             </Link>
             
-            {navLinks.map((link) => (
-              <NavLink
-                key={link.name}
-                to={link.path}
-                className="px-3 md:px-5 py-2 rounded-full text-xs md:text-sm font-bold text-slate-200 transition-all duration-300 border border-transparent hover:bg-slate-800 relative"
-                style={({ isActive }) => (isActive ? activeLinkStyle : {})}
-              >
-                {link.name}
-                {link.badge && (
-                  <span className="absolute -top-2.5 -right-1 bg-indigo-600 text-white text-[8px] font-black px-1.5 py-0.5 rounded-full shadow-[0_0_8px_rgba(79,70,229,0.5)] tracking-tighter uppercase whitespace-nowrap">
-                    {link.badge}
-                  </span>
-                )}
-              </NavLink>
-            ))}
+            {/* Navigation Links */}
+            <div className="flex items-center gap-0.5 md:gap-1 px-1">
+                {navLinks.map((link) => (
+                <NavLink
+                    key={link.name}
+                    to={link.path}
+                    className={({ isActive }) => `
+                        px-3 md:px-5 py-2.5 rounded-full text-[10px] md:text-xs font-black uppercase tracking-tighter transition-all duration-300 border relative flex items-center justify-center
+                        ${isActive ? activeLinkStyle : inactiveLinkStyle}
+                    `}
+                >
+                    {link.name}
+                    
+                    {/* Dynamic Badges */}
+                    {link.badge && (
+                    <span className={`absolute -top-2.5 -right-0.5 bg-indigo-600 text-white text-[8px] font-black shadow-[0_0_12px_rgba(79,70,229,0.7)] flex items-center justify-center uppercase tracking-tighter z-10
+                        ${link.badge.includes('NEW') 
+                            ? 'px-2 py-0.5 rounded-full min-w-[34px] border border-indigo-400/30' 
+                            : 'w-4 h-4 rounded-full border border-indigo-400/30'}
+                    `}>
+                        {link.badge}
+                    </span>
+                    )}
+                </NavLink>
+                ))}
+            </div>
 
-            <Link to="/contact" className="ml-1">
-               <PremiumButton icon={false} className="!px-4 !py-2 !text-xs">Contact</PremiumButton>
+            {/* Fixed Contact Button - Clean Gradient Style */}
+            <Link to="/contact" className="ml-1 pr-1 flex-shrink-0">
+               <button className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-cyan-500 hover:to-blue-600 text-white px-4 md:px-6 py-2.5 rounded-full text-[10px] md:text-xs font-black uppercase tracking-tight shadow-lg shadow-indigo-500/20 active:scale-95 transition-all">
+                 Contact
+               </button>
             </Link>
           </div>
         </motion.div>
