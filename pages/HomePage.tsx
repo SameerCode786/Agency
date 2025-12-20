@@ -913,10 +913,9 @@ const HomePage: React.FC = () => {
                               <span className="w-2 h-2 rounded-full bg-white"></span>
                               <span className="text-white text-xs font-bold uppercase tracking-[0.3em]">Blog</span>
                           </div>
-                          <h2 className="text-5xl md:text-7xl font-bold text-white leading-[1.05] tracking-tighter mb-10">
-                              The latest <br />
-                              from our <br />
-                              <span className="text-slate-400">design studio</span>
+                          <h2 className="text-3xl md:text-5xl font-bold text-white leading-[1.05] tracking-tighter mb-10">
+                              Intelligence from <br /> 
+                              our <span className="text-slate-400">digital lab</span>
                           </h2>
                           <Link to="/blog">
                                <PremiumButton icon={true} className="!px-10 !py-5 shadow-xl">
@@ -950,7 +949,7 @@ const HomePage: React.FC = () => {
                         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                       >
                           {latestBlogs.map((blog, index) => (
-                              <Link to={blog.link} key={blog.id} className="min-w-full sm:min-w-[420px] snap-start group cursor-none">
+                              <Link to={blog.link} key={blog.id} className="min-w-full sm:min-w-[45%] snap-start group cursor-none">
                                   <motion.div
                                       initial={{ opacity: 0, x: 100 }}
                                       whileInView={{ opacity: 1, x: 0 }}
