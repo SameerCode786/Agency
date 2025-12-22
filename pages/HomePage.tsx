@@ -7,42 +7,21 @@ import { Link, useLocation } from 'react-router-dom';
 import AnimatedHeading from '../components/AnimatedHeading';
 import ParticleBackground from '../components/ParticleBackground';
 import PremiumButton from '../components/PremiumButton';
-import { useCursor } from '../components/CustomCursor'; // Import hook
+import { useCursor } from '../components/CustomCursor'; 
 import { 
-    WordPressIcon, 
-    StarIcon,
     ReactIcon,
     JsIcon,
-    ExpoIcon,
-    SupabaseIcon,
     ArrowRightIcon,
     FigmaIcon,
     CodeIcon,
-    TailwindIcon,
     CssIcon,
-    ElementorIcon,
-    ShoppingCartIcon,
     DatabaseIcon,
     ApiIcon,
     HtmlIcon,
-    SearchIcon
+    StarIcon
 } from '../components/Icons';
 import { useSeoContent } from '../hooks/useSeoContent';
-
-// --- Types ---
-interface ProjectData {
-    title: string;
-    category: string;
-    description: string;
-    image1: string;
-    image2: string;
-    tools: React.ReactNode[];
-    role: string;
-    timeline: string;
-    fullImage: string;
-    goals?: string[]; 
-    link?: string; 
-}
+import { ALL_PROJECTS, ProjectData, getToolIcon } from '../data/projectsData';
 
 // --- REVIEWS & FAQ DATA ---
 const reviewsData = [
@@ -137,7 +116,6 @@ const latestBlogs = [
     }
 ];
 
-
 interface ParallaxTextProps {
   children?: React.ReactNode;
   baseVelocity: number;
@@ -193,7 +171,7 @@ interface ProjectModalProps {
     onClose: () => void;
 }
 
-const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
+export const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
     useEffect(() => {
         document.body.style.overflow = 'hidden';
         return () => {
@@ -270,8 +248,9 @@ const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                         <h3 className="text-lg font-bold text-white mb-3">Tech Stack</h3>
                         <div className="flex flex-wrap gap-2">
                             {project.tools.map((tool, idx) => (
-                                <div key={idx} className="bg-slate-800 text-slate-300 px-3 py-1.5 rounded-md text-sm border border-slate-700">
-                                    {tool}
+                                <div key={idx} className="bg-slate-800 text-slate-300 px-3 py-1.5 rounded-md text-sm border border-slate-700 flex items-center gap-2">
+                                    {getToolIcon(tool, "w-4 h-4")}
+                                    <span className="capitalize">{tool}</span>
                                 </div>
                             ))}
                         </div>
@@ -357,82 +336,6 @@ const coreServicesData = [
         video: "https://res.cloudinary.com/dow2sbjsp/video/upload/v1763927832/wordpress_z7f2lk.mp4",
         colSpan: "lg:col-span-1",
         link: "/wordpress-customization"
-    }
-];
-
-// Mock Projects Data
-const selectedProjects: ProjectData[] = [
-    {
-        title: "Eagle Eyes Tech",
-        category: "Tech Solutions & Security",
-        description: "A high-performance business website for Eagle Eyes Tech, designed to showcase advanced technology solutions with a professional, authoritative digital presence. This project highlights Sameer Digital Lab's ability to deliver a complex, fully optimized site in record-breaking time.",
-        image1: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1766381934/sameer_dev_mu6abq.jpg",
-        image2: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1766381934/sameer_dev_mu6abq.jpg",
-        tools: [<WordPressIcon className="w-5 h-5 text-blue-400" />, <ElementorIcon className="w-5 h-5 text-pink-500" />, <SearchIcon className="w-5 h-5 text-cyan-400" />, <CssIcon className="w-5 h-5 text-blue-300" />],
-        role: "Lead Developer",
-        timeline: "1 Day Development",
-        fullImage: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1766382005/screencapture-eagleeyestech-online-2025-12-22-10_39_12_qnbslw.png",
-        link: "https://eagleeyestech.online/",
-        goals: [
-            "Establish a robust and trustworthy online identity for a specialized technology firm.",
-            "Complete a full-scale, responsive build within a 24-hour rapid development sprint.",
-            "Optimize for search engines (SEO) to ensure immediate digital visibility.",
-            "Implement high-end CSS styling to reflect a modern, secure technical aesthetic."
-        ]
-    },
-    {
-        title: "Weversity.org",
-        category: "Free Education / EdTech",
-        description: "Weversity is a transformative free learning platform built to democratize education. Developed within a rigorous 4-week challenge, this project leverages the power of WordPress and Elementor to deliver a seamless, accessible, and high-quality learning experience for everyone.",
-        image1: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1765470774/weversity_portfolio_gmnt44.jpg",
-        image2: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1765470774/weversity_portfolio_gmnt44.jpg",
-        tools: [<WordPressIcon className="w-5 h-5 text-blue-400" />, <ElementorIcon className="w-5 h-5 text-pink-500" />, <CssIcon className="w-5 h-5 text-blue-300" />, <ShoppingCartIcon className="w-5 h-5 text-purple-400" />],
-        role: "WordPress Developer",
-        timeline: "4 Weeks Challenge",
-        fullImage: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1765470870/screencapture-weversity-org-2025-11-30-22_34_09_xfle0e.png",
-        link: "https://weversity.org/",
-        goals: [
-            "Provide 100% free, high-quality education to underprivileged students worldwide.",
-            "Create a lightweight, accessible interface that works seamlessly on low-bandwidth devices.",
-            "Empower the youth with practical digital skills to achieve financial independence.",
-            "Bridge the gap between traditional academic learning and modern industry demands."
-        ]
-    },
-    {
-        title: "AP Nusamas",
-        category: "Recruitment Agency",
-        description: "A premier recruitment agency based in Malaysia (Agensi Pekerjaan Nusamas), dedicated to connecting skilled talent with global opportunities. This project involved creating a professional, trustworthy digital presence to streamline the hiring process.",
-        image1: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1765811782/appusmans_xawuwq.png",
-        image2: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1765811782/appusmans_xawuwq.png",
-        tools: [<WordPressIcon className="w-5 h-5 text-blue-400" />, <ElementorIcon className="w-5 h-5 text-pink-500" />, <CssIcon className="w-5 h-5 text-blue-300" />],
-        role: "Full Stack Developer",
-        timeline: "5 Weeks",
-        fullImage: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1765811782/appusmans_xawuwq.png",
-        link: "https://apnusamas.com/",
-        goals: [
-            "Establish a credible digital presence for a licensed Malaysian recruitment agency.",
-            "Facilitate seamless connection between job seekers and employers.",
-            "Showcase services and industry expertise with a clean, corporate aesthetic.",
-            "Ensure mobile responsiveness for accessibility across all devices."
-        ]
-    },
-    {
-        title: "Legal Light Law",
-        category: "Legal Services",
-        description: "A professional and authoritative website for Legal Light Law, designed to instill trust and accessibility for clients seeking legal counsel. The site features a clean layout, easy navigation for practice areas, and clear calls to action for consultation bookings.",
-        image1: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1766381484/NEw_work_sameer_mygmkj.jpg",
-        image2: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1766381484/NEw_work_sameer_mygmkj.jpg",
-        tools: [<WordPressIcon className="w-5 h-5 text-blue-400" />, <ElementorIcon className="w-5 h-5 text-pink-500" />, <CssIcon className="w-5 h-5 text-blue-300" />],
-        role: "Web Developer",
-        timeline: "4 Weeks",
-        fullImage: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1765819763/screencapture-legallightlaw-2025-11-30-22_36_04_tuntfm.png",
-        link: "https://legallightlaw.com/",
-        goals: [
-            "Create a trustworthy online presence for legal services.",
-            "Simplify the process for clients to find practice areas and contact attorneys.",
-            "Ensure a responsive and accessible design for all users.",
-            "Implement a professional aesthetic that reflects the firm's values."
-        ]
     }
 ];
 
@@ -653,7 +556,7 @@ const HomePage: React.FC = () => {
                                             <div className="bg-slate-950/80 backdrop-blur-md p-2 rounded-full border border-purple-500/30 shadow-lg shadow-purple-500/20 group hover:border-purple-400 transition-colors">
                                                 <motion.div 
                                                     animate={{ rotate: 360 }} 
-                                                    transition={{ duration: 20, repeat: Infinity, ease: "linear" }} 
+                                                    transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
                                                     className="w-8 h-8 flex items-center justify-center"
                                                 >
                                                     {tool.icon}
@@ -797,8 +700,8 @@ const HomePage: React.FC = () => {
                 </motion.div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {selectedProjects.map((project, index) => (
-                    <motion.div key={index} initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.2 }} className="relative group rounded-2xl p-[2px] overflow-hidden">
+                {ALL_PROJECTS.map((project, index) => (
+                    <motion.div key={project.id} initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.2 }} className="relative group rounded-2xl p-[2px] overflow-hidden">
                         <div className="absolute inset-[-50%] bg-[conic-gradient(from_0deg_at_50%_50%,#0f172a_0%,#0f172a_40%,#22d3ee_50%,#0f172a_60%,#0f172a_90%,#8936ea_100%)] animate-[spin_4s_linear_infinite] opacity-70 group-hover:opacity-100 transition-opacity duration-500" />
                         <div className="relative h-full bg-slate-950 rounded-xl overflow-hidden flex flex-col">
                             <div className="relative aspect-[4/3] w-full overflow-hidden bg-slate-900 border-b border-slate-800">
@@ -825,7 +728,9 @@ const HomePage: React.FC = () => {
                                     </button>
                                     <div className="flex items-center gap-3">
                                         {project.tools.map((tool, tIndex) => (
-                                            <div key={tIndex} className="text-slate-400 hover:text-white transition-colors p-1.5 bg-slate-900 rounded-md border border-slate-800 shadow-sm">{tool}</div>
+                                            <div key={tIndex} className="text-slate-400 hover:text-white transition-colors p-1.5 bg-slate-900 rounded-md border border-slate-800 shadow-sm">
+                                                {getToolIcon(tool)}
+                                            </div>
                                         ))}
                                     </div>
                                 </div>
