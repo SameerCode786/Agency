@@ -1,12 +1,14 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import PageWrapper from '../components/PageWrapper';
 import { motion, AnimatePresence } from 'framer-motion';
-import { TwitterIcon, LinkedinIcon, GithubIcon, ArrowRightIcon, LoaderIcon } from '../components/Icons';
+// Added CheckIcon to the imports from components/Icons to fix "Cannot find name 'CheckIcon'" on line 222.
+import { TwitterIcon, LinkedinIcon, GithubIcon, ArrowRightIcon, LoaderIcon, PhoneIcon, EmailIcon, CheckIcon } from '../components/Icons';
 import { useSeoContent } from '../hooks/useSeoContent';
 import { Link } from 'react-router-dom';
 import PremiumButton from '../components/PremiumButton';
 import { supabase } from '../services/supabaseClient';
+import ProjectPlannerModal from '../components/ProjectPlannerModal';
 
 const faqs = [
     { q: "How long does a website project usually take to complete?", a: "Timescales depend on the size of the project. A brochure website typically takes 4-6 weeks, while more complex eCommerce or web apps can take 10-14 weeks." },
@@ -23,6 +25,8 @@ const faqs = [
 const ContactPage: React.FC = () => {
     const { title, description } = useSeoContent('Contact');
     const [activeFaq, setActiveFaq] = useState<number | null>(0);
+    const formSectionRef = useRef<HTMLElement>(null);
+    const [isPlannerOpen, setIsPlannerOpen] = useState(false);
     
     // Form State
     const [formData, setFormData] = useState({
@@ -47,6 +51,10 @@ const ContactPage: React.FC = () => {
             ...prev,
             [name]: type === 'checkbox' ? checked : value
         }));
+    };
+
+    const scrollToForm = () => {
+        formSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -94,135 +102,148 @@ const ContactPage: React.FC = () => {
             <title>{title}</title>
             <meta name="description" content={description} />
             
+            <ProjectPlannerModal isOpen={isPlannerOpen} onClose={() => setIsPlannerOpen(false)} />
+            
             {/* HERO SECTION */}
-            <section className="relative pt-32 pb-12 lg:pt-48 lg:pb-24 bg-slate-950 px-4 sm:px-6 lg:px-8">
+            <section className="relative pt-32 pb-16 lg:pt-48 lg:pb-32 bg-slate-950 px-4 sm:px-6 lg:px-8 overflow-hidden">
+                <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-cyan-500/5 rounded-full blur-[120px] pointer-events-none"></div>
+                
                 <div className="container mx-auto">
-                    <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-12">
-                        <div className="max-w-4xl relative">
-                            <span className="text-white text-sm font-bold tracking-widest uppercase mb-4 block">• Contact</span>
-                            <h1 className="text-6xl md:text-8xl lg:text-[7rem] font-bold text-white leading-[0.9] tracking-tight">
-                                It's nice to <br />
-                                <span className="flex items-center gap-4 md:gap-8">
-                                    meet ya
-                                    <motion.div 
-                                        whileHover={{ scale: 1.1, rotate: 45 }}
-                                        className="w-16 h-16 md:w-24 md:h-24 rounded-full bg-gradient-to-br from-cyan-400 to-purple-600 flex items-center justify-center cursor-pointer shadow-lg shadow-cyan-500/20"
-                                    >
-                                        <ArrowRightIcon className="w-8 h-8 md:w-10 md:h-10 text-white transform rotate-45" />
-                                    </motion.div>
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                        <div className="lg:col-span-8 relative">
+                            <motion.div
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ duration: 0.6 }}
+                            >
+                                <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-bold tracking-[0.2em] uppercase mb-6">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+                                    Reach out today
                                 </span>
-                            </h1>
+                                <h1 className="text-4xl md:text-6xl lg:text-[5rem] xl:text-[6rem] font-black text-white leading-[1.05] tracking-tighter mb-8 max-w-full overflow-visible">
+                                    Let's craft your <br />
+                                    <span className="flex items-center flex-wrap gap-x-6 gap-y-4">
+                                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500">digital future</span>
+                                        <motion.button 
+                                            onClick={scrollToForm}
+                                            whileHover={{ scale: 1.1, rotate: 90 }}
+                                            whileTap={{ scale: 0.9, rotate: 90 }}
+                                            className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-gradient-to-br from-cyan-400 to-indigo-600 flex items-center justify-center cursor-pointer shadow-2xl shadow-cyan-500/40 border border-white/20 transition-all duration-300"
+                                        >
+                                            <ArrowRightIcon className="w-8 h-8 md:w-10 md:h-10 text-white" />
+                                        </motion.button>
+                                    </span>
+                                </h1>
+                                <p className="text-slate-400 text-lg md:text-xl max-w-xl leading-relaxed">
+                                    Have a project in mind? We're ready to help you build something extraordinary. Tell us your vision and let's make it a reality.
+                                </p>
+                            </motion.div>
                         </div>
                         
-                        <div className="w-full lg:w-auto flex justify-end">
-                            <div className="relative w-64 h-80 rounded-2xl overflow-hidden border border-slate-800 rotate-3 hover:rotate-0 transition-transform duration-500 shadow-2xl">
+                        <div className="lg:col-span-4 flex justify-center lg:justify-end">
+                            <motion.div 
+                                initial={{ opacity: 0, scale: 0.8, rotate: 5 }}
+                                animate={{ opacity: 1, scale: 1, rotate: -3 }}
+                                transition={{ duration: 0.8, type: "spring" }}
+                                className="relative w-64 h-80 md:w-72 md:h-96 rounded-3xl overflow-hidden border border-slate-800 shadow-[0_20px_50px_rgba(0,0,0,0.5)] group"
+                            >
                                 <img 
-                                    src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1887&auto=format&fit=crop" 
+                                    src="https://res.cloudinary.com/dow2sbjsp/image/upload/v1766382478/Sameer_if98jm.jpg" 
                                     alt="Sameer" 
-                                    className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" 
+                                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-110 group-hover:scale-100" 
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-                                <div className="absolute bottom-4 left-4">
-                                    <div className="bg-white/10 backdrop-blur p-2 rounded-full inline-block border border-white/20">
-                                        <div className="w-8 h-8 bg-cyan-400 rounded-full flex items-center justify-center shadow-lg">
-                                            <svg className="w-4 h-4 text-black" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-60"></div>
+                                <div className="absolute bottom-6 right-6 w-12 h-12 border-b-2 border-r-2 border-cyan-500/50 rounded-br-xl"></div>
+                            </motion.div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* FORM SECTION */}
-            <section className="py-24 bg-slate-950 border-t border-slate-900">
-                <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
+            {/* REDESIGNED CONTACT SECTION */}
+            <section ref={formSectionRef} className="py-24 md:py-32 bg-slate-950 border-t border-slate-900 scroll-mt-24 relative">
+                {/* Visual side-glow ornament */}
+                <div className="absolute right-0 top-0 w-64 h-full bg-indigo-600/5 blur-[120px] pointer-events-none"></div>
+
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24">
                         
-                        {/* Left Info */}
-                        <div className="lg:col-span-4 space-y-12">
-                            <div className="space-y-6">
-                                <p className="text-slate-400 text-lg leading-relaxed">
-                                    For general enquiries, please fill out the form to get in touch. Alternatively, if you know your project details — head over to our project planner for a more refined step-by-step process.
-                                </p>
-                                <Link to="/contact">
-                                    <PremiumButton icon={true}>
-                                        Go to Project Planner
+                        {/* Left Column: The Next Step Messaging */}
+                        <div className="lg:col-span-5 flex flex-col justify-center">
+                            <motion.div 
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                className="space-y-12"
+                            >
+                                <div>
+                                    <h2 className="text-4xl md:text-5xl font-bold text-white mb-8 tracking-tight">The Next Step.</h2>
+                                    <p className="text-slate-400 text-lg md:text-xl leading-relaxed font-light">
+                                        Ready to move beyond standard solutions? Whether you have a quick question or a detailed blueprint, our lab is open for your next big idea.
+                                    </p>
+                                </div>
+                                
+                                <div className="bg-slate-900/60 border border-slate-800 p-8 rounded-[2rem] shadow-xl relative group">
+                                    <div className="absolute -top-6 -left-6 w-12 h-12 bg-indigo-600/20 rounded-full flex items-center justify-center">
+                                        <span className="text-indigo-400 font-black">OR</span>
+                                    </div>
+                                    <h4 className="text-white font-bold text-xl mb-4">Strategic Planning</h4>
+                                    <p className="text-slate-500 text-sm mb-8 leading-relaxed">
+                                        If you've already defined your mission, skip the line and use our detailed project blueprint tool to provide full logistics immediately.
+                                    </p>
+                                    <PremiumButton 
+                                        onClick={() => setIsPlannerOpen(true)}
+                                        icon={true}
+                                        className="!w-full shadow-2xl shadow-indigo-500/20"
+                                    >
+                                        Start Project Blueprint
                                     </PremiumButton>
-                                </Link>
-                            </div>
-                            
-                            <div>
-                                <p className="text-slate-500 text-sm mb-2 font-bold uppercase tracking-wider">Hate contact forms?</p>
-                                <a href="mailto:support@sameercodes.online" className="text-white hover:text-cyan-400 transition-colors text-lg font-bold border-b border-slate-800 pb-1">
-                                    support@sameercodes.online
-                                </a>
-                            </div>
+                                </div>
+                                
+                                <div className="pt-4">
+                                    <p className="text-slate-600 text-xs font-black uppercase tracking-widest mb-3 ml-1">Direct Comms</p>
+                                    <a href="mailto:support@sameercodes.online" className="inline-block text-white hover:text-cyan-400 transition-all text-xl font-bold border-b-2 border-slate-800 hover:border-cyan-500 pb-1">
+                                        support@sameercodes.online
+                                    </a>
+                                </div>
+                            </motion.div>
                         </div>
 
-                        {/* Right Form */}
-                        <div className="lg:col-span-8">
-                            {isSuccess ? (
-                                <motion.div 
-                                    initial={{ opacity: 0, scale: 0.9 }} 
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    className="bg-slate-900 border border-cyan-500/30 p-12 rounded-[2.5rem] text-center"
-                                >
-                                    <div className="w-20 h-20 bg-cyan-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
-                                        <ArrowRightIcon className="w-10 h-10 text-cyan-400 -rotate-45" />
-                                    </div>
-                                    <h2 className="text-3xl font-bold text-white mb-4">Message Sent!</h2>
-                                    <p className="text-slate-400">Thanks for reaching out. We'll be in touch within 24 hours.</p>
-                                    <button onClick={() => setIsSuccess(false)} className="mt-8 text-cyan-400 font-bold hover:underline">Send another message</button>
-                                </motion.div>
-                            ) : (
-                                <form onSubmit={handleSubmit} className="space-y-6">
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                        <div className="space-y-2">
-                                            <label className="text-xs font-bold text-slate-500 uppercase ml-1">Name *</label>
-                                            <input 
-                                                type="text" 
-                                                name="name"
-                                                value={formData.name}
-                                                onChange={handleInputChange}
-                                                className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-4 text-white focus:outline-none focus:border-cyan-500 transition-colors" 
-                                                required
-                                            />
+                        {/* Right Column: Sleek Form Interface */}
+                        <div className="lg:col-span-7">
+                            <motion.div 
+                                initial={{ opacity: 0, x: 20 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true }}
+                                className="bg-slate-900/40 backdrop-blur-md border border-slate-800 p-8 md:p-12 rounded-[2.5rem] shadow-2xl"
+                            >
+                                {isSuccess ? (
+                                    <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="text-center py-12">
+                                        <div className="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                                            <CheckIcon className="w-10 h-10 text-green-400" />
                                         </div>
-                                        <div className="space-y-2">
-                                            <label className="text-xs font-bold text-slate-500 uppercase ml-1">Email Address *</label>
-                                            <input 
-                                                type="email" 
-                                                name="email"
-                                                value={formData.email}
-                                                onChange={handleInputChange}
-                                                className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-4 text-white focus:outline-none focus:border-cyan-500 transition-colors" 
-                                                required
-                                            />
+                                        <h2 className="text-3xl font-bold text-white mb-4">Transmission Successful</h2>
+                                        <p className="text-slate-400 mb-8">We've received your mission details. Our architects will contact you within 24 hours.</p>
+                                        <button onClick={() => setIsSuccess(false)} className="text-cyan-400 font-bold hover:underline">Send another briefing</button>
+                                    </motion.div>
+                                ) : (
+                                    <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                                        <div className="md:col-span-1 space-y-2">
+                                            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Full Identity *</label>
+                                            <input type="text" name="name" value={formData.name} onChange={handleInputChange} required className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-4 text-white focus:outline-none focus:border-cyan-500 transition-colors" placeholder="e.g. John Doe" />
                                         </div>
-                                    </div>
-                                    
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                        <div className="space-y-2">
-                                            <label className="text-xs font-bold text-slate-500 uppercase ml-1">Phone <span className="text-slate-600 normal-case">(Optional)</span></label>
-                                            <input 
-                                                type="tel" 
-                                                name="phone"
-                                                value={formData.phone}
-                                                onChange={handleInputChange}
-                                                className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-4 text-white focus:outline-none focus:border-cyan-500 transition-colors" 
-                                            />
+                                        <div className="md:col-span-1 space-y-2">
+                                            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Comms Channel (Email) *</label>
+                                            <input type="email" name="email" value={formData.email} onChange={handleInputChange} required className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-4 text-white focus:outline-none focus:border-cyan-500 transition-colors" placeholder="hello@example.com" />
                                         </div>
-                                        <div className="space-y-2">
-                                            <label className="text-xs font-bold text-slate-500 uppercase ml-1">How did you hear about us?</label>
+                                        <div className="md:col-span-1 space-y-2">
+                                            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Phone <span className="text-slate-700 font-normal italic">(Optional)</span></label>
+                                            <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-4 text-white focus:outline-none focus:border-cyan-500 transition-colors" placeholder="+1..." />
+                                        </div>
+                                        <div className="md:col-span-1 space-y-2">
+                                            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Acquisition Source</label>
                                             <div className="relative">
-                                                <select 
-                                                    name="source"
-                                                    value={formData.source}
-                                                    onChange={handleInputChange}
-                                                    className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-4 text-white focus:outline-none focus:border-cyan-500 transition-colors appearance-none cursor-pointer"
-                                                >
+                                                <select name="source" value={formData.source} onChange={handleInputChange} className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-4 text-white focus:outline-none focus:border-cyan-500 transition-colors appearance-none cursor-pointer">
                                                     <option>Google Search</option>
                                                     <option>Social Media</option>
                                                     <option>Referral</option>
@@ -234,134 +255,55 @@ const ContactPage: React.FC = () => {
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-
-                                    <div className="space-y-2">
-                                        <label className="text-xs font-bold text-slate-500 uppercase ml-1">Tell us about your project *</label>
-                                        <textarea 
-                                            rows={6} 
-                                            name="message"
-                                            value={formData.message}
-                                            onChange={handleInputChange}
-                                            required
-                                            className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-4 text-white focus:outline-none focus:border-cyan-500 transition-colors resize-none"
-                                        ></textarea>
-                                    </div>
-
-                                    <div className="flex items-start gap-3 py-2">
-                                        <div className="relative flex items-center">
-                                            <input 
-                                                type="checkbox" 
-                                                id="newsletter" 
-                                                name="newsletter"
-                                                checked={formData.newsletter}
-                                                onChange={handleInputChange}
-                                                className="peer h-5 w-5 cursor-pointer appearance-none rounded border border-slate-700 bg-slate-900 checked:bg-cyan-500 checked:border-cyan-500 transition-all" 
-                                            />
-                                            <svg className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-3.5 h-3.5 pointer-events-none opacity-0 peer-checked:opacity-100 text-slate-900" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                        <div className="md:col-span-2 space-y-2 mt-2">
+                                            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Mission Briefing *</label>
+                                            <textarea rows={6} name="message" value={formData.message} onChange={handleInputChange} required className="w-full bg-slate-950 border border-slate-800 rounded-2xl px-5 py-5 text-white focus:outline-none focus:border-cyan-500 transition-colors resize-none leading-relaxed" placeholder="Briefly describe your project goals..."></textarea>
                                         </div>
-                                        <label htmlFor="newsletter" className="text-sm text-slate-400 cursor-pointer select-none">Subscribe to our newsletter for all the latest digital insights!</label>
-                                    </div>
 
-                                    <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-6">
-                                        <p className="text-xs text-slate-600">By submitting this form I accept the Privacy Policy of this site.</p>
-                                        <PremiumButton 
-                                            onClick={() => {}} 
-                                            icon={!isSubmitting} 
-                                            className={isSubmitting ? "opacity-70" : ""}
-                                        >
-                                            {isSubmitting ? (
-                                                <span className="flex items-center gap-2"><LoaderIcon className="w-4 h-4 animate-spin"/> Sending...</span>
-                                            ) : "Send Message"}
-                                        </PremiumButton>
-                                    </div>
-                                </form>
-                            )}
-                        </div>
-                    </div>
-                </div>
-            </section>
+                                        <div className="md:col-span-2 flex items-center gap-3 py-4">
+                                            <div className="relative flex items-center">
+                                                <input type="checkbox" id="newsletter" name="newsletter" checked={formData.newsletter} onChange={handleInputChange} className="peer h-5 w-5 cursor-pointer appearance-none rounded border border-slate-800 bg-slate-950 checked:bg-cyan-500 checked:border-cyan-500 transition-all" />
+                                                <svg className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-3.5 h-3.5 pointer-events-none opacity-0 peer-checked:opacity-100 text-slate-900" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                            </div>
+                                            <label htmlFor="newsletter" className="text-[11px] font-bold text-slate-500 cursor-pointer select-none uppercase tracking-widest">Subscribe to digital insights</label>
+                                        </div>
 
-            {/* STUDIO SECTION */}
-            <section className="py-24 bg-slate-900">
-                <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="bg-slate-950 rounded-[2.5rem] p-8 md:p-12 lg:p-16 flex flex-col lg:flex-row gap-12 lg:gap-20 items-center border border-slate-800">
-                        {/* Text Side */}
-                        <div className="w-full lg:w-1/2">
-                            <h2 className="text-4xl md:text-5xl font-bold text-white mb-8">Our Digital Studio</h2>
-                            <p className="text-slate-400 mb-12 leading-relaxed">
-                                Just a short drive from the city centre, our Studio is in a very convenient location, near two train stations, a motorway, and connects us globally.
-                            </p>
-
-                            <div className="grid grid-cols-2 gap-8 mb-12">
-                                <div>
-                                    <h4 className="text-xs font-bold text-slate-500 uppercase mb-2">Studio Address</h4>
-                                    <p className="text-white text-sm leading-relaxed font-medium">
-                                        Sameer Digital Lab<br />
-                                        1 Gibfield Park Avenue<br />
-                                        Atherton Manchester<br />
-                                        M46 0SU
-                                    </p>
-                                </div>
-                                <div>
-                                    <h4 className="text-xs font-bold text-slate-500 uppercase mb-2">Follow us</h4>
-                                    <div className="flex gap-3">
-                                        <a href="#" className="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-cyan-400 hover:text-black transition-colors"><LinkedinIcon className="w-4 h-4"/></a>
-                                        <a href="#" className="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-cyan-400 hover:text-black transition-colors"><TwitterIcon className="w-4 h-4"/></a>
-                                        <a href="#" className="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-cyan-400 hover:text-black transition-colors"><GithubIcon className="w-4 h-4"/></a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <button className="bg-slate-900 border border-slate-700 text-white px-8 py-3 rounded-full font-bold text-sm hover:bg-cyan-500 hover:border-cyan-500 hover:text-black transition-all flex items-center gap-2 group">
-                                Get directions
-                                <ArrowRightIcon className="w-4 h-4 transform -rotate-45 group-hover:text-black" />
-                            </button>
-                        </div>
-
-                        {/* Image Side */}
-                        <div className="w-full lg:w-1/2 h-[400px] lg:h-[500px] rounded-2xl overflow-hidden relative shadow-2xl">
-                            <img 
-                                src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2301&auto=format&fit=crop" 
-                                alt="Studio Interior" 
-                                className="w-full h-full object-cover"
-                            />
-                            {/* Neon Sign Effect */}
-                            <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                                <h3 className="font-script text-5xl md:text-7xl text-white opacity-90 drop-shadow-[0_0_15px_rgba(34,211,238,0.8)] rotate-[-5deg]">
-                                    good vibes only
-                                </h3>
-                            </div>
+                                        <div className="md:col-span-2 pt-4 flex flex-col sm:flex-row items-center justify-between gap-8 border-t border-white/5 pt-8 mt-4">
+                                            <div className="flex gap-4">
+                                                <a href="#" className="w-10 h-10 rounded-full bg-slate-950 border border-slate-800 flex items-center justify-center text-slate-500 hover:text-cyan-400 hover:border-cyan-500 transition-all"><LinkedinIcon className="w-4 h-4"/></a>
+                                                <a href="#" className="w-10 h-10 rounded-full bg-slate-950 border border-slate-800 flex items-center justify-center text-slate-500 hover:text-cyan-400 hover:border-cyan-500 transition-all"><TwitterIcon className="w-4 h-4"/></a>
+                                            </div>
+                                            <PremiumButton 
+                                                onClick={() => {}} 
+                                                icon={!isSubmitting} 
+                                                className={`!px-12 !py-5 ${isSubmitting ? "opacity-70" : ""}`}
+                                            >
+                                                {isSubmitting ? <span className="flex items-center gap-2"><LoaderIcon className="w-4 h-4 animate-spin"/> Sending...</span> : "Send Message"}
+                                            </PremiumButton>
+                                        </div>
+                                    </form>
+                                )}
+                            </motion.div>
                         </div>
                     </div>
                 </div>
             </section>
 
             {/* FAQ SECTION */}
-            <section className="py-24 bg-slate-950">
+            <section className="py-24 bg-slate-950 border-t border-slate-900">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-                        {/* Left Header */}
                         <div className="lg:col-span-4">
                             <span className="text-cyan-400 text-sm font-bold block mb-4 uppercase tracking-widest">• Anything else?</span>
-                            <h2 className="text-4xl md:text-5xl font-bold text-white mb-8">
-                                The answers to <br /> your questions.
-                            </h2>
+                            <h2 className="text-4xl md:text-5xl font-bold text-white mb-8">The answers to <br /> your questions.</h2>
                             <Link to="/contact">
-                                <PremiumButton icon={true}>
-                                    View all FAQs
-                                </PremiumButton>
+                                <PremiumButton icon={true}>View all FAQs</PremiumButton>
                             </Link>
                         </div>
-
-                        {/* Right Accordion */}
                         <div className="lg:col-span-8 space-y-2">
                             {faqs.map((faq, index) => (
                                 <div key={index} className="bg-slate-900/50 rounded-xl overflow-hidden border border-slate-800 hover:border-slate-700 transition-colors">
-                                    <button 
-                                        onClick={() => toggleFaq(index)}
-                                        className="w-full p-6 flex items-center justify-between text-left focus:outline-none group"
-                                    >
+                                    <button onClick={() => toggleFaq(index)} className="w-full p-6 flex items-center justify-between text-left focus:outline-none group">
                                         <span className={`font-bold pr-8 transition-colors ${activeFaq === index ? 'text-cyan-400' : 'text-white'}`}>{faq.q}</span>
                                         <span className={`w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center flex-shrink-0 transition-colors group-hover:bg-slate-700 ${activeFaq === index ? 'text-cyan-400' : 'text-slate-400'}`}>
                                             <ArrowRightIcon className={`w-4 h-4 transition-transform duration-300 ${activeFaq === index ? '-rotate-45' : 'rotate-45'}`} />
@@ -369,15 +311,8 @@ const ContactPage: React.FC = () => {
                                     </button>
                                     <AnimatePresence>
                                         {activeFaq === index && (
-                                            <motion.div
-                                                initial={{ height: 0, opacity: 0 }}
-                                                animate={{ height: "auto", opacity: 1 }}
-                                                exit={{ height: 0, opacity: 0 }}
-                                                transition={{ duration: 0.3 }}
-                                            >
-                                                <div className="px-6 pb-6 pt-0 text-slate-400 text-sm leading-relaxed border-t border-slate-800/50 mt-2 pt-4">
-                                                    {faq.a}
-                                                </div>
+                                            <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3 }}>
+                                                <div className="px-6 pb-6 pt-0 text-slate-400 text-sm leading-relaxed border-t border-slate-800/50 mt-2 pt-4">{faq.a}</div>
                                             </motion.div>
                                         )}
                                     </AnimatePresence>
