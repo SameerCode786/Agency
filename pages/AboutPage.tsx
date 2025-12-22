@@ -214,6 +214,7 @@ const AboutPage: React.FC = () => {
 
     const videoScale = useTransform(videoScrollProgress, [0, 1], [0.8, 1]);
     const videoRadius = useTransform(videoScrollProgress, [0, 1], ["40px", "0px"]);
+    const videoRadiusNumber = useTransform(videoScrollProgress, [0, 1], [40, 0]); // Alternative if Radius CSS doesn't behave
     const videoOpacity = useTransform(videoScrollProgress, [0, 0.2], [0.5, 1]);
 
   return (
@@ -471,13 +472,13 @@ const AboutPage: React.FC = () => {
           </div>
       </section>
 
-      {/* 6. CULTURE SECTION */}
-      <section className="py-24 bg-slate-900 border-t border-slate-800 relative overflow-hidden">
+      {/* 6. CULTURE SECTION (UPDATED PER USER REQUEST) */}
+      <section className="py-24 bg-slate-950 border-t border-slate-900 relative overflow-hidden">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                   <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-cyan-500/10 order-2 lg:order-1">
                       <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070&auto=format&fit=crop" alt="Our Culture" className="w-full h-full object-cover min-h-[500px]" />
-                      <div className="absolute inset-0 bg-gradient-to-tr from-slate-900/60 to-transparent"></div>
+                      <div className="absolute inset-0 bg-gradient-to-tr from-slate-950/60 to-transparent"></div>
                   </div>
                   <div className="order-1 lg:order-2">
                       <div className="mb-6">
@@ -489,27 +490,25 @@ const AboutPage: React.FC = () => {
                       <div className="space-y-6 text-slate-400 text-lg leading-relaxed mb-8">
                           <p>We produce good work for good people, and with the idea that staff and the client will be happy throughout the full process.</p>
                       </div>
-                      <div className="bg-lime-300/10 border border-lime-300/30 p-6 rounded-2xl relative">
+                      {/* Updated: Quote Box Background styled for the site and updated profile info */}
+                      <div className="bg-slate-900/60 border border-cyan-500/20 p-6 rounded-2xl relative backdrop-blur-sm shadow-xl">
                           <div className="flex gap-4">
-                              <div className="text-lime-300 text-4xl leading-none">“</div>
+                              <div className="text-cyan-500 text-4xl leading-none font-serif">“</div>
                               <div>
-                                  <p className="text-lime-200 font-medium italic mb-4">My vision has always been to look after the clients we work with, but to also look after the staff just as much.</p>
+                                  <p className="text-slate-300 font-medium italic mb-6 leading-relaxed">My vision has always been to look after the clients we work with, but to also look after the staff just as much.</p>
                                   <div className="flex items-center gap-3">
-                                      <div className="w-10 h-10 rounded-full bg-slate-800 overflow-hidden">
-                                          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1887&auto=format&fit=crop" alt="Sameer" className="w-full h-full object-cover" />
+                                      <div className="w-12 h-12 rounded-full bg-slate-800 overflow-hidden border-2 border-cyan-500/30">
+                                          <img src="https://res.cloudinary.com/dow2sbjsp/image/upload/v1766382478/Sameer_if98jm.jpg" alt="Sameer Profile" className="w-full h-full object-cover" />
                                       </div>
-                                      <div><p className="text-white font-bold text-sm">Sameer</p><p className="text-lime-300 text-xs uppercase tracking-wider">Founder</p></div>
+                                      <div>
+                                          <p className="text-white font-bold text-base leading-none mb-1">Sameer</p>
+                                          <p className="text-cyan-400 text-[10px] font-black uppercase tracking-[0.2em]">Founder & Digital Architect</p>
+                                      </div>
                                   </div>
                               </div>
                           </div>
                       </div>
-                      <div className="mt-8 flex justify-end">
-                          <Link to="/about">
-                              <button className="flex items-center gap-2 text-white border border-slate-700 rounded-full px-6 py-2 hover:bg-slate-800 transition-colors text-sm">
-                                  Learn about our culture <ArrowRightIcon className="w-4 h-4 -rotate-45"/>
-                              </button>
-                          </Link>
-                      </div>
+                      {/* Removed: "Learn about our culture" button */}
                   </div>
               </div>
           </div>
