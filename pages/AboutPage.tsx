@@ -502,7 +502,7 @@ const AboutPage: React.FC = () => {
                                       </div>
                                       <div>
                                           <p className="text-white font-bold text-base leading-none mb-1">Sameer</p>
-                                          <p className="text-cyan-400 text-[10px] font-black uppercase tracking-[0.2em]">Founder & Digital Architect</p>
+                                          <p className="text-cyan-400 text-[10px] font-black uppercase tracking-[0.2em]">Digital Architect</p>
                                       </div>
                                   </div>
                               </div>
