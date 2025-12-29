@@ -448,7 +448,8 @@ const HomePage: React.FC = () => {
         </video>
         <div className="absolute inset-0 bg-slate-950/95 z-0"></div>
         <ParticleBackground />
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 z-20 relative w-full h-full flex items-center py-24 lg:py-32">
+        {/* Adjusted padding for symmetry and better bottom clearance */}
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 z-20 relative w-full h-full flex items-center pt-32 pb-32 md:pt-40 md:pb-40">
             <div className="flex flex-col lg:flex-row items-center justify-between w-full gap-12">
                 <motion.div
                     initial="hidden"
@@ -486,9 +487,14 @@ const HomePage: React.FC = () => {
                         We turn your vision into reality with cutting-edge web and mobile applications. Our expertise in React Native, WordPress, and modern frameworks ensures your digital presence stands out. 
                     </motion.p>
                     <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: 'easeOut' } }}} className="flex items-center">
-                        <div className="inline-flex items-center p-1 rounded-full border border-slate-700 bg-slate-900/40 backdrop-blur-sm">
-                            <Link to="/contact"><PremiumButton className="!m-0">Start Your Project</PremiumButton></Link>
-                            <Link to="/portfolio"><span className="px-6 py-4 text-slate-300 font-bold hover:text-white transition-colors duration-300 cursor-pointer">View Our Work</span></Link>
+                        {/* Redesigned Button Container to fix mobile/tablet squashing and overlap issues */}
+                        <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-0 sm:p-1 sm:rounded-full sm:border sm:border-slate-800 sm:bg-slate-900/40 sm:backdrop-blur-md w-full sm:w-auto">
+                            <Link to="/contact" className="w-full sm:w-auto">
+                                <PremiumButton className="!m-0 !w-full sm:!w-auto !py-4 sm:!py-4 whitespace-nowrap">Start Your Project</PremiumButton>
+                            </Link>
+                            <Link to="/portfolio" className="w-full sm:w-auto text-center">
+                                <span className="block sm:inline-block px-8 py-4 text-slate-300 font-bold hover:text-white transition-colors duration-300 cursor-pointer whitespace-nowrap text-sm sm:text-base">View Our Work</span>
+                            </Link>
                         </div>
                     </motion.div>
                 </motion.div>
