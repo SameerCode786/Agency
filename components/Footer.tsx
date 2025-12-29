@@ -28,8 +28,6 @@ const Footer: React.FC = () => {
     // Rotation & Tilt Parallax Values
     const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["18deg", "-18deg"]);
     const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-18deg", "18deg"]);
-    const textZ = useTransform(mouseYSpring, [-0.5, 0.5], [20, -20]);
-    const globeZ = useTransform(mouseXSpring, [-0.5, 0.5], [60, -60]);
 
     const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
         const rect = e.currentTarget.getBoundingClientRect();
@@ -105,7 +103,7 @@ const Footer: React.FC = () => {
                 </div>
             </div>
 
-            {/* --- 2. DEEP 3D ACTION CARD (Parallax Depth) --- */}
+            {/* --- 2. DEEP 3D ACTION CARD (Sized down as requested) --- */}
             <div className="container mx-auto px-4 relative z-30">
                 <motion.div
                     onMouseMove={handleMouseMove}
@@ -115,26 +113,25 @@ const Footer: React.FC = () => {
                         rotateY, 
                         transformStyle: "preserve-3d" 
                     }}
-                    className="relative max-w-6xl mx-auto perspective-2000 group cursor-default -mb-40 md:-mb-56"
+                    className="relative max-w-5xl mx-auto perspective-2000 group cursor-default -mb-24 md:-mb-32"
                 >
-                    <div className="bg-gradient-to-br from-slate-900 via-[#0a0f1d] to-[#020617] border border-white/10 rounded-[3rem] md:rounded-[4.5rem] p-10 md:p-24 flex flex-col md:flex-row items-center justify-between shadow-[0_120px_200px_-60px_rgba(0,0,0,1)] backdrop-blur-3xl overflow-hidden">
+                    <div className="bg-gradient-to-br from-slate-900 via-[#0a0f1d] to-[#020617] border border-white/10 rounded-[2.5rem] md:rounded-[3.5rem] p-8 md:p-12 lg:p-16 flex flex-col md:flex-row items-center justify-between shadow-[0_80px_150px_-40px_rgba(0,0,0,1)] backdrop-blur-3xl overflow-hidden">
                         
                         {/* Glass Grain Overlay */}
                         <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
                         
                         {/* Floating Glows */}
                         <div className="absolute -top-40 -right-40 w-[40rem] h-[40rem] bg-cyan-400/10 rounded-full blur-[140px] group-hover:bg-cyan-400/20 transition-colors duration-1000"></div>
-                        <div className="absolute -bottom-40 -left-40 w-[30rem] h-[30rem] bg-purple-500/5 rounded-full blur-[120px]"></div>
 
-                        {/* Text Layer (Middle Z) */}
+                        {/* Text Layer */}
                         <motion.div 
                             className="relative z-10 md:w-3/5" 
                             style={{ transform: "translateZ(80px)" }}
                         >
-                            <span className="inline-block px-5 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-[10px] font-black tracking-[0.4em] uppercase mb-12 shadow-inner">
-                                Infrastructure Laboratory
+                            <span className="inline-block px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-[9px] font-black tracking-[0.4em] uppercase mb-8 shadow-inner">
+                                Infrastructure Lab
                             </span>
-                            <h3 className="text-5xl md:text-[6rem] font-black text-white mb-12 leading-[0.82] tracking-tighter drop-shadow-2xl">
+                            <h3 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-10 leading-[0.9] tracking-tighter drop-shadow-2xl">
                                 Experience <br />
                                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-white to-indigo-400">Digital Mastery.</span>
                             </h3>
@@ -142,25 +139,25 @@ const Footer: React.FC = () => {
                                 <motion.button
                                     whileHover={{ scale: 1.05, y: -5, boxShadow: "0 20px 40px rgba(34, 211, 238, 0.2)" }}
                                     whileTap={{ scale: 0.95 }}
-                                    className="bg-white text-black px-14 py-6 rounded-[2rem] font-black text-sm uppercase tracking-widest transition-all duration-300 shadow-2xl flex items-center gap-4"
+                                    className="bg-white text-black px-10 py-4 rounded-[1.5rem] font-black text-xs uppercase tracking-widest transition-all duration-300 shadow-2xl flex items-center gap-3"
                                 >
                                     Start a Mission
-                                    <ArrowRightIcon className="w-5 h-5" />
+                                    <ArrowRightIcon className="w-4 h-4" />
                                 </motion.button>
                             </Link>
                         </motion.div>
 
-                        {/* Globe Layer (Highest Z) */}
+                        {/* Globe Layer */}
                         <motion.div 
-                            className="md:w-2/5 flex justify-end relative" 
+                            className="md:w-2/5 flex justify-end relative mt-8 md:mt-0" 
                             style={{ transform: "translateZ(150px)" }}
                         >
                             <motion.div 
                                 animate={{ rotate: 360 }}
                                 transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
-                                className="w-64 h-64 md:w-[32rem] md:h-[32rem] text-cyan-400/20 group-hover:text-cyan-400/50 transition-colors duration-1000 filter drop-shadow-[0_0_50px_rgba(34,211,238,0.1)]"
+                                className="w-48 h-48 md:w-64 md:h-64 lg:w-80 lg:h-80 text-cyan-400/20 group-hover:text-cyan-400/50 transition-colors duration-1000 filter drop-shadow-[0_0_50px_rgba(34,211,238,0.1)]"
                             >
-                                <WireframeGlobeIcon className="w-full h-full stroke-[0.2]" />
+                                <WireframeGlobeIcon className="w-full h-full stroke-[0.25]" />
                             </motion.div>
                         </motion.div>
                     </div>
@@ -208,11 +205,7 @@ const Footer: React.FC = () => {
                                 <p className="text-slate-400 text-base leading-relaxed max-w-xs font-medium">
                                     Engineering high-performance digital ecosystems. Sameer Digital Lab architectures excellence for global market leaders.
                                 </p>
-                                <div className="flex gap-8">
-                                    <a href="#" className="text-slate-600 hover:text-cyan-400 transition-colors"><InstagramIcon className="w-6 h-6"/></a>
-                                    <a href="#" className="text-slate-600 hover:text-cyan-400 transition-colors"><YoutubeIcon className="w-6 h-6"/></a>
-                                    <a href="#" className="text-slate-600 hover:text-cyan-400 transition-colors"><TwitterIcon className="w-6 h-6"/></a>
-                                </div>
+                                {/* Social icons removed from here as requested */}
                             </div>
                         </div>
 
