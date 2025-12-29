@@ -70,12 +70,11 @@ const ProjectPlannerModal: React.FC<ProjectPlannerModalProps> = ({ isOpen, onClo
 
         setIsSubmitting(true);
         try {
-            // Updated payload to match exactly what's in the DB schema seen in ContactPage.tsx
             const payload = {
                 name: formData.name,
                 email: formData.email,
-                phone: '', // Default empty to avoid schema mismatch
-                newsletter: false, // Default false
+                phone: '', 
+                newsletter: false,
                 source: 'Blueprint Builder',
                 message: `
 [MISSION INITIALIZED]
@@ -91,19 +90,21 @@ Files: ${formData.fileName || 'None attached'}
             const { error } = await supabase.from('contact_inquiries').insert([payload]);
             
             if (error) {
-                // Better error reporting to identify why it fails
-                console.error("Supabase Error Details:", error);
+                console.error("Supabase Error:", error);
+                // Specifically handle the missing table error to help the user
+                if (error.message.includes("public.contact_inquiries") || error.code === "PGRST204") {
+                    throw new Error("The database table 'contact_inquiries' does not exist. Please create it in your Supabase SQL Editor.");
+                }
                 throw new Error(error.message);
             }
             
             alert("Transmission Successful! Mission initialized.");
             onClose();
-            // Reset for next use
             setStep(1);
             setFormData({ name: '', email: '', company: '', startDate: '', endDate: '', services: [], minBudget: '', maxBudget: '', summary: '', fileName: '' });
         } catch (err: any) {
-            console.error("Submission catch:", err);
-            alert(`Uplink failed: ${err.message || 'Unknown network error'}. Please check if the 'contact_inquiries' table exists.`);
+            console.error("Submission Failure:", err);
+            alert(`Uplink Error: ${err.message}`);
         } finally {
             setIsSubmitting(false);
         }
@@ -122,12 +123,10 @@ Files: ${formData.fileName || 'None attached'}
                         exit={{ opacity: 0, scale: 0.95, y: 20 }}
                         className="relative w-full max-w-5xl bg-[#0a0a0a] rounded-[2rem] overflow-hidden border border-white/5 flex flex-col md:flex-row shadow-[0_40px_100px_rgba(0,0,0,1)] h-[85vh] md:h-[650px]"
                     >
-                        {/* Static Header Elements */}
                         <button onClick={onClose} className="absolute top-4 right-6 z-[110] text-slate-600 hover:text-white transition-colors bg-white/5 p-2 rounded-full">
                             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" /></svg>
                         </button>
 
-                        {/* LEFT SIDE: STEPS (Sticky) */}
                         <div className="w-full md:w-[35%] bg-gradient-to-br from-slate-900/40 to-black p-8 md:p-10 flex flex-col border-r border-white/5 overflow-hidden">
                             <div className="mb-8">
                                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-[9px] font-black uppercase tracking-widest mb-4">
@@ -158,7 +157,6 @@ Files: ${formData.fileName || 'None attached'}
                             </div>
                         </div>
 
-                        {/* RIGHT SIDE: SCROLLABLE FORM CONTENT */}
                         <div className="flex-1 bg-[#050505] overflow-y-auto custom-scrollbar p-8 md:p-10 flex flex-col">
                             <AnimatePresence mode="wait">
                                 {step === 1 && (
