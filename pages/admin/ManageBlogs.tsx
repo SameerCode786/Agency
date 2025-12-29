@@ -209,7 +209,7 @@ const ManageBlogs: React.FC = () => {
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
                 <div>
                     <h2 className="text-2xl font-bold text-white">Editorial Dashboard</h2>
-                    <p className="text-slate-500 text-sm">Managing ${blogs.length} high-authority articles</p>
+                    <p className="text-slate-500 text-sm">Managing {blogs.length} high-authority articles</p>
                 </div>
                 <div className="flex gap-4">
                     <div className="flex bg-slate-900 p-1 rounded-full border border-slate-800">
