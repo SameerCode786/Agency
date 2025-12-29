@@ -31,8 +31,8 @@ const ProjectPlannerModal: React.FC<ProjectPlannerModalProps> = ({ isOpen, onClo
         startDate: '',
         endDate: '',
         services: [] as string[],
-        minBudget: '200',
-        maxBudget: '400',
+        minBudget: '', // Changed from '200' to empty
+        maxBudget: '', // Changed from '400' to empty
         summary: '',
         fileName: ''
     });
@@ -77,7 +77,7 @@ const ProjectPlannerModal: React.FC<ProjectPlannerModalProps> = ({ isOpen, onClo
 Company: ${formData.company}
 Timeline: ${formData.startDate} to ${formData.endDate}
 Services Required: ${formData.services.join(', ')}
-Budget Range: £${formData.minBudget} - £${formData.maxBudget}
+Budget Range: $${formData.minBudget || '0'} - $${formData.maxBudget || '0'}
 Project Summary: ${formData.summary}
 Attached File: ${formData.fileName || 'None'}
                 `.trim(),
@@ -91,7 +91,7 @@ Attached File: ${formData.fileName || 'None'}
             onClose();
             // Reset state
             setStep(1);
-            setFormData({ name: '', email: '', company: '', startDate: '', endDate: '', services: [], minBudget: '200', maxBudget: '400', summary: '', fileName: '' });
+            setFormData({ name: '', email: '', company: '', startDate: '', endDate: '', services: [], minBudget: '', maxBudget: '', summary: '', fileName: '' });
         } catch (err) {
             console.error(err);
             alert("Uplink failed. Check connection.");
@@ -238,10 +238,11 @@ Attached File: ${formData.fileName || 'None'}
                                               <div className="relative flex items-center">
                                                 <input 
                                                   value={formData.minBudget} 
+                                                  placeholder="0"
                                                   onChange={e => setFormData({...formData, minBudget: e.target.value})}
                                                   className="w-20 bg-[#111] border border-white/10 rounded-lg px-3 py-2 text-white font-bold text-center focus:border-cyan-500 outline-none transition-all text-sm" 
                                                 />
-                                                <div className="w-8 h-8 ml-1 flex items-center justify-center bg-white/5 rounded-lg text-slate-400 font-serif italic border border-white/5 text-xs">£</div>
+                                                <div className="w-8 h-8 ml-1 flex items-center justify-center bg-white/5 rounded-lg text-slate-400 font-serif italic border border-white/5 text-xs">$</div>
                                               </div>
                                               
                                               <span className="text-slate-500 text-xs font-medium px-1">and</span>
@@ -249,10 +250,11 @@ Attached File: ${formData.fileName || 'None'}
                                               <div className="relative flex items-center">
                                                 <input 
                                                   value={formData.maxBudget} 
+                                                  placeholder="0"
                                                   onChange={e => setFormData({...formData, maxBudget: e.target.value})}
                                                   className="w-20 bg-[#111] border border-white/10 rounded-lg px-3 py-2 text-white font-bold text-center focus:border-cyan-500 outline-none transition-all text-sm" 
                                                 />
-                                                <div className="w-8 h-8 ml-1 flex items-center justify-center bg-white/5 rounded-lg text-slate-400 font-serif italic border border-white/5 text-xs">£</div>
+                                                <div className="w-8 h-8 ml-1 flex items-center justify-center bg-white/5 rounded-lg text-slate-400 font-serif italic border border-white/5 text-xs">$</div>
                                               </div>
                                             </div>
                                         </div>
