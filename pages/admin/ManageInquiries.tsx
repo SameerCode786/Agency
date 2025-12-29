@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../services/supabaseClient';
 import { motion } from 'framer-motion';
-import { LoaderIcon, SearchIcon, EmailIcon, PhoneIcon } from '../../components/Icons';
+import { LoaderIcon, SearchIcon, EmailIcon, PhoneIcon, ArrowRightIcon } from '../../components/Icons';
 
 interface Inquiry {
     id: number;
@@ -52,6 +52,12 @@ const ManageInquiries: React.FC = () => {
         i.message.toLowerCase().includes(filter.toLowerCase())
     );
 
+    // Helper to extract file URL from the message body
+    const getAttachmentUrl = (message: string) => {
+        const match = message.match(/Attachment: (https?:\/\/[^\s]+)/);
+        return match ? match[1] : null;
+    };
+
     return (
         <div>
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
@@ -77,7 +83,10 @@ const ManageInquiries: React.FC = () => {
                 </div>
             ) : (
                 <div className="space-y-4">
-                    {filteredInquiries.map(inquiry => (
+                    {filteredInquiries.map(inquiry => {
+                        const fileUrl = getAttachmentUrl(inquiry.message);
+                        
+                        return (
                         <motion.div 
                             key={inquiry.id} 
                             initial={{ opacity: 0, y: 10 }}
@@ -111,12 +120,24 @@ const ManageInquiries: React.FC = () => {
                                         </span>
                                     </div>
                                 </div>
-                                <button 
-                                    onClick={() => handleDelete(inquiry.id)}
-                                    className="text-red-400 hover:text-red-300 text-xs px-4 py-2 rounded-xl bg-red-900/10 border border-red-900/20 opacity-0 group-hover:opacity-100 transition-opacity"
-                                >
-                                    Delete Inquiry
-                                </button>
+                                <div className="flex gap-2">
+                                    {fileUrl && (
+                                        <a 
+                                            href={fileUrl} 
+                                            target="_blank" 
+                                            rel="noopener noreferrer"
+                                            className="text-cyan-400 bg-cyan-400/10 border border-cyan-400/20 hover:bg-cyan-400 hover:text-black text-xs px-4 py-2 rounded-xl transition-all flex items-center gap-2"
+                                        >
+                                            View Attachment <ArrowRightIcon className="w-4 h-4 -rotate-45" />
+                                        </a>
+                                    )}
+                                    <button 
+                                        onClick={() => handleDelete(inquiry.id)}
+                                        className="text-red-400 hover:text-red-300 text-xs px-4 py-2 rounded-xl bg-red-900/10 border border-red-900/20 opacity-0 group-hover:opacity-100 transition-opacity"
+                                    >
+                                        Delete
+                                    </button>
+                                </div>
                             </div>
                             
                             <div className="bg-slate-950/50 border border-slate-800/50 p-6 rounded-xl relative">
@@ -126,7 +147,7 @@ const ManageInquiries: React.FC = () => {
                                 </p>
                             </div>
                         </motion.div>
-                    ))}
+                    )})}
                     
                     {filteredInquiries.length === 0 && (
                         <div className="text-center py-20 text-slate-500 bg-slate-950/30 rounded-3xl border border-dashed border-slate-800">

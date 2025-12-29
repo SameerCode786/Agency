@@ -35,7 +35,8 @@ const ProjectPlannerModal: React.FC<ProjectPlannerModalProps> = ({ isOpen, onClo
         minBudget: '',
         maxBudget: '',
         summary: '',
-        fileName: ''
+        fileName: '',
+        fileObject: null as File | null
     });
 
     const servicesList = [
@@ -58,7 +59,11 @@ const ProjectPlannerModal: React.FC<ProjectPlannerModalProps> = ({ isOpen, onClo
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
-            setFormData(prev => ({ ...prev, fileName: file.name }));
+            setFormData(prev => ({ 
+                ...prev, 
+                fileName: file.name,
+                fileObject: file 
+            }));
         }
     };
 
@@ -70,6 +75,31 @@ const ProjectPlannerModal: React.FC<ProjectPlannerModalProps> = ({ isOpen, onClo
 
         setIsSubmitting(true);
         try {
+            let fileUrl = 'None attached';
+
+            // 1. Handle File Upload to Supabase Storage if file exists
+            if (formData.fileObject) {
+                const fileExt = formData.fileObject.name.split('.').pop();
+                const fileName = `${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
+                const filePath = `briefs/${fileName}`;
+
+                const { error: uploadError } = await supabase.storage
+                    .from('project-briefs')
+                    .upload(filePath, formData.fileObject);
+
+                if (uploadError) {
+                    console.error("Upload Error:", uploadError);
+                    // Continue without file if upload fails, or throw error
+                } else {
+                    const { data: publicUrlData } = supabase.storage
+                        .from('project-briefs')
+                        .getPublicUrl(filePath);
+                    
+                    fileUrl = publicUrlData.publicUrl;
+                }
+            }
+
+            // 2. Prepare Payload
             const payload = {
                 name: formData.name,
                 email: formData.email,
@@ -83,7 +113,7 @@ Timeline: ${formData.startDate || 'TBD'} to ${formData.endDate || 'TBD'}
 Services: ${formData.services.join(', ') || 'General Consultation'}
 Budget: $${formData.minBudget || '0'} - $${formData.maxBudget || '0'}
 Briefing: ${formData.summary}
-Files: ${formData.fileName || 'None attached'}
+Attachment: ${fileUrl}
                 `.trim()
             };
 
@@ -91,7 +121,6 @@ Files: ${formData.fileName || 'None attached'}
             
             if (error) {
                 console.error("Supabase Error:", error);
-                // Specifically handle the missing table error to help the user
                 if (error.message.includes("public.contact_inquiries") || error.code === "PGRST204") {
                     throw new Error("The database table 'contact_inquiries' does not exist. Please create it in your Supabase SQL Editor.");
                 }
@@ -101,7 +130,7 @@ Files: ${formData.fileName || 'None attached'}
             alert("Transmission Successful! Mission initialized.");
             onClose();
             setStep(1);
-            setFormData({ name: '', email: '', company: '', startDate: '', endDate: '', services: [], minBudget: '', maxBudget: '', summary: '', fileName: '' });
+            setFormData({ name: '', email: '', company: '', startDate: '', endDate: '', services: [], minBudget: '', maxBudget: '', summary: '', fileName: '', fileObject: null });
         } catch (err: any) {
             console.error("Submission Failure:", err);
             alert(`Uplink Error: ${err.message}`);
