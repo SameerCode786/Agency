@@ -101,19 +101,19 @@ export const ALL_PROJECTS: ProjectData[] = [
         id: 3,
         title: "AP Nusamas",
         category: "Recruitment Agency",
-        description: "A premier recruitment agency based in Malaysia (Agensi Pekerjaan Nusamas), dedicated to connecting skilled talent with global opportunities. This project involved creating a professional, trustworthy digital presence to streamline the hiring process.",
-        image1: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1765811782/appusmans_xawuwq.png",
-        image2: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1765811782/appusmans_xawuwq.png",
+        description: "A premier recruitment agency website based in Malaysia (Agensi Pekerjaan Nusamas), architected to bridge the gap between global talent and industry opportunities. This project showcases an elite agency-standard digital interface, engineered for trust, performance, and high-speed recruitment workflows.",
+        image1: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1767597406/appnsumans_tqd3md.jpg",
+        image2: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1767597406/appnsumans_tqd3md.jpg",
         tools: ['wordpress', 'elementor', 'css'],
         role: "Full Stack Developer",
-        timeline: "5 Weeks",
-        fullImage: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1765811782/appusmans_xawuwq.png",
+        timeline: "5 Days Rapid Build",
+        fullImage: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1767597732/app_nsuman_complete_image_pn13wx.png",
         link: "https://apnusamas.com/",
         goals: [
-            "Establish a credible digital presence for a licensed Malaysian recruitment agency.",
-            "Facilitate seamless connection between job seekers and employers.",
-            "Showcase services and industry expertise with a clean, corporate aesthetic.",
-            "Ensure mobile responsiveness for accessibility across all devices."
+            "Establish the leading digital identity for a licensed Malaysian recruitment firm.",
+            "Execute a high-end agency build within a tight 5-day development window.",
+            "Ensure a flawless, corporate aesthetic that balances professionalism with modern UI.",
+            "Optimize site architecture for seamless candidate submissions and employer inquiries."
         ]
     },
     {
