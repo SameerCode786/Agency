@@ -79,6 +79,44 @@ export const ALL_PROJECTS: ProjectData[] = [
         ]
     },
     {
+        id: 5,
+        title: "Rootex",
+        category: "Logistics & Global Solutions",
+        description: "A premium digital platform for Rootex, designed to modernize global logistics communications. This project utilizes custom CSS and advanced WordPress architecture to provide a seamless, high-speed interface for international service management.",
+        image1: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1768558246/screencapture-rootex-online-2026-01-16-15_07_58_qqgnof.png",
+        image2: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1768558246/screencapture-rootex-online-2026-01-16-15_07_58_qqgnof.png",
+        tools: ['wordpress', 'elementor', 'css'],
+        role: "Full Stack Developer",
+        timeline: "3 Days Rapid Build",
+        fullImage: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1768558246/screencapture-rootex-online-2026-01-16-15_07_58_qqgnof.png",
+        link: "https://rootex.online/",
+        goals: [
+            "Modernize the digital face of global logistics services.",
+            "Implement a high-performance WordPress architecture with custom CSS elements.",
+            "Ensure pixel-perfect responsiveness across all devices using Elementor.",
+            "Optimize site architecture for lightning-fast user engagement and tracking."
+        ]
+    },
+    {
+        id: 6,
+        title: "Online Istikhara",
+        category: "Consultation Services",
+        description: "A comprehensive digital platform engineered to provide seamless spiritual consultation services. Built with a focus on user trust and accessibility, this project features a clean, professional layout optimized for rapid response and client engagement.",
+        image1: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1768558875/screencapture-onlineistikharasite-2026-01-16-15_20_24_y4hmsm.png",
+        image2: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1768558875/screencapture-onlineistikharasite-2026-01-16-15_20_24_y4hmsm.png",
+        tools: ['wordpress', 'elementor', 'css'],
+        role: "Full Stack Developer",
+        timeline: "4 Days Rapid Build",
+        fullImage: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1768558875/screencapture-onlineistikharasite-2026-01-16-15_20_24_y4hmsm.png",
+        link: "https://onlineistikharasite.com/",
+        goals: [
+            "Create a respectful and trustworthy digital environment for consultation services.",
+            "Deliver a fully functional, mobile-responsive site within a strict 4-day deadline.",
+            "Implement custom CSS for a unique, professional aesthetic.",
+            "Streamline user interactions to ensure ease of navigation and service accessibility."
+        ]
+    },
+    {
         id: 2,
         title: "Weversity.org",
         category: "Free Education / EdTech",
