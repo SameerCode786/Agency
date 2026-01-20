@@ -4,26 +4,22 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { XIcon, ArrowRightIcon } from './Icons';
 import PremiumButton from './PremiumButton';
 
+// Exact same structure as Header.tsx
+const navLinks = [
+  { name: 'Services', path: '/services', badge: '5' },
+  { name: 'Work', path: '/portfolio', badge: 'NEW 4' },
+  { name: 'About', path: '/about' },
+  { name: 'Blog', path: '/blog' },
+];
+
 interface MobileOffCanvasMenuProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const navItems = [
-  { name: 'Home', path: '/' },
-  { name: 'Services', path: '/services' },
-  { name: 'Web Development', path: '/web-development' },
-  { name: 'WordPress', path: '/wordpress-customization' },
-  { name: 'Shopify', path: '/shopify-development' },
-  { name: 'App Development', path: '/app-development' },
-  { name: 'SEO', path: '/seo-optimization' },
-  { name: 'Blogs', path: '/blog' },
-  { name: 'Contact', path: '/contact' },
-];
-
 const MobileOffCanvasMenu: React.FC<MobileOffCanvasMenuProps> = ({ isOpen, onClose }) => {
   
-  // Body scroll lock
+  // Disable body scroll when menu is open
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -36,12 +32,30 @@ const MobileOffCanvasMenu: React.FC<MobileOffCanvasMenuProps> = ({ isOpen, onClo
   }, [isOpen]);
 
   const panelVariants = {
-    closed: { x: '100%', transition: { type: 'spring', stiffness: 300, damping: 30 } },
-    open: { x: 0, transition: { type: 'spring', stiffness: 300, damping: 30, staggerChildren: 0.05, delayChildren: 0.1 } }
+    closed: { 
+      x: '100%', 
+      transition: { 
+        type: 'spring', 
+        stiffness: 400, 
+        damping: 40,
+        staggerChildren: 0.05,
+        staggerDirection: -1
+      } 
+    },
+    open: { 
+      x: 0, 
+      transition: { 
+        type: 'spring', 
+        stiffness: 400, 
+        damping: 40, 
+        staggerChildren: 0.07, 
+        delayChildren: 0.2 
+      } 
+    }
   };
 
   const itemVariants = {
-    closed: { x: 20, opacity: 0 },
+    closed: { x: 50, opacity: 0 },
     open: { x: 0, opacity: 1 }
   };
 
@@ -49,72 +63,77 @@ const MobileOffCanvasMenu: React.FC<MobileOffCanvasMenuProps> = ({ isOpen, onClo
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* Backdrop */}
+          {/* Backdrop Overlay */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 z-[100] bg-slate-950/60 backdrop-blur-sm lg:hidden"
+            className="fixed inset-0 z-[100] bg-slate-950/80 backdrop-blur-md lg:hidden"
           />
 
-          {/* Side Panel */}
+          {/* Off-Canvas Panel */}
           <motion.div
             variants={panelVariants}
             initial="closed"
             animate="open"
             exit="closed"
-            className="fixed top-0 right-0 bottom-0 z-[101] w-[85%] max-w-sm bg-slate-950/95 backdrop-blur-2xl border-l border-white/10 shadow-2xl flex flex-col lg:hidden"
+            className="fixed top-0 right-0 bottom-0 z-[101] w-[80%] max-w-sm bg-slate-950 border-l border-white/10 shadow-[-20px_0_50px_rgba(0,0,0,0.5)] flex flex-col lg:hidden"
           >
-            {/* Header Area */}
+            {/* Panel Header */}
             <div className="flex items-center justify-between p-6 border-b border-white/5">
-              <span className="text-xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
-                LAB MENU.
+              <span className="text-xl font-black tracking-tighter text-white">
+                SAMEER<span className="text-cyan-400">CODES.</span>
               </span>
               <button 
                 onClick={onClose}
-                className="p-2 bg-white/5 rounded-full text-slate-400 hover:text-white transition-colors"
-                aria-label="Close menu"
+                className="p-3 bg-white/5 rounded-2xl text-slate-400 hover:text-white transition-colors"
+                aria-label="Close navigation menu"
               >
                 <XIcon className="w-6 h-6" />
               </button>
             </div>
 
-            {/* Navigation Links */}
-            <nav className="flex-1 overflow-y-auto py-8 px-6 no-scrollbar">
-              <div className="flex flex-col space-y-2">
-                {navItems.map((item) => (
+            {/* Navigation Links (Mirrored from Desktop) */}
+            <nav className="flex-1 overflow-y-auto py-10 px-8 no-scrollbar">
+              <div className="flex flex-col space-y-6">
+                {navLinks.map((item) => (
                   <motion.div key={item.name} variants={itemVariants}>
                     <NavLink
                       to={item.path}
                       onClick={onClose}
                       className={({ isActive }) => `
-                        flex items-center justify-between py-4 text-lg font-bold transition-all duration-300 group
-                        ${isActive ? 'text-cyan-400 pl-4 border-l-2 border-cyan-400' : 'text-slate-400 hover:text-white hover:pl-2'}
+                        flex items-center justify-between text-2xl font-bold transition-all duration-300 group
+                        ${isActive ? 'text-cyan-400' : 'text-slate-400 hover:text-white'}
                       `}
                     >
-                      {item.name}
-                      <ArrowRightIcon className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                      <span className="flex items-center gap-3">
+                        {item.name}
+                        {item.badge && (
+                          <span className="bg-indigo-600 text-white text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-tighter">
+                            {item.badge}
+                          </span>
+                        )}
+                      </span>
+                      <ArrowRightIcon className="w-5 h-5 opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
                     </NavLink>
                   </motion.div>
                 ))}
               </div>
             </nav>
 
-            {/* Footer / CTA Section */}
-            <div className="p-8 bg-slate-900/50 border-t border-white/5 space-y-4">
-              <Link to="/contact" onClick={onClose} className="block w-full">
-                <PremiumButton width="full" icon={true} className="!py-4 shadow-xl shadow-cyan-500/10">
-                  Free Consultation
-                </PremiumButton>
-              </Link>
-              <Link 
-                to="/portfolio" 
-                onClick={onClose}
-                className="block w-full text-center py-3 text-sm font-black text-slate-500 uppercase tracking-widest hover:text-white transition-colors"
-              >
-                View Portfolio
-              </Link>
+            {/* Panel Footer (CTA Button Mirrored from Desktop) */}
+            <div className="p-8 bg-slate-900/30 border-t border-white/5">
+              <motion.div variants={itemVariants}>
+                <Link to="/contact" onClick={onClose}>
+                  <PremiumButton width="full" icon={true} className="!py-5 !text-base shadow-2xl shadow-cyan-500/10">
+                    Contact Us
+                  </PremiumButton>
+                </Link>
+              </motion.div>
+              <motion.p variants={itemVariants} className="mt-8 text-center text-[10px] font-black text-slate-600 uppercase tracking-[0.3em]">
+                Digital Agency Lab
+              </motion.p>
             </div>
           </motion.div>
         </>
