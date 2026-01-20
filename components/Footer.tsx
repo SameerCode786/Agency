@@ -170,14 +170,16 @@ const Footer: React.FC = () => {
                 {/* 100% Width Kinetic Social Bar */}
                 <div className="w-full grid grid-cols-1 md:grid-cols-4 border-b border-white/5">
                     {[
-                        { name: 'Facebook', color: 'hover:bg-blue-600', path: '#' },
+                        { name: 'Facebook', color: 'hover:bg-blue-600', path: 'https://www.facebook.com/sameerwebdeveloper' },
                         { name: 'Twitter', color: 'hover:bg-cyan-400', path: '#' },
-                        { name: 'LinkedIn', color: 'hover:bg-indigo-700', path: '#' },
-                        { name: 'Instagram', color: 'hover:bg-pink-600', path: '#' }
+                        { name: 'LinkedIn', color: 'hover:bg-indigo-700', path: 'https://www.linkedin.com/in/sameer-sajid-9571653a3' },
+                        { name: 'Instagram', color: 'hover:bg-pink-600', path: 'https://www.instagram.com/sameerwebdeveloper41/' }
                     ].map((social) => (
                         <a 
                             key={social.name} 
                             href={social.path}
+                            target="_blank"
+                            rel="noopener noreferrer"
                             className={`group flex items-center justify-between p-14 border-r border-white/5 last:border-r-0 relative overflow-hidden transition-all duration-700 ${social.color}`}
                         >
                             <div className="absolute inset-0 bg-white/0 group-hover:bg-white/[0.05] transition-colors"></div>
@@ -205,7 +207,6 @@ const Footer: React.FC = () => {
                                 <p className="text-slate-400 text-base leading-relaxed max-w-xs font-medium">
                                     Engineering high-performance digital ecosystems. Sameer Digital Lab architectures excellence for global market leaders.
                                 </p>
-                                {/* Social icons removed from here as requested */}
                             </div>
                         </div>
 
