@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import PageWrapper from '../components/PageWrapper';
 import { motion, AnimatePresence, useScroll, useTransform, useSpring, useMotionValue, useVelocity, useAnimationFrame } from 'framer-motion';
@@ -562,7 +561,7 @@ const HomePage: React.FC = () => {
                                             <div className="bg-slate-950/80 backdrop-blur-md p-2 rounded-full border border-purple-500/30 shadow-lg shadow-purple-500/20 group hover:border-purple-400 transition-colors">
                                                 <motion.div 
                                                     animate={{ rotate: 360 }} 
-                                                    transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                                                    transition={{ duration: 20, repeat: Infinity, ease: "linear" }} 
                                                     className="w-8 h-8 flex items-center justify-center"
                                                 >
                                                     {tool.icon}
@@ -706,7 +705,12 @@ const HomePage: React.FC = () => {
                 </motion.div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {ALL_PROJECTS.map((project, index) => (
+                {/* 
+                  IMPORTANT: ID 7 is 'Jadu Ki Kaat'. 
+                  Filtering it out from Home Page only as requested. 
+                  Showing only first 6 projects to maintain the desired grid structure.
+                */}
+                {ALL_PROJECTS.filter(project => project.id !== 7).slice(0, 6).map((project, index) => (
                     <motion.div key={project.id} initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.2 }} className="relative group rounded-2xl p-[2px] overflow-hidden">
                         <div className="absolute inset-[-50%] bg-[conic-gradient(from_0deg_at_50%_50%,#0f172a_0%,#0f172a_40%,#22d3ee_50%,#0f172a_60%,#0f172a_90%,#8936ea_100%)] animate-[spin_4s_linear_infinite] opacity-70 group-hover:opacity-100 transition-opacity duration-500" />
                         <div className="relative h-full bg-slate-950 rounded-xl overflow-hidden flex flex-col">

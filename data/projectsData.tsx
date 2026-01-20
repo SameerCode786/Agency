@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { 
     WordPressIcon, 
@@ -38,6 +37,7 @@ export const getToolIcon = (tool: string, className: string = "w-5 h-5") => {
     switch (tool.toLowerCase()) {
         case 'wordpress': return <WordPressIcon className={`${className} text-blue-400`} />;
         case 'elementor': return <ElementorIcon className={`${className} text-pink-500`} />;
+        case 'divi': return <CodeIcon className={`${className} text-purple-500`} />; // Representing Divi builder
         case 'seo': return <SearchIcon className={`${className} text-cyan-400`} />;
         case 'css': return <CssIcon className={`${className} text-blue-300`} />;
         case 'react': return <ReactIcon className={`${className} text-cyan-400`} />;
@@ -59,6 +59,25 @@ export const getToolIcon = (tool: string, className: string = "w-5 h-5") => {
 };
 
 export const ALL_PROJECTS: ProjectData[] = [
+    {
+        id: 7,
+        title: "Jadu Ki Kaat",
+        category: "Web & Spiritual Consultation",
+        description: "A specialized web platform engineered for Jadu Ki Kaat, focusing on spiritual guidance and bespoke consultation services. This project was architected using WordPress and the Divi builder, enhanced with custom CSS to deliver a unique, professional, and serene user experience in a very short timeframe.",
+        image1: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1768889235/screencapture-jadukikaat-2026-01-20-11_06_01_hrslid.png",
+        image2: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1768889235/screencapture-jadukikaat-2026-01-20-11_06_01_hrslid.png",
+        tools: ['wordpress', 'divi', 'css'],
+        role: "Full Stack Developer",
+        timeline: "5 Days Rapid Build",
+        fullImage: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1768889235/screencapture-jadukikaat-2026-01-20-11_06_01_hrslid.png",
+        link: "https://www.jadukikaat.com/",
+        goals: [
+            "Create a clean and trustworthy digital environment for spiritual services.",
+            "Utilize the Divi builder combined with custom CSS for a highly tailored aesthetic.",
+            "Complete the full design and development cycle within a 5-day rapid sprint.",
+            "Ensure seamless navigation and high-speed performance for global users."
+        ]
+    },
     {
         id: 1,
         title: "Eagle Eyes Tech",
