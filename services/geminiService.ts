@@ -110,35 +110,31 @@ export const generateBlogPost = async (topic?: string, category: string = "Techn
  * Refactored to use Thinking Budget and JSON Schema for reliable automation
  */
 export const generateAutomatedBlog = async (lastCategory?: string): Promise<any> => {
-    if (!process.env.API_KEY) {
-        throw new Error("API_KEY is missing in Environment Variables. Please set it in your hosting dashboard.");
-    }
-
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
     const systemInstruction = `
-        You are a MULTI-AGENT AI WORKFLOW SYSTEM.
+        You are a MULTI-AGENT AI WORKFLOW SYSTEM operating as the primary Content Engine for 'Sameer Digital Lab'.
         
-        AGENTS:
-        1. Content Strategist: Determines the best trending topic.
-        2. SEO Specialist: Architecting metadata and slugs.
-        3. Expert Writer: Drafting 1200+ word technical articles.
-        4. Quality Control: Ensuring HTML compliance.
+        YOUR WORKFLOW AGENTS:
+        1. Content Strategist: Analyze trending digital transformation topics and select a high-impact subject.
+        2. SEO Specialist: Architect primary keywords, URL slugs, and semantic header structures.
+        3. Stock Image Researcher: Defining high-end visual prompts for real stock photography sourcing.
+        4. Expert Technical Writer: Drafting a comprehensive, authority-driven 1200+ word article in semantic HTML.
+        5. Quality Control: Final validation for HTML accuracy, SEO compliance, and agency brand voice.
 
-        ROTATION: Web Development -> WordPress -> SEO -> Shopify -> App Development -> Digital Growth.
-        Last category was: ${lastCategory || 'None'}.
+        ROTATION CATEGORIES: Web Development -> WordPress -> SEO -> Shopify -> App Development -> Digital Growth.
+        Previous article category was: ${lastCategory || 'None'}. Please select the next appropriate category or a trending sub-topic.
 
         OUTPUT REQUIREMENTS:
-        - Return strictly valid JSON.
-        - Content must be semantic HTML.
-        - Title must be under 60 chars.
-        - Excerpt must be under 155 chars.
+        - Return strictly valid JSON matching the provided schema.
+        - Content MUST be strictly semantic HTML (using <h2>, <h3>, <p>, <ul>, <li>).
+        - Use a professional, futuristic, and authoritative tone.
     `;
 
     try {
         const response = await ai.models.generateContent({
             model: 'gemini-3-pro-preview',
-            contents: "Execute full daily blog automation workflow trigger.",
+            contents: "Trigger full Multi-Agent daily blog automation sequence.",
             config: {
                 systemInstruction,
                 thinkingConfig: { thinkingBudget: 4000 },
@@ -158,9 +154,10 @@ export const generateAutomatedBlog = async (lastCategory?: string): Promise<any>
             }
         });
 
-        return JSON.parse(response.text || "{}");
+        if (!response.text) throw new Error("Agentic Workflow returned an empty response.");
+        return JSON.parse(response.text);
     } catch (error) {
-        console.error("Multi-Agent Workflow Error:", error);
+        console.error("Multi-Agent Workflow Execution Failure:", error);
         throw error;
     }
 };
