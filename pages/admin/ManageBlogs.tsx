@@ -1,7 +1,6 @@
-
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../services/supabaseClient';
-import { generateBlogPost, generateTrendingTopic, generateAutomatedBlog } from '../../services/geminiService';
+import { generateAutomatedBlog } from '../../services/geminiService';
 import { motion, AnimatePresence } from 'framer-motion';
 import PremiumButton from '../../components/PremiumButton';
 import { LightbulbIcon, StarIcon, LoaderIcon, CheckIcon, EyeIcon, SearchIcon, RocketIcon, CodeIcon, StrategyIcon, BrainIcon } from '../../components/Icons';
@@ -27,12 +26,10 @@ const ManageBlogs: React.FC = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [filterStatus, setFilterStatus] = useState<BlogStatus | 'All'>('All');
     
-    // Automation States
     const [isGenerating, setIsGenerating] = useState(false);
-    const [workflowStep, setWorkflowStep] = useState(0); // 0 to 5
+    const [workflowStep, setWorkflowStep] = useState(0); 
     const [batchProgress, setBatchProgress] = useState('');
     
-    // Form State
     const [currentBlog, setCurrentBlog] = useState<Partial<Blog & { stock_keywords: string }>>({
         title: '',
         slug: '',
@@ -64,33 +61,21 @@ const ManageBlogs: React.FC = () => {
         setLoading(false);
     };
 
-    const parseAutomatedOutput = (text: string) => {
-        const sections = ['Category', 'SEO Title', 'Meta Description', 'URL Slug', 'Primary Keyword', 'Secondary Keywords', 'Blog Content'];
-        const result: any = {};
-        sections.forEach(section => {
-            const regex = new RegExp(`\\[${section}\\]([\\s\\S]*?)(?=\\[|$)`, 'i');
-            const match = text.match(regex);
-            if (match) {
-                result[section.toLowerCase().replace(/ /g, '_')] = match[1].trim();
-            }
-        });
-        return result;
-    }
-
     const handleRunAutomation = async () => {
         setIsGenerating(true);
-        setWorkflowStep(1); // Content Strategy
+        setWorkflowStep(1);
+        setBatchProgress('Content Strategist Agent Initializing...');
         
         try {
             const lastBlog = blogs[0];
-            const resultText = await generateAutomatedBlog(lastBlog?.category);
+            const data = await generateAutomatedBlog(lastBlog?.category);
             
-            // Progress simulation for better UX
+            // Progress simulation for better UX (Staggered steps)
             const steps = [
-                { s: 2, t: 1500, label: 'SEO Planning...' },
-                { s: 3, t: 3000, label: 'Image Research...' },
-                { s: 4, t: 5000, label: 'Agent Writing Content...' },
-                { s: 5, t: 8000, label: 'Quality Control Check...' }
+                { s: 2, t: 1000, label: 'SEO Specialist Agent Planning...' },
+                { s: 3, t: 1500, label: 'Stock Researcher Agent Sourcing...' },
+                { s: 4, t: 2000, label: 'Expert Writer Agent Drafting (1200+ words)...' },
+                { s: 5, t: 3000, label: 'Quality Control Agent Checking Compliance...' }
             ];
 
             for (const step of steps) {
@@ -99,18 +84,14 @@ const ManageBlogs: React.FC = () => {
                 await new Promise(r => setTimeout(r, step.t));
             }
 
-            const parsed = parseAutomatedOutput(resultText);
-            
-            // Generate a default image based on category keywords
-            const kw = parsed.primary_keyword || parsed.category;
-            const imgUrl = `https://loremflickr.com/1280/800/${encodeURIComponent(kw.replace(/\s/g, ','))}`;
+            const imgUrl = `https://loremflickr.com/1280/800/${encodeURIComponent((data.primary_keyword || data.category).replace(/\s/g, ','))}`;
 
             setCurrentBlog({
-                title: parsed.seo_title || 'New Automated Post',
-                category: parsed.category || 'Web Development',
-                slug: parsed.url_slug || `post-${Date.now()}`,
-                excerpt: parsed.meta_description || '',
-                content: parsed.blog_content || '',
+                title: data.title || 'New Automated Post',
+                category: data.category || 'Web Development',
+                slug: data.slug || `post-${Date.now()}`,
+                excerpt: data.excerpt || '',
+                content: data.content || '',
                 image: imgUrl,
                 status: 'Draft',
                 date: new Date().toISOString().split('T')[0]
@@ -163,7 +144,6 @@ const ManageBlogs: React.FC = () => {
 
     return (
         <div className="space-y-8">
-            {/* Automation Workflow Visual Bar */}
             <div className="bg-slate-950 border border-slate-800 p-6 rounded-[2rem] relative overflow-hidden">
                 <div className="flex flex-col md:flex-row items-center justify-between gap-8">
                     <div className="flex items-center gap-4">
@@ -221,7 +201,6 @@ const ManageBlogs: React.FC = () => {
                 </div>
             </div>
 
-            {/* Editing UI */}
             <AnimatePresence>
                 {isEditing && (
                     <motion.div initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.98 }} className="fixed inset-0 z-[100] bg-slate-950 p-8 overflow-y-auto custom-scrollbar">
@@ -256,7 +235,7 @@ const ManageBlogs: React.FC = () => {
                                             <input value={currentBlog.slug} onChange={e => setCurrentBlog({...currentBlog, slug: e.target.value})} className="w-full bg-slate-950 border border-slate-800 p-3 rounded-xl text-cyan-400 font-mono text-xs" />
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Hero Image (Real Stock)</label>
+                                            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Hero Image</label>
                                             <div className="aspect-video bg-slate-950 rounded-xl overflow-hidden mb-2 border border-slate-800">
                                                 <img src={currentBlog.image} alt="Preview" className="w-full h-full object-cover" />
                                             </div>
@@ -271,7 +250,6 @@ const ManageBlogs: React.FC = () => {
                 )}
             </AnimatePresence>
 
-            {/* List View */}
             <div className="grid grid-cols-1 gap-4">
                 {loading ? (
                     <div className="flex justify-center py-20"><LoaderIcon className="w-8 h-8 animate-spin text-cyan-500" /></div>

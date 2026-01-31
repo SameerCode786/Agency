@@ -1,4 +1,3 @@
-
 import { GoogleGenAI, Type } from "@google/genai";
 
 interface SeoContent {
@@ -10,11 +9,10 @@ interface BlogPostData {
     title: string;
     excerpt: string;
     content: string; // HTML
-    imageKeywords: string; // Changed from imagePrompt to strictly keywords for real stock photos
+    imageKeywords: string; 
     category: string;
 }
 
-// New Interface for Website Architect
 export interface WebsitePlan {
     projectName: string;
     tagline: string;
@@ -26,25 +24,11 @@ export interface WebsitePlan {
         content: string;
         features: string[];
     }[];
-    visualPrompt: string; // Prompt for the image generator
+    visualPrompt: string; 
 }
 
 export const generateSeoContent = async (pageName: string): Promise<SeoContent> => {
-    const apiKey = process.env.API_KEY;
-    
-    if (!apiKey) {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                resolve({ 
-                    title: `Sameer Digital Lab | ${pageName}`, 
-                    description: `Premium digital services for ${pageName}. Web development, mobile apps, and SEO.` 
-                });
-            }, 500);
-        });
-    }
-
-    const ai = new GoogleGenAI({ apiKey });
-
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
     try {
         const prompt = `Generate a premium, SEO-friendly meta title (max 60 chars) and meta description (max 160 chars) for the '${pageName}' page of a futuristic, high-end digital agency called 'Sameer Digital Lab'. The tone should be professional, innovative, and authoritative.`;
 
@@ -64,14 +48,7 @@ export const generateSeoContent = async (pageName: string): Promise<SeoContent> 
             }
         });
 
-        if (response.text) {
-            const cleanText = response.text.replace(/```json/g, "").replace(/```/g, "").trim();
-            const jsonMatch = cleanText.match(/\{[\s\S]*\}/);
-            const finalJson = jsonMatch ? jsonMatch[0] : cleanText;
-            return JSON.parse(finalJson);
-        }
-        throw new Error("No response from AI");
-
+        return JSON.parse(response.text || "{}");
     } catch (error) {
         console.error("SEO Gen Error:", error);
         return { 
@@ -81,47 +58,8 @@ export const generateSeoContent = async (pageName: string): Promise<SeoContent> 
     }
 };
 
-export const generateTrendingTopic = async (category: string): Promise<string> => {
-    const apiKey = process.env.API_KEY;
-    if (!apiKey) return `The Future of ${category} in 2025`;
-
-    const ai = new GoogleGenAI({ apiKey });
-    const today = new Date().toDateString();
-
-    const prompt = `
-        Generate ONE unique, trending, and specific blog post title for the industry: "${category}".
-        Context: Today is ${today}.
-        Requirements:
-        - Do NOT use generic titles.
-        - Focus on a specific niche, a recent tech update, or professional advice.
-        - Return ONLY the title string.
-    `;
-
-    try {
-        const response = await ai.models.generateContent({
-            model: 'gemini-3-flash-preview',
-            contents: prompt,
-        });
-        return response.text?.trim() || `${category} Trends`;
-    } catch (e) {
-        return `Latest Innovations in ${category}`;
-    }
-};
-
 export const generateBlogPost = async (topic?: string, category: string = "Technology"): Promise<BlogPostData> => {
-    const apiKey = process.env.API_KEY;
-
-    if (!apiKey) {
-        return {
-            title: topic || "Digital Strategy Essentials",
-            excerpt: "Key insights for growing your digital presence effectively.",
-            content: `<p>Please set your API_KEY to generate real content.</p>`,
-            imageKeywords: "modern office technology",
-            category: category
-        };
-    }
-
-    const ai = new GoogleGenAI({ apiKey });
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
     const userTopic = topic || "Current trends in digital transformation";
 
     const systemInstruction = `
@@ -129,17 +67,14 @@ export const generateBlogPost = async (topic?: string, category: string = "Techn
         You are ONLY a CONTENT & SEO ENGINE.
         
         CRITICAL IMAGE RULES:
-        1. You are NOT allowed to generate, create, describe, or mention AI-generated images.
-        2. You do NOT have permission to generate image prompts for AI tools.
-        3. ONLY suggest 3-5 specific REAL stock photography search keywords.
-        4. Focus on high-end editorial, professional, or architectural photography.
-        5. Keywords should be compatible with Unsplash, Pexels, or Pixabay.
+        1. Suggest 3-5 specific REAL stock photography search keywords.
+        2. Focus on high-end editorial, professional, or architectural photography.
+        3. Keywords should be compatible with Unsplash or Pexels.
         
         CONTENT RULES:
         1. Title: Click-worthy, SEO-rich.
         2. Excerpt: Compelling summary (max 25 words).
         3. Content: Strictly semantic HTML (<h2>, <h3>, <p>, <ul>, <li>, <strong>). NO <h1>.
-        4. Focus on real-world business growth and technical authority.
     `;
 
     try {
@@ -155,7 +90,7 @@ export const generateBlogPost = async (topic?: string, category: string = "Techn
                         title: { type: Type.STRING },
                         excerpt: { type: Type.STRING },
                         content: { type: Type.STRING },
-                        imageKeywords: { type: Type.STRING, description: "3-5 search keywords for real stock photography only. No AI descriptions." },
+                        imageKeywords: { type: Type.STRING },
                         category: { type: Type.STRING }
                     },
                     required: ['title', 'excerpt', 'content', 'imageKeywords', 'category'],
@@ -163,13 +98,7 @@ export const generateBlogPost = async (topic?: string, category: string = "Techn
             }
         });
 
-        if (response.text) {
-            const cleanText = response.text.replace(/```json/g, "").replace(/```/g, "").trim();
-            const jsonMatch = cleanText.match(/\{[\s\S]*\}/);
-            const finalJson = jsonMatch ? jsonMatch[0] : cleanText;
-            return JSON.parse(finalJson);
-        }
-        throw new Error("Empty response from Gemini");
+        return JSON.parse(response.text || "{}");
     } catch (error) {
         console.error("Blog Gen Error:", error);
         throw error;
@@ -177,81 +106,59 @@ export const generateBlogPost = async (topic?: string, category: string = "Techn
 };
 
 /**
- * MULTI-AGENT AI SYSTEM (n8n Workflow Simulation)
- * Powering the Admin Dashboard Blog Automation
+ * MULTI-AGENT AI SYSTEM
+ * Refactored to use Thinking Budget and JSON Schema for reliable automation
  */
-export const generateAutomatedBlog = async (lastCategory?: string): Promise<string> => {
-    const apiKey = process.env.API_KEY;
-    if (!apiKey) throw new Error("API Key required for Multi-Agent Workflow.");
+export const generateAutomatedBlog = async (lastCategory?: string): Promise<any> => {
+    if (!process.env.API_KEY) {
+        throw new Error("API_KEY is missing in Environment Variables. Please set it in your hosting dashboard.");
+    }
 
-    const ai = new GoogleGenAI({ apiKey });
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
-    const multiAgentPrompt = `
-You are NOT a single chatbot.
-You are a MULTI-AGENT AI SYSTEM designed to work like an automation workflow (similar to n8n / Make).
+    const systemInstruction = `
+        You are a MULTI-AGENT AI WORKFLOW SYSTEM.
+        
+        AGENTS:
+        1. Content Strategist: Determines the best trending topic.
+        2. SEO Specialist: Architecting metadata and slugs.
+        3. Expert Writer: Drafting 1200+ word technical articles.
+        4. Quality Control: Ensuring HTML compliance.
 
-Your job is to power an ADMIN DASHBOARD BLOG SYSTEM.
+        ROTATION: Web Development -> WordPress -> SEO -> Shopify -> App Development -> Digital Growth.
+        Last category was: ${lastCategory || 'None'}.
 
-==============================
-SYSTEM ARCHITECTURE (MANDATORY)
-==============================
-You must internally behave as these AI agents:
-1️⃣ Content Strategist Agent  
-2️⃣ SEO Specialist Agent  
-3️⃣ Image Research Agent  
-4️⃣ Blog Writer Agent  
-5️⃣ Quality Control Agent  
-
-==============================
-WORKFLOW (LIKE n8n)
-==============================
-Trigger → Content Strategy → SEO Planning → Image Research → Blog Writing → Final Quality Check → Admin-Ready Output
-
-==============================
-AGENT RESPONSIBILITIES
-==============================
-🔹 1. Content Strategist Agent: Select ONE fresh topic matching the rotation. (Last category was: ${lastCategory || 'None'}).
-🔹 2. SEO Specialist Agent: Define SEO Title (<=60), Meta Description (<=155), Slug, Keywords.
-🔹 3. Image Research Agent: Suggest 3-5 REAL stock keywords for Unsplash/Pexels. NO AI IMAGES.
-🔹 4. Blog Writer Agent: Write 1200–1800 words in expert agency tone. Semantic HTML formatting.
-🔹 5. Quality Control Agent: Verify all rules before output.
-
-==============================
-CATEGORY ROTATION (STRICT)
-==============================
-Daily Rotation: 1. Web Development, 2. WordPress, 3. SEO & Google Ranking, 4. Shopify / eCommerce, 5. App Development, 6. Digital Growth for Businesses.
-
-==============================
-ADMIN DASHBOARD OUTPUT FORMAT
-==============================
-Return the response EXACTLY in this order for easy CMS parsing:
-
-[Category]
-[SEO Title]
-[Meta Description]
-[URL Slug]
-[Primary Keyword]
-[Secondary Keywords]
-[Blog Content]
-(Include image blocks inside content in this format:
-Image Block:
-Placement:
-Source:
-Search Keywords:
-Alt Text:
-)
+        OUTPUT REQUIREMENTS:
+        - Return strictly valid JSON.
+        - Content must be semantic HTML.
+        - Title must be under 60 chars.
+        - Excerpt must be under 155 chars.
     `;
 
     try {
         const response = await ai.models.generateContent({
             model: 'gemini-3-pro-preview',
-            contents: "Execute current daily blog workflow trigger.",
+            contents: "Execute full daily blog automation workflow trigger.",
             config: {
-                systemInstruction: multiAgentPrompt,
+                systemInstruction,
+                thinkingConfig: { thinkingBudget: 4000 },
+                responseMimeType: "application/json",
+                responseSchema: {
+                    type: Type.OBJECT,
+                    properties: {
+                        category: { type: Type.STRING },
+                        title: { type: Type.STRING },
+                        excerpt: { type: Type.STRING },
+                        slug: { type: Type.STRING },
+                        content: { type: Type.STRING },
+                        primary_keyword: { type: Type.STRING },
+                    },
+                    required: ['category', 'title', 'excerpt', 'slug', 'content', 'primary_keyword']
+                }
             }
         });
 
-        return response.text || "Workflow Error: Empty Output";
+        return JSON.parse(response.text || "{}");
     } catch (error) {
         console.error("Multi-Agent Workflow Error:", error);
         throw error;
@@ -259,15 +166,8 @@ Alt Text:
 };
 
 export const generateWebsitePlan = async (userPrompt: string): Promise<WebsitePlan> => {
-    const apiKey = process.env.API_KEY;
-    if (!apiKey) throw new Error("API Key Missing");
-    const ai = new GoogleGenAI({ apiKey });
-
-    const systemPrompt = `
-        You are a World-Class UI/UX Architect.
-        Analyze the request and return a JSON blueprint for a website.
-        User Prompt: "${userPrompt}"
-    `;
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const systemPrompt = `Analyze the request and return a JSON blueprint for a website. User Prompt: "${userPrompt}"`;
 
     try {
         const response = await ai.models.generateContent({
@@ -302,13 +202,7 @@ export const generateWebsitePlan = async (userPrompt: string): Promise<WebsitePl
             }
         });
 
-        if (response.text) {
-            const cleanText = response.text.replace(/```json/g, "").replace(/```/g, "").trim();
-            const jsonMatch = cleanText.match(/\{[\s\S]*\}/);
-            const finalJson = jsonMatch ? jsonMatch[0] : cleanText;
-            return JSON.parse(finalJson);
-        }
-        throw new Error("No response from AI Architect");
+        return JSON.parse(response.text || "{}");
     } catch (error) {
         console.error("Architect Error:", error);
         throw error;
