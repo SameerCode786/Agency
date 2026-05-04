@@ -40,7 +40,10 @@ export const getToolIcon = (tool: string, className: string = "w-5 h-5") => {
         case 'divi': return <CodeIcon className={`${className} text-purple-500`} />; // Representing Divi builder
         case 'seo': return <SearchIcon className={`${className} text-cyan-400`} />;
         case 'css': return <CssIcon className={`${className} text-blue-300`} />;
-        case 'react': return <ReactIcon className={`${className} text-cyan-400`} />;
+        case 'react':
+        case 'reactnative': return <ReactIcon className={`${className} text-cyan-400`} />;
+        case 'typescript':
+        case 'ts': return <CodeIcon className={`${className} text-blue-500`} />;
         case 'javascript':
         case 'js': return <JsIcon className={`${className} text-yellow-400`} />;
         case 'supabase': return <SupabaseIcon className={`${className} text-green-400`} />;
@@ -50,6 +53,8 @@ export const getToolIcon = (tool: string, className: string = "w-5 h-5") => {
         case 'shopping-cart':
         case 'woocommerce': return <ShoppingCartIcon className={`${className} text-purple-400`} />;
         case 'database':
+        case 'mysql':
+        case 'postgresql':
         case 'mongodb': return <DatabaseIcon className={`${className} text-green-500`} />;
         case 'api': return <ApiIcon className={`${className} text-white`} />;
         case 'node': return <CodeIcon className={`${className} text-green-600`} />;
@@ -59,6 +64,25 @@ export const getToolIcon = (tool: string, className: string = "w-5 h-5") => {
 };
 
 export const ALL_PROJECTS: ProjectData[] = [
+    {
+        id: 8,
+        title: "WeVersity",
+        category: "App Development",
+        description: "My First App is Now LIVE on Google Play Store! 🚀 After 2 months of intense coding and dedication, I am thrilled to announce that WeVersity is finally live! 🎉 This journey has been incredible, and I’ve built this app to make learning more interactive and seamless than ever before.",
+        image1: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1772611173/WhatsApp_Image_2026-02-27_at_9.49.31_AM_afn8du.jpg",
+        image2: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1772611173/WhatsApp_Image_2026-02-27_at_9.49.31_AM_afn8du.jpg",
+        tools: ['reactnative', 'expo', 'mysql', 'postgresql'],
+        role: "Lead App Developer",
+        timeline: "2 Months Development",
+        fullImage: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1772611173/WhatsApp_Image_2026-02-27_at_9.49.31_AM_afn8du.jpg",
+        link: "https://play.google.com/store/apps/details?id=com.weversity.app",
+        goals: [
+            "🎥 TikTok Style Shorts: Instructors can share quick knowledge through shorts, making learning fast and fun!",
+            "🎙️ Live Classes: Join real-time sessions and interact directly with experts.",
+            "📅 Upcoming Events: Stay updated with the latest webinars and workshops.",
+            "💬 Real-time Chat: Connect with instructors for instant support and guidance."
+        ]
+    },
     {
         id: 7,
         title: "Jadu Ki Kaat",

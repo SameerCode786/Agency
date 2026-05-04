@@ -305,14 +305,75 @@ const AppDevelopmentPage: React.FC = () => {
                             </motion.div>
                         ))}
                     </div>
+                </div>
+            </section>
 
-                    <div className="mt-16 text-center">
-                        <Link to="/contact">
-                             <button className="inline-flex items-center gap-2 text-white border-b border-blue-500 pb-1 hover:text-blue-400 transition-colors text-lg font-medium group">
-                                Get a Free Consultation
-                                <ArrowRightIcon className="w-5 h-5 transform group-hover:translate-x-1 transition-transform" />
-                             </button>
-                        </Link>
+            {/* FEATURED PROJECT */}
+            <section className="py-24 bg-slate-950 relative overflow-hidden">
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-500/5 rounded-full blur-[120px] pointer-events-none"></div>
+                
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="flex flex-col items-center text-center mb-16">
+                        <span className="text-blue-400 font-bold tracking-[0.2em] uppercase text-sm mb-4">Featured Case Study</span>
+                        <h2 className="text-4xl md:text-6xl font-bold text-white">WeVersity</h2>
+                    </div>
+
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center bg-slate-900/50 border border-slate-800 rounded-[2rem] p-8 md:p-12 backdrop-blur-xl">
+                        <motion.div
+                            initial={{ opacity: 0, x: -30 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            className="relative aspect-[9/16] max-w-[320px] mx-auto lg:mx-0 rounded-[2.5rem] overflow-hidden border-[8px] border-slate-800 shadow-2xl"
+                        >
+                            <img 
+                                src="https://res.cloudinary.com/dow2sbjsp/image/upload/v1772611173/WhatsApp_Image_2026-02-27_at_9.49.31_AM_afn8du.jpg" 
+                                alt="WeVersity App" 
+                                className="w-full h-full object-cover"
+                            />
+                        </motion.div>
+
+                        <motion.div
+                            initial={{ opacity: 0, x: 30 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                        >
+                            <h3 className="text-3xl font-bold text-white mb-6">Revolutionizing Digital Learning</h3>
+                            <p className="text-slate-400 text-lg mb-8 leading-relaxed">
+                                WeVersity is a production-level EdTech application built with React Native and Expo. It features TikTok-style shorts for micro-learning, real-time chat, and live classes, providing a seamless interactive experience for students and instructors.
+                            </p>
+
+                            <div className="space-y-4 mb-10">
+                                {[
+                                    "🎥 TikTok Style Shorts for fast learning",
+                                    "🎙️ Live Classes with direct expert interaction",
+                                    "💬 Real-time Chat for instant support",
+                                    "📅 Upcoming Events & Webinars"
+                                ].map((feature, i) => (
+                                    <div key={i} className="flex items-center gap-3 text-slate-300">
+                                        <div className="w-1.5 h-1.5 rounded-full bg-blue-500"></div>
+                                        <span>{feature}</span>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div className="flex flex-wrap gap-3 mb-10">
+                                {['React Native', 'Expo SDK 54', 'MySQL', 'PostgreSQL', 'TanStack Query'].map((tech) => (
+                                    <span key={tech} className="px-3 py-1 bg-slate-800 text-slate-400 text-xs font-bold rounded-full border border-slate-700">
+                                        {tech}
+                                    </span>
+                                ))}
+                            </div>
+
+                            <a 
+                                href="https://play.google.com/store/apps/details?id=com.weversity.app" 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-3 bg-blue-600 hover:bg-blue-500 text-white px-8 py-4 rounded-full font-bold transition-all shadow-lg shadow-blue-600/20 group"
+                            >
+                                View on Play Store
+                                <ArrowRightIcon className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                            </a>
+                        </motion.div>
                     </div>
                 </div>
             </section>

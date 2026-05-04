@@ -60,7 +60,7 @@ const CustomCursor: React.FC<CustomCursorProps> = ({ variant, text }) => {
         default: {
             height: 32,
             width: 32,
-            backgroundColor: "transparent",
+            backgroundColor: "rgba(0, 0, 0, 0)",
             border: "2px solid #22d3ee", // cyan-400
             mixBlendMode: "normal" as any,
         },

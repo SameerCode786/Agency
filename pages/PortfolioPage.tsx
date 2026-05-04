@@ -93,7 +93,7 @@ const PortfolioPage: React.FC = () => {
 
        {/* PORTFOLIO GRID */}
        <section className="pb-32 bg-slate-950">
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
                 <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     <AnimatePresence mode='popLayout'>
                         {filteredItems.map((item, index) => (

@@ -369,7 +369,7 @@ const AboutPage: React.FC = () => {
                       </div>
 
                       {/* Right: Expertise Tags */}
-                      <div className="flex flex-wrap content-center gap-3 lg:gap-4 lg:justify-end max-w-xl ml-auto">
+                      <div className="flex flex-wrap content-center gap-3 lg:gap-4 lg:justify-end max-w-xl ml-auto relative">
                           {expertiseTags.map((tag, i) => {
                               const isActive = tag.cat === activeProcessIndex;
                               const activeColorClass = processCategories[tag.cat].color;
@@ -382,7 +382,7 @@ const AboutPage: React.FC = () => {
                                     animate={{ 
                                         opacity: isActive ? 1 : 0.2,
                                         scale: isActive ? 1 : 0.95,
-                                        borderColor: isActive ? 'rgba(255,255,255,0.2)' : 'transparent',
+                                        borderColor: isActive ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0)',
                                     }}
                                     transition={{ duration: 0.4 }}
                                     className={`px-5 py-3 rounded-full border transition-all duration-300 backdrop-blur-sm cursor-default

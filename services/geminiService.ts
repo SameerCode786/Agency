@@ -28,6 +28,7 @@ export interface WebsitePlan {
 }
 
 export const generateSeoContent = async (pageName: string): Promise<SeoContent> => {
+    // Initialize inside the function to ensure the latest API key is used
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
     try {
         const prompt = `Generate a premium, SEO-friendly meta title (max 60 chars) and meta description (max 160 chars) for the '${pageName}' page of a futuristic, high-end digital agency called 'Sameer Digital Lab'. The tone should be professional, innovative, and authoritative.`;
@@ -106,35 +107,37 @@ export const generateBlogPost = async (topic?: string, category: string = "Techn
 };
 
 /**
- * MULTI-AGENT AI SYSTEM
- * Refactored to use Thinking Budget and JSON Schema for reliable automation
+ * MULTI-AGENT AI SYSTEM - SEQUENTIAL WORKFLOW
+ * Orchestrates 5 distinct agent personas to generate production-ready SEO content.
  */
 export const generateAutomatedBlog = async (lastCategory?: string): Promise<any> => {
+    // Critical: Initialize here to use the latest API key from the environment
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
     const systemInstruction = `
-        You are a MULTI-AGENT AI WORKFLOW SYSTEM operating as the primary Content Engine for 'Sameer Digital Lab'.
-        
-        YOUR WORKFLOW AGENTS:
-        1. Content Strategist: Analyze trending digital transformation topics and select a high-impact subject.
-        2. SEO Specialist: Architect primary keywords, URL slugs, and semantic header structures.
-        3. Stock Image Researcher: Defining high-end visual prompts for real stock photography sourcing.
-        4. Expert Technical Writer: Drafting a comprehensive, authority-driven 1200+ word article in semantic HTML.
-        5. Quality Control: Final validation for HTML accuracy, SEO compliance, and agency brand voice.
+        You are the 'Sameer Digital Lab' Multi-Agent Automation Orchestrator. 
+        You must execute a sequential workflow involving 5 specific agents.
 
-        ROTATION CATEGORIES: Web Development -> WordPress -> SEO -> Shopify -> App Development -> Digital Growth.
-        Previous article category was: ${lastCategory || 'None'}. Please select the next appropriate category or a trending sub-topic.
+        SEQUENTIAL AGENT PROTOCOL:
+        1. [Strategist Agent]: Analyze trending tech/business topics. Select a topic that bridges innovation and business growth.
+        2. [SEO Specialist Agent]: Define the primary keyword, target slug, and ensure the structure follows Google's E-E-A-T guidelines.
+        3. [Researcher Agent]: Source 3-5 high-end stock photography keywords for Unsplash (professional, architectural, futuristic).
+        4. [Expert Writer Agent]: Draft a 1200+ word authority-building article using ONLY semantic HTML (h2, h3, p, ul, strong).
+        5. [Quality Control Agent]: Verify HTML syntax, check tone consistency (Futuristic/Premium), and validate SEO density.
+
+        ROTATION: Web Development -> WordPress -> SEO -> Shopify -> App Development -> Digital Growth.
+        The last published category was: ${lastCategory || 'None'}.
 
         OUTPUT REQUIREMENTS:
-        - Return strictly valid JSON matching the provided schema.
-        - Content MUST be strictly semantic HTML (using <h2>, <h3>, <p>, <ul>, <li>).
-        - Use a professional, futuristic, and authoritative tone.
+        - Return strictly valid JSON.
+        - Tone: professional, authoritative, innovative.
+        - Language: English.
     `;
 
     try {
         const response = await ai.models.generateContent({
             model: 'gemini-3-pro-preview',
-            contents: "Trigger full Multi-Agent daily blog automation sequence.",
+            contents: "Execute full agentic workflow sequence for today's automated article.",
             config: {
                 systemInstruction,
                 thinkingConfig: { thinkingBudget: 4000 },
@@ -142,23 +145,24 @@ export const generateAutomatedBlog = async (lastCategory?: string): Promise<any>
                 responseSchema: {
                     type: Type.OBJECT,
                     properties: {
-                        category: { type: Type.STRING },
-                        title: { type: Type.STRING },
-                        excerpt: { type: Type.STRING },
-                        slug: { type: Type.STRING },
-                        content: { type: Type.STRING },
-                        primary_keyword: { type: Type.STRING },
+                        category: { type: Type.STRING, description: "The finalized niche category" },
+                        title: { type: Type.STRING, description: "SEO title under 60 chars" },
+                        excerpt: { type: Type.STRING, description: "Compelling summary for cards" },
+                        slug: { type: Type.STRING, description: "URL friendly slug" },
+                        content: { type: Type.STRING, description: "The full HTML content of the post" },
+                        primary_keyword: { type: Type.STRING, description: "The main keyword used for SEO" },
+                        stock_keywords: { type: Type.STRING, description: "Researcher keywords for images" }
                     },
-                    required: ['category', 'title', 'excerpt', 'slug', 'content', 'primary_keyword']
+                    required: ['category', 'title', 'excerpt', 'slug', 'content', 'primary_keyword', 'stock_keywords']
                 }
             }
         });
 
-        if (!response.text) throw new Error("Agentic Workflow returned an empty response.");
+        if (!response.text) throw new Error("Agentic Workflow returned no data.");
         return JSON.parse(response.text);
-    } catch (error) {
-        console.error("Multi-Agent Workflow Execution Failure:", error);
-        throw error;
+    } catch (error: any) {
+        console.error("Multi-Agent Critical Failure:", error);
+        throw new Error(error.message || "The Multi-Agent workflow failed to initialize.");
     }
 };
 
