@@ -38,7 +38,8 @@ export const getToolIcon = (tool: string, className: string = "w-5 h-5") => {
         case 'wordpress': return <WordPressIcon className={`${className} text-blue-400`} />;
         case 'elementor': return <ElementorIcon className={`${className} text-pink-500`} />;
         case 'divi': return <CodeIcon className={`${className} text-purple-500`} />; // Representing Divi builder
-        case 'seo': return <SearchIcon className={`${className} text-cyan-400`} />;
+        case 'seo': 
+        case 'yoast': return <SearchIcon className={`${className} text-cyan-400`} />;
         case 'css': return <CssIcon className={`${className} text-blue-300`} />;
         case 'react':
         case 'reactnative': return <ReactIcon className={`${className} text-cyan-400`} />;
@@ -64,6 +65,25 @@ export const getToolIcon = (tool: string, className: string = "w-5 h-5") => {
 };
 
 export const ALL_PROJECTS: ProjectData[] = [
+    {
+        id: 9,
+        title: "Slowstead Living",
+        category: "Web & Lifestyle Blog",
+        description: "A beautifully crafted WordPress lifestyle blog focused on slow living and sustainable wellness. Built with Elementor for a bespoke visual experience and optimized with Yoast SEO for maximum organic reach. The project features custom HTML/CSS for fine-tuned layout adjustments and a serene, minimalist aesthetic.",
+        image1: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1777877990/sameercodes.online_d2ulmu.png",
+        image2: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1777877990/sameercodes.online_d2ulmu.png",
+        tools: ['wordpress', 'elementor', 'yoast', 'html', 'css'],
+        role: "Full Stack WordPress Developer",
+        timeline: "2 Weeks",
+        fullImage: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1777877990/sameercodes.online_d2ulmu.png",
+        link: "https://slowsteadliving.com/",
+        goals: [
+            "Develop a premium lifestyle blog focused on high-quality content presentation.",
+            "Utilize Elementor Pro for custom page templates and dynamic content layouts.",
+            "Implement Yoast SEO for optimized metadata and improved search engine rankings.",
+            "Add custom HTML/CSS for specific design requirements not met by standard builders."
+        ]
+    },
     {
         id: 8,
         title: "WeVersity",
