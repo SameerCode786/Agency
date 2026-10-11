@@ -216,24 +216,5 @@ export const ALL_PROJECTS: ProjectData[] = [
             "Ensure a flawless, corporate aesthetic that balances professionalism with modern UI.",
             "Optimize site architecture for seamless candidate submissions and employer inquiries."
         ]
-    },
-    {
-        id: 4,
-        title: "Legal Light Law",
-        category: "Legal Services",
-        description: "A professional and authoritative website for Legal Light Law, designed to instill trust and accessibility for clients seeking legal counsel. The site features a clean layout, easy navigation for practice areas, and clear calls to action for consultation bookings.",
-        image1: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1766381484/NEw_work_sameer_mygmkj.jpg",
-        image2: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1766381484/NEw_work_sameer_mygmkj.jpg",
-        tools: ['wordpress', 'elementor', 'css'],
-        role: "Web Developer",
-        timeline: "4 Weeks",
-        fullImage: "https://res.cloudinary.com/dow2sbjsp/image/upload/v1765819763/screencapture-legallightlaw-2025-11-30-22_36_04_tuntfm.png",
-        link: "https://legallightlaw.com/",
-        goals: [
-            "Create a trustworthy online presence for legal services.",
-            "Simplify the process for clients to find practice areas and contact attorneys.",
-            "Ensure a responsive and accessible design for all users.",
-            "Implement a professional aesthetic that reflects the firm's values."
-        ]
     }
 ];
